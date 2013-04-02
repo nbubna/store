@@ -48,44 +48,36 @@ store.clearAll();
 
 Passing in false for the optional overwrite parameters will cause "set" actions to be skipped if the storage already has a value for that key. All "set" action methods return the previous value for that key, by default. If overwrite is false and there is a previous value, the unused new value will be returned.
 
-All of the above functions are act upon the storage area currently being used. By default, that will be localStorage (aka "local") until you tell store to use a different storage facility, like this:
+All of the above functions are acting upon simple localStorage (aka "local"). Using sessionStorage merely requires calling functions on store.session:
 
 ```javascript
-store.use("session");
+store.session("addMeTo", "sessionStorage");
+store.local({lots: 'of', data: 'altogether'});// store.local === store :)
 ```
-
-The 'use' function is one of five general-purpose functions:
-
-```javascript
-store.area(id[, storageArea]);// selects and/or creates a new store API
-store.isFake();//are things really persistent?
-store.namespace(prefix);// creates store API that prefixes all key-based functions
-store.bind([key, ]handler);// registers a storage event listener
-```
-
-Two facilities are available automatically: "local" and "session". The "session" store uses sessionStorage.  If these are unavailable, they will be faked to prevent errors, but data stored will NOT persist beyond the life of the current document/page.
-
-Of course, you don't have to rely on area() for 'local' and 'session'. You can just use their specific store API and do things like:
-
-```javascript
-store.session.remove(key);
-store.local({lots: 'of', data: 'altogether'});
-```
-
-All the specific get, set, etc. functions are directly callable on both store.session and store.local, as well as any other storage facility registered via store.use(name, customStorageObject), where customStorageObject implements the [Storage interface][storage] for all store functions to work properly.
+All the specific get, set, etc. functions are available on both store.session and store.local, as well as any other storage facility registered via store.area(name, customStorageObject) by an extension, where customStorageObject must implement the [Storage interface][storage].
 
 [storage]: http://dev.w3.org/html5/webstorage/#the-storage-interface
 
-Finally, if you want to put stored data from different pages or areas of your site into separate namespaces, the store.namespace is your friend:
+If you want to put stored data from different pages or areas of your site into separate namespaces, the store.namespace is your friend:
 
 ```javascript
-var cart = store.namespace('cart').use('local');
+var cart = store.namespace('cart');
 cart('total', 23.25);// stores in localStorage as 'cart.total'
 console.log(store('cart.total') == cart('total'));// logs true
 console.log(store.cart.getAll());// logs {total: 23.25}
+cart.session('group', 'toys');// stores in sessionStorage as 'cart.group'
 ```
 
-The namespace created provides the same API and defaults to the parent's underlying storage but silently adds/removes the namespace prefix as needed. It also makes the namespace accessible directly via store[namespace] as long as it does not conflict with an existing property.
+The namespace provides the same exact API as "store" but silently adds/removes the namespace prefix as needed. It also makes the namespace accessible directly via store[namespace] (e.g. 'store.cart') as long as it does not conflict with an existing part of the store API.
+
+The 'namespace' function is one of two "extra" functions that are also part of the "store API":
+
+```javascript
+store.namespace(prefix[, noSession]);// returns a new store API that prefixes all key-based functions
+store.isFake();// is this storage persistent? (e.g. is this old IE?) 
+```
+
+If localStorage or sessionStorage are unavailable, they will be faked to prevent errors, but data stored will NOT persist beyond the life of the current document/page. Look for the store.old.js extension to create persistent backing for the store API in older browsers.
 
 ## Examples
 _(Coming soon)_

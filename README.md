@@ -21,7 +21,8 @@ store('greeting', 'hello world!');
 ## Documentation
 The main store function handles set, get, setAll, getAll and clear actions; respectively, these are called like so:
 
-```store(key, data);
+```javascript
+store(key, data);
 store(key);
 store({key: data, key2: data2});
 store();
@@ -30,7 +31,8 @@ store(false);
 
 There are also more explicit and versatile functions available:
 
-```store.set(key, data[, overwrite=true]);
+```javascript
+store.set(key, data[, overwrite=true]);
 store.setAll(data[, overwrite=true]);
 store.get(key[, alt]);
 store.getAll();
@@ -48,12 +50,14 @@ Passing in false for the optional overwrite parameters will cause "set" actions 
 
 All of the above functions are act upon the storage area currently being used. By default, that will be localStorage (aka "local") until you tell store to use a different storage facility, like this:
 
-```store.use("session");
+```javascript
+store.use("session");
 ```
 
 The 'use' function is one of five general-purpose functions:
 
-```store.area(id[, storageArea]);// selects and/or creates a new store API
+```javascript
+store.area(id[, storageArea]);// selects and/or creates a new store API
 store.isFake();//are things really persistent?
 store.namespace(prefix);// creates store API that prefixes all key-based functions
 store.bind([key, ]handler);// registers a storage event listener
@@ -63,7 +67,8 @@ Two facilities are available automatically: "local" and "session". The "session"
 
 Of course, you don't have to rely on area() for 'local' and 'session'. You can just use their specific store API and do things like:
 
-```store.session.remove(key);
+```javascript
+store.session.remove(key);
 store.local({lots: 'of', data: 'altogether'});
 ```
 
@@ -73,7 +78,8 @@ All the specific get, set, etc. functions are directly callable on both store.se
 
 Finally, if you want to put stored data from different pages or areas of your site into separate namespaces, the store.namespace is your friend:
 
-```var cart = store.namespace('cart').use('local');
+```javascript
+var cart = store.namespace('cart').use('local');
 cart('total', 23.25);// stores in localStorage as 'cart.total'
 console.log(store('cart.total') == cart('total'));// logs true
 console.log(store.cart.getAll());// logs {total: 23.25}

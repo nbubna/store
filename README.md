@@ -79,8 +79,8 @@ store.isFake();// is this storage persistent? (e.g. is this old IE?)
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors, but data stored will NOT persist beyond the life of the current document/page. Look for the store.old.js extension to create persistent backing for the store API in older browsers.
 
-## Examples
-_(Coming soon)_
+## Extensions & Experiments
+Documentation on these is yet to be written, but several are available in the src folder already. Some even have tests in the repo already. All have their current status in the comments. Help developing these is welcome, of course.
 
 ## Release History
 _(Nothing yet)_

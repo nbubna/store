@@ -1,0 +1,45 @@
+{
+  "name": "store",
+  "description": "Better localStorage",
+  "keywords": "localStorage sessionStorage json namespace",
+  "version": "2.0.0",
+  "author": {
+    "name": "Nathan Bubna",
+    "email": "nathan@esha.com",
+    "url": "http://www.esha.com/"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "files": [
+    "src"
+  ],
+  "bugs": {
+    "url": "http://github.com/nbubna/store/issues",
+    "email": "nathan@esharesearch.com"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    {
+      "type": "GPL",
+      "url": "http://www.gnu.org/licenses/gpl.html"
+    }
+  ],
+  "scripts": {
+    "test": "grunt qunit"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-qunit": "~0.2.0",
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-contrib-uglify": "~0.1.1",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt": "~0.4.1",
+    "grunt-lib-phantomjs": "~0.2.0",
+    "phantomjs": "1.8.2-0"
+  }
+}

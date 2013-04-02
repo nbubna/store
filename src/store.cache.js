@@ -1,11 +1,13 @@
 /**
- * Copyright (c) 2011, Nathan Bubna
+ * Copyright (c) 2013 ESHA Research
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
  * Allows use of the 'overwrite' param on set calls to give an enforced expiration date
  * without breaking existing 'overwrite' functionality.
+ *
+ * Status: BETA - useful, needs testing
  */
 ;(function(_) {
     var prefix = 'exp@',

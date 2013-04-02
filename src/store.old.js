@@ -1,13 +1,15 @@
 /**
- * Copyright (c) 2011, Nathan Bubna
+ * Copyright (c) 2013 ESHA Research
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * If FakeStorage for users stuck in the dark ages does not satisfy you, this
- * will replace FakeStorage with the a reasonable imitator for their
+ * If fake (non-persistent) storage for users stuck in the dark ages 
+ * does not satisfy you, this will replace it with the a reasonable imitator for their
  * pathetic, incompetent browser.  Note that the session replacement here is potentially
  * insecure as it uses window.name without any fancy protections.
+ *
+ * Status: BETA - unsupported, useful, needs testing & refining
  */
 ;(function(window, document, store, _) {
 
@@ -18,7 +20,6 @@
                 length++;
             }
         }
-
         var area = _.inherit(_.storageAPI, { items:items, length:length, name:name });
         if (update) {
             addUpdateFn(area, 'setItem', update);
@@ -113,7 +114,7 @@
             });
         }
 
-        // replace local's FakeStorage
+        // replace local's fake storage
         store._area = _.areas.local = area;
     }
 

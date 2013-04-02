@@ -1,12 +1,14 @@
 /**
- * Copyright (c) 2011, Nathan Bubna
+ * Copyright (c) 2013 ESHA Research
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
  * Allows user to register handlers for quota errors, if a handler returns true
  * other handlers are not called and the error is suppressed.  Also provides methods
- * to test available space, but these are expensive and crash-prone.
+ * to test available space, but *these are expensive and crash-prone*!
+ *
+ * Status: ALPHA - possibly useful, with some dangerous features (store.remaining())
  */
 ;(function(store, _) {
     var set = _.set,

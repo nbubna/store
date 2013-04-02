@@ -1,11 +1,13 @@
 /**
- * Copyright (c) 2011, Nathan Bubna
+ * Copyright (c) 2013 ESHA Research
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
  * Makes it easy to watch for storage events by enhancing the events and
  * allowing binding to particular keys and/or namespaces.
+ *
+ * Status: ALPHA - useful, but browser support is inconsistent
  */
 ;(function(window, document, _) {
     _.fn('bind', function(key, fn) {

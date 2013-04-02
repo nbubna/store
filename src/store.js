@@ -6,7 +6,7 @@
  */
 ;(function(window) {
     var _ = {
-        version: "2.0.1",
+        version: "2.0.2",
         areas: {},
         apis: {},
 
@@ -202,6 +202,6 @@
     store.local = store;// for completeness
     store._ = _;// for extenders and debuggers...
     // safely setup store.session (throws exception in FF for file:/// urls)
-    store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
+    store.area("session", (function(){try{ return window.sessionStorage; }catch(e){}})());
 
 })(window);

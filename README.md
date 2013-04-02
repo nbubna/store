@@ -68,7 +68,7 @@ console.log(store.cart.getAll());// logs {total: 23.25}
 cart.session('group', 'toys');// stores in sessionStorage as 'cart.group'
 ```
 
-The namespace provides the same exact API as "store" but silently adds/removes the namespace prefix as needed. It also makes the namespace accessible directly via store.<namespace> (e.g. 'store.cart') as long as it does not conflict with an existing part of the store API.
+The namespace provides the same exact API as "store" but silently adds/removes the namespace prefix as needed. It also makes the namespace accessible directly via store.namespace (e.g. 'store.cart') as long as it does not conflict with an existing part of the store API.
 
 The 'namespace' function is one of two "extra" functions that are also part of the "store API":
 

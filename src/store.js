@@ -8,6 +8,7 @@
     var _ = {
         version: "2.0.1",
         areas: {},
+        apis: {},
 
         // utilities
         inherit: function(api, o) {
@@ -27,7 +28,12 @@
         },
 
         // extension hooks
-        fn: function(name, fn){ store[name] = store.session[name] = _.storeAPI[name] = fn; },
+        fn: function(name, fn) {
+            _.storeAPI[name] = fn;
+            for (var api in _.apis) {
+                api[name] = fn;
+            }
+        },
         get: function(area, key){ return area.getItem(key); },
         set: function(area, key, string){ area.setItem(key, string); },
         remove: function(area, key){ area.removeItem(key); },
@@ -47,6 +53,9 @@
             if (!_.areas[id]) {
                 _.areas[id] = store._area;
             }
+            if (!_.apis[store._ns+store._id]) {
+                _.apis[store._ns+store._id] = store;
+            }
             return store;
         },
         storeAPI: {
@@ -59,7 +68,7 @@
                 }
                 return store;
             },
-            namespace: function(namespace, createSession) {
+            namespace: function(namespace, noSession) {
                 if (!namespace){
                     return this._ns ? this._ns.substring(0,this._ns.length-1) : '';
                 }
@@ -67,7 +76,7 @@
                 if (!store || !store.namespace) {
                     store = _.Store(this._id, this._area, this._ns+ns+'.');//new namespaced api
                     if (!this[ns]){ this[ns] = store; }
-                    if (createSession){ store.area('session', _.areas.session); }
+                    if (!noSession){ store.area('session', _.areas.session); }
                 }
                 return store;
             },

@@ -1,0 +1,10 @@
+{
+  "name": "store",
+  "version": "2.0.2",
+  "main": "src/store.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}

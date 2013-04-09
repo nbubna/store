@@ -1,9 +1,10 @@
-/*! store - v2.0.0 - 2013-04-02
+/*! store - v2.0.3 - 2013-04-09
 * Copyright (c) 2013 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window) {
     var _ = {
-        version: "2.0.1",
+        version: "2.0.2",
         areas: {},
+        apis: {},
 
         // utilities
         inherit: function(api, o) {
@@ -23,7 +24,12 @@
         },
 
         // extension hooks
-        fn: function(name, fn){ store[name] = store.session[name] = _.storeAPI[name] = fn; },
+        fn: function(name, fn) {
+            _.storeAPI[name] = fn;
+            for (var api in _.apis) {
+                api[name] = fn;
+            }
+        },
         get: function(area, key){ return area.getItem(key); },
         set: function(area, key, string){ area.setItem(key, string); },
         remove: function(area, key){ area.removeItem(key); },
@@ -43,6 +49,9 @@
             if (!_.areas[id]) {
                 _.areas[id] = store._area;
             }
+            if (!_.apis[store._ns+store._id]) {
+                _.apis[store._ns+store._id] = store;
+            }
             return store;
         },
         storeAPI: {
@@ -55,7 +64,7 @@
                 }
                 return store;
             },
-            namespace: function(namespace, createSession) {
+            namespace: function(namespace, noSession) {
                 if (!namespace){
                     return this._ns ? this._ns.substring(0,this._ns.length-1) : '';
                 }
@@ -63,7 +72,7 @@
                 if (!store || !store.namespace) {
                     store = _.Store(this._id, this._area, this._ns+ns+'.');//new namespaced api
                     if (!this[ns]){ this[ns] = store; }
-                    if (createSession){ store.area('session', _.areas.session); }
+                    if (!noSession){ store.area('session', _.areas.session); }
                 }
                 return store;
             },
@@ -81,13 +90,17 @@
             },
             size: function(){ return this.keys().length; },
             key: function(i){ return this._out(this._area.key(i)); },
-            each: function(fn, end) {
+            each: function(fn, and) {
                 for (var i=0, m=this._area.length; i<m; i++) {
                     var key = this.key(i);
-                    if (key){ fn.call(this, key, end); }
+                    if (key !== undefined) {
+                        if (fn.call(this, key, and || this.get(key), i) === false) {
+                            break;
+                        }
+                    }
                     if (m > this._area.length) { m--; i--; }// in case of removeItem
                 }
-                return end || this;
+                return and || this;
             },
             keys: function() {
                 return this.each(function(k, list){ list.push(k); }, []);
@@ -124,9 +137,10 @@
             clear: function() {
                 if (!this._ns) {
                     this._area.clear();
-                    return this;
+                } else {
+                    this.each(function(k){ _.remove(this._area, this._in(k)); }, 1);
                 }
-                return this.each(function(k){ _.remove(this._area, this._in(k)); });
+                return this;
             },
             clearAll: function() {
                 var area = this._area;
@@ -146,12 +160,11 @@
                 return this._ns ? this._ns + k : k;
             },
             _out: function(k) {
-                if (!this._ns) {
-                    return k;
-                }
-                if (k.indexOf(this._ns) === 0) {
-                    return k.substring(this._ns.length);
-                }
+                return this._ns ?
+                    k && k.indexOf(this._ns) === 0 ?
+                        k.substring(this._ns.length) :
+                        undefined : // so each() knows to skip it
+                    k;
             }
         },// end _.storeAPI
         storageAPI: {
@@ -189,6 +202,6 @@
     store.local = store;// for completeness
     store._ = _;// for extenders and debuggers...
     // safely setup store.session (throws exception in FF for file:/// urls)
-    store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
+    store.area("session", (function(){try{ return window.sessionStorage; }catch(e){}})());
 
 })(window);

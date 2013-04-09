@@ -9,7 +9,7 @@
  *
  * Status: EXPERIMENTAL - not likely to serve any useful purpose
  */
-;(function(_) {
+;(function(store, _) {
     var set = _.set, get = _.get, remove = _.remove;
     store.area('overflow');//create overflow area
     _.get = function(area, key) {
@@ -40,4 +40,4 @@
             throw e;
         }
     };
-})(window.store._);
+})(window.store, window.store._);

@@ -94,13 +94,17 @@
             },
             size: function(){ return this.keys().length; },
             key: function(i){ return this._out(this._area.key(i)); },
-            each: function(fn, end) {
+            each: function(fn, and) {
                 for (var i=0, m=this._area.length; i<m; i++) {
                     var key = this.key(i);
-                    if (key){ fn.call(this, key, end); }
+                    if (key !== undefined) {
+                        if (fn.call(this, key, and || this.get(key), i) === false) {
+                            break;
+                        }
+                    }
                     if (m > this._area.length) { m--; i--; }// in case of removeItem
                 }
-                return end || this;
+                return and || this;
             },
             keys: function() {
                 return this.each(function(k, list){ list.push(k); }, []);
@@ -137,9 +141,10 @@
             clear: function() {
                 if (!this._ns) {
                     this._area.clear();
-                    return this;
+                } else {
+                    this.each(function(k){ _.remove(this._area, this._in(k)); }, 1);
                 }
-                return this.each(function(k){ _.remove(this._area, this._in(k)); });
+                return this;
             },
             clearAll: function() {
                 var area = this._area;
@@ -159,12 +164,11 @@
                 return this._ns ? this._ns + k : k;
             },
             _out: function(k) {
-                if (!this._ns) {
-                    return k;
-                }
-                if (k.indexOf(this._ns) === 0) {
-                    return k.substring(this._ns.length);
-                }
+                return this._ns ?
+                    k && k.indexOf(this._ns) === 0 ?
+                        k.substring(this._ns.length) :
+                        undefined : // so each() knows to skip it
+                    k;
             }
         },// end _.storeAPI
         storageAPI: {

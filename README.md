@@ -1,7 +1,7 @@
 A feature-filled and friendly way to take advantage of localStorage and sessionStorage (JSON, namespacing, extensions, etc).
 
 Download: [store.min.js][prod]  or  [store.js][dev]  
-[NPM][npm]: ```npm install store2``` (store was already taken)  
+[NPM][npm]: ```npm install store2``` ([store was taken](#store-vs-store))  
 Bower: ```bower install store```  
 
 [prod]: https://raw.github.com/nbubna/store/master/dist/store.min.js
@@ -89,3 +89,16 @@ Documentation on these is yet to be written. Some have tests in the repo already
 * 2010-02-10 v0.1 (extraction from esha.js)
 * 2010-05-25 v1.0 (internal release)
 * 2013-04-09 v2.0.3 (public)
+
+## Store vs Store
+When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.
+To my surprise, even our APIs had notable overlap. His has fewer features and includes superior support
+for IE 6/7 in the main lib. I contacted him with the idea of merging the featuresets, but we agreed it wouldn't work.
+He sees his library as a temporary polyfill meant to fade away with IE 6/7. This project is meant 
+to always be useful, as a better way to use localStorage, with polyfilling a mere extension.  I do hope
+to incorporate some of the IE 6/7 improvements into store.old.js at some point, but it is not a priority.
+
+Until such time as Marcus retires his polyfill, i will continue to publish on Bower as 'store' and NPM as 'store2'.
+My apologies for any confusion this causes.
+
+[other]: https://github.com/marcuswestin/store.js/

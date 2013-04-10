@@ -40,6 +40,10 @@ module.exports = function(grunt) {
     jshint: {
       gruntfile: {
         options: {
+          globals: {
+            localStorage: false,
+            sessionStorage: false
+          },
           jshintrc: '.jshintrc'
         },
         src: 'Gruntfile.js'

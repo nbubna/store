@@ -1,8 +1,8 @@
-/*! store - v2.0.3 - 2013-04-09
+/*! store - v2.0.3 - 2013-04-10
 * Copyright (c) 2013 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window) {
     var _ = {
-        version: "2.0.2",
+        version: "2.0.3",
         areas: {},
         apis: {},
 
@@ -198,10 +198,10 @@
 
     // setup the primary store fn
     if (window.store){ _.conflict = window.store; }
-    var store = window.store = _.Store('local', window.localStorage);
+    var store = window.store = _.Store('local', localStorage);
     store.local = store;// for completeness
     store._ = _;// for extenders and debuggers...
     // safely setup store.session (throws exception in FF for file:/// urls)
-    store.area("session", (function(){try{ return window.sessionStorage; }catch(e){}})());
+    store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
 })(window);

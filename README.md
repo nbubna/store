@@ -1,8 +1,5 @@
-# store.js
+A feature-filled and friendly way to take advantage of localStorage and sessionStorage (JSON, namespacing, extensions, etc).
 
-An extensible, feature-filled, and friendly way to take advantage of localStorage and sessionStorage (JSON, namespacing, etc).
-
-## Getting Started
 Download: [store.min.js][prod]  or  [store.js][dev]  
 [NPM][npm]: ```npm install store2``` (store was already taken)  
 Bower: ```bower install store```  
@@ -13,7 +10,7 @@ Bower: ```bower install store```
 
 
 ## Documentation
-The main store function handles ```set```, ```get```, ```setAll```, ```getAll``` and ```clear``` actions; respectively, these are called like so:
+The main store function can handle ```set```, ```get```, ```setAll```, ```getAll``` and ```clear``` actions directly. Respectively, these are called like so:
 
 ```javascript
 store(key, data);
@@ -26,23 +23,23 @@ store(false);
 There are also more explicit and versatile functions available:
 
 ```javascript
-store.set(key, data[, overwrite]);
-store.setAll(data[, overwrite]);
-store.get(key[, alt]);
-store.getAll();
-store.remove(key);
-store.has(key);
-store.key(index);
-store.keys();
-store.each(fn[, end]);
-store.size();
-store.clear();
-store.clearAll();
+store.set(key, data[, overwrite]); // === store(key, data);
+store.setAll(data[, overwrite]);   // === store({key: data, key2: data});
+store.get(key[, alt]);             // === store(key);
+store.getAll();                    // === store();
+store.clear();                     // === store(false);
+store.has(key);                    // returns true or false
+store.remove(key);                 // removes key and its data
+store.each(callback);              // callback receives key, data, index args
+store.keys();                      // returns array of keys
+store.key(index);                  // return key at index
+store.size();                      // number of keys, not length of data
+store.clearAll();                  // clears *ALL* areas
 ```
 
 Passing in ```false``` for the optional overwrite parameters will cause ```set``` actions to be skipped if the storage already has a value for that key. All ```set``` action methods return the previous value for that key, by default. If overwrite is ```false``` and there is a previous value, the unused new value will be returned.
 
-All of the above functions are acting upon the browser's localStorage (aka "local"). Using sessionStorage merely requires calling functions on ```store.session```:
+All of these use the browser's localStorage (aka "local"). Using sessionStorage merely requires calling the same functions on ```store.session```:
 
 ```javascript
 store.session("addMeTo", "sessionStorage");
@@ -74,7 +71,7 @@ store.isFake();// is this storage persistent? (e.g. is this old IE?)
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors, but data stored will NOT persist beyond the life of the current document/page. Use [store.old.js][old] extension to add persistent backing for the store API in older browsers.
 
 ## Extensions & Experiments
-Documentation on these is yet to be written. Some even have tests in the repo already. Help developing these is welcome, of course.
+Documentation on these is yet to be written. Some have tests in the repo already. Contributions are welcome, of course.
 
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for older browsers
 * [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
@@ -89,5 +86,6 @@ Documentation on these is yet to be written. Some even have tests in the repo al
 [overflow]: https://raw.github.com/nbubna/store/master/src/store.overflow.js
 
 ## Release History
-* 2010-05-25 v1.0 (non-public)
-* 2013-04-08 v2.0.2 (public)
+* 2010-02-10 v0.1 (extraction from esha.js)
+* 2010-05-25 v1.0 (internal release)
+* 2013-04-09 v2.0.3 (public)

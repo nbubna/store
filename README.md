@@ -1,4 +1,5 @@
-A feature-filled and friendly way to take advantage of localStorage and sessionStorage (JSON, namespacing, extensions, etc).
+A feature-filled and friendly way to take advantage of localStorage and sessionStorage
+(JSON, namespacing, extensions, etc).
 
 Download: [store.min.js][prod]  or  [store.js][dev]  
 [NPM][npm]: ```npm install store2``` ([store was taken](#store-vs-store))  
@@ -10,7 +11,8 @@ Bower: ```bower install store```
 
 
 ## Documentation
-The main store function can handle ```set```, ```get```, ```setAll```, ```getAll``` and ```clear``` actions directly. Respectively, these are called like so:
+The main store function can handle ```set```, ```get```, ```setAll```, ```getAll``` and ```clear```
+actions directly. Respectively, these are called like so:
 
 ```javascript
 store(key, data);
@@ -37,9 +39,13 @@ store.size();                      // number of keys, not length of data
 store.clearAll();                  // clears *ALL* areas
 ```
 
-Passing in ```false``` for the optional overwrite parameters will cause ```set``` actions to be skipped if the storage already has a value for that key. All ```set``` action methods return the previous value for that key, by default. If overwrite is ```false``` and there is a previous value, the unused new value will be returned.
+Passing in ```false``` for the optional overwrite parameters will cause ```set``` actions to be skipped 
+if the storage already has a value for that key. All ```set``` action methods return the previous value 
+for that key, by default. If overwrite is ```false``` and there is a previous value, the unused new 
+value will be returned.
 
-All of these use the browser's localStorage (aka "local"). Using sessionStorage merely requires calling the same functions on ```store.session```:
+All of these use the browser's localStorage (aka "local"). Using sessionStorage merely requires 
+calling the same functions on ```store.session```:
 
 ```javascript
 store.session("addMeTo", "sessionStorage");
@@ -49,7 +55,8 @@ All the specific ```get```, ```set```, etc. functions are available on both ```s
 
 [storage]: http://dev.w3.org/html5/webstorage/#the-storage-interface
 
-If you want to put stored data from different pages or areas of your site into separate namespaces, the ```store.namespace(ns)``` function is your friend:
+If you want to put stored data from different pages or areas of your site into separate namespaces, 
+the ```store.namespace(ns)``` function is your friend:
 
 ```javascript
 var cart = store.namespace('cart');
@@ -59,7 +66,9 @@ console.log(store.cart.getAll());// logs {total: 23.25}
 cart.session('group', 'toys');// stores in sessionStorage as 'cart.group'
 ```
 
-The namespace provides the same exact API as ```store``` but silently adds/removes the namespace prefix as needed. It also makes the namespaced API accessible directly via ```store[namespace]``` (e.g. ```store.cart```) as long as it does not conflict with an existing part of the store API.
+The namespace provides the same exact API as ```store``` but silently adds/removes the namespace prefix as needed.
+It also makes the namespaced API accessible directly via ```store[namespace]``` (e.g. ```store.cart```) as long as it
+does not conflict with an existing part of the store API.
 
 The 'namespace' function is one of two "extra" functions that are also part of the "store API":
 
@@ -68,10 +77,13 @@ store.namespace(prefix[, noSession]);// returns a new store API that prefixes al
 store.isFake();// is this storage persistent? (e.g. is this old IE?) 
 ```
 
-If localStorage or sessionStorage are unavailable, they will be faked to prevent errors, but data stored will NOT persist beyond the life of the current document/page. Use [store.old.js][old] extension to add persistent backing for the store API in older browsers.
+If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
+but data stored will NOT persist beyond the life of the current document/page. Use the 
+[store.old.js][old] extension to add persistent backing for the store API in older browsers.
 
 ## Extensions & Experiments
-Documentation on these is yet to be written. Some have tests in the repo already. Contributions are welcome, of course.
+Documentation on these is yet to be written. Some have tests in the repo already.
+Contributions are welcome, of course.
 
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for older browsers
 * [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
@@ -95,8 +107,9 @@ When i went to publish this on NPM i discovered another [store.js][other] by Mar
 To my surprise, even our APIs had notable overlap. His has fewer features and includes superior support
 for IE 6/7 in the main lib. I contacted him with the idea of merging the featuresets, but we agreed it wouldn't work.
 He sees his library as a temporary polyfill meant to fade away with IE 6/7. This project is meant 
-to always be useful, as a better way to use localStorage, with polyfilling a mere extension.  I do hope
-to incorporate some of the IE 6/7 improvements into store.old.js at some point, but it is not a priority.
+to always be useful, as a better way to use localStorage, with polyfilling as an extension.  I do hope
+to incorporate IE 6/7 improvements from the other store.js into store.old.js at some point,
+but it is not a priority.
 
 Until such time as Marcus retires his polyfill, i will continue to publish on Bower as 'store' and NPM as 'store2'.
 My apologies for any confusion this causes.

@@ -72,11 +72,17 @@
         equal(keys.length, expect.length, 'deepEqual length');
     }
     function each(expect, s) {
-        var arr = [];
         (s || store).each(function(k, v, i) {
-            arr.push([k,v,i]);
+            ok(inArray(expect, [k,v]), 'contains '+k+':'+v+' at '+i);
         });
-        deepEqual(arr, expect);
+    }
+    function inArray(array, element) {
+        for (var i=0,m=array.length; i<m; i++) {
+            if (element.toString() === array[i].toString()) {
+                return true;
+            }
+        }
+        return false;
     }
     function remove(key, expect, s) {
         equal((s || store).remove(key), expect, "remove '"+key+"'");
@@ -132,10 +138,10 @@
                 ok(!store.isFake(), "is not faked");
                 save('foo','bar');
                 getAll({foo:'bar'});
-                update({foo:true, fiz:'wiz'});
+                update({fiz:'wiz',foo:true});
                 update('foo', false);
                 keys(['foo','fiz']);
-                each([['foo',false,0],['fiz','wiz',1]]);
+                each([['fiz','wiz'],['foo',false]]);
                 equal(store.size(), 2, "size should be 2");
                 remove('fiz', 'wiz');
                 remove('woogie', undefined);
@@ -150,8 +156,8 @@
                 getAll({}, ns);
                 save('a', 'b', ns);
                 get('test.a', 'b');
-                each([['a','b',1]], ns);
-                each([['foo',true,0],['test.a','b',1]]);
+                each([['a','b']], ns);
+                each([['foo',true],['test.a','b']]);
                 each([], space('empty'));
                 save('test.', 'true', ns);
                 remove('test.test.', 'true');

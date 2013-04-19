@@ -6,7 +6,7 @@
  */
 ;(function(window) {
     var _ = {
-        version: "2.0.4",
+        version: "2.1",
         areas: {},
         apis: {},
 
@@ -31,12 +31,15 @@
         fn: function(name, fn) {
             _.storeAPI[name] = fn;
             for (var api in _.apis) {
-                api[name] = fn;
+                _.apis[api][name] = fn;
             }
         },
         get: function(area, key){ return area.getItem(key); },
         set: function(area, key, string){ area.setItem(key, string); },
         remove: function(area, key){ area.removeItem(key); },
+        key: function(area, i){ return area.key(i); },
+        length: function(area){ return area.length; },
+        clear: function(area){ area.clear(); },
 
         // core functions
         Store: function(id, area, namespace) {
@@ -93,16 +96,15 @@
                 return !!(this._in(key) in this._area);
             },
             size: function(){ return this.keys().length; },
-            key: function(i){ return this._out(this._area.key(i)); },
             each: function(fn, and) {
-                for (var i=0, m=this._area.length; i<m; i++) {
-                    var key = this.key(i);
+                for (var i=0, m=_.length(this._area); i<m; i++) {
+                    var key = this._out(_.key(this._area, i));
                     if (key !== undefined) {
-                        if (fn.call(this, key, and || this.get(key), i) === false) {
+                        if (fn.call(this, key, and || this.get(key)) === false) {
                             break;
                         }
                     }
-                    if (m > this._area.length) { m--; i--; }// in case of removeItem
+                    if (m > _.length(this._area)) { m--; i--; }// in case of removeItem
                 }
                 return and || this;
             },
@@ -140,7 +142,7 @@
             },
             clear: function() {
                 if (!this._ns) {
-                    this._area.clear();
+                    _.clear(this._area);
                 } else {
                     this.each(function(k){ _.remove(this._area, this._in(k)); }, 1);
                 }

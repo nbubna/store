@@ -1,9 +1,9 @@
 A feature-filled and friendly way to take advantage of localStorage and sessionStorage
 (JSON, namespacing, extensions, etc).
 
-Download: [store.min.js][prod]  or  [store.js][dev]  
-[NPM][npm]: ```npm install store2``` ([store was taken](#store-vs-store))  
-Bower: ```bower install store```  
+Download: [store2.min.js][prod]  or  [store2.js][dev]  
+[NPM][npm]: ```npm install store2```  
+Bower: ```bower install store2```  
 
 [prod]: https://raw.github.com/nbubna/store/master/dist/store.min.js
 [dev]: https://raw.github.com/nbubna/store/master/dist/store.js
@@ -85,16 +85,20 @@ Documentation on these is yet to be written. Some have tests in the repo already
 Contributions are welcome, of course.
 
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for older browsers
+* [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. [Safari private mode][safari])
 * [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
 * [store.bind.js][bind] - Better, cross-browser storage event handling (in browsers that have such events)
 * [store.quota.js][quota] - Add handlers for quota errors, experiments in measuring data use
-* [store.overflow.js][overflow] - Short demo extension that probably has no legitimate use case.
+* [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
+
 
 [old]: https://raw.github.com/nbubna/store/master/src/store.old.js
 [cache]: https://raw.github.com/nbubna/store/master/src/store.cache.js
 [bind]: https://raw.github.com/nbubna/store/master/src/store.bind.js
 [quota]: https://raw.github.com/nbubna/store/master/src/store.quota.js
 [overflow]: https://raw.github.com/nbubna/store/master/src/store.overflow.js
+[measure]: https://raw.github.com/nbubna/store/master/src/store.measure.js
+[safari]: https://github.com/marcuswestin/store.js/issues/66
 
 ## Release History
 * 2010-02-10 v0.1 (extraction from esha.js)
@@ -110,7 +114,7 @@ to always be useful, as a better way to use localStorage, with polyfilling as an
 to incorporate IE 6/7 improvements from the other store.js into store.old.js at some point,
 but it is not a priority.
 
-Until such time as Marcus retires his polyfill, i will continue to publish on Bower as 'store' and NPM as 'store2'.
-My apologies for any confusion this causes.
+To minimize confusion, i will be publishing the library as 'store2', but the main function will always be ```store``` (kind of like json2.js).  My apologies for the
+confusion caused while i was publishing this as another 'store'.
 
 [other]: https://github.com/marcuswestin/store.js/

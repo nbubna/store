@@ -32,9 +32,8 @@ store.getAll();                    // === store();
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data
-store.each(callback);              // callback receives key, data, index args
+store.each(callback);              // callback receives key and data args
 store.keys();                      // returns array of keys
-store.key(index);                  // return key at index
 store.size();                      // number of keys, not length of data
 store.clearAll();                  // clears *ALL* areas
 ```

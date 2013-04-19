@@ -4,24 +4,36 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * Allows user to register handlers for quota errors, if a handler returns true
- * other handlers are not called and the error is suppressed.  Also provides methods
- * to test available space, but *these are expensive and crash-prone*!
+ * Bind handlers to quota errors:
+ *   store.quota(function(e, area, key, str) {
+ *      console.log(e, area, key, str);
+ *   });
+ * If a handler returns true other handlers are not called and
+ * the error is suppressed.
  *
- * Status: ALPHA - possibly useful, with some dangerous features (store.remaining())
+ * Think quota errors will never happen to you? Think again:
+ * http://spin.atomicobject.com/2013/01/23/ios-private-browsing-localstorage/
+ * (this affects sessionStorage too)
+ *
+ * Status: ALPHA - API could use unbind feature
  */
 ;(function(store, _) {
-    var set = _.set,
-        list = [];
-    store.full = function(fn){ list.push(fn); },
-    store.full.handlers = list;
-    _.set = function() {
+
+    store.quota = function(fn) {
+        store.quota.fns.push(fn);
+    };
+    store.quota.fns = [];
+
+    var _set = _.set;
+    _.set = function(area, key, str) {
         try {
-            set.apply(this, arguments);
+            _set.apply(this, arguments);
         } catch (e) {
-            if (e.name === 'QUOTA_EXCEEDED_ERR' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-                for (var i=0,m=list.length; i<m; i++) {
-                    if (true === list[i].apply(this, arguments)) {
+            if (e.name === 'QUOTA_EXCEEDED_ERR' ||
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                var fns = store.quota.fns;
+                for (var i=0,m=fns.length; i<m; i++) {
+                    if (true === fns[i].call(this, e, area, key, str)) {
                         return;
                     }
                 }
@@ -29,35 +41,5 @@
             throw e;
         }
     };
-    var test = function(s) {
-        try {
-            set(localStorage, "__test__", s);
-            return s;
-        } catch (e) {}
-    };
-    store.existing = function(){ return _.stringify(store()).length; };
-    store.remaining = function() {
-        if (store.isFake()){ return; }
-        if (store._area.remainingSpace){ return store._area.remainingSpace; }
-        var s = 's ', add = s;
-        // grow add for speed
-        while (test(s)) {
-            s += add;
-            if (add.length < 50000) {
-                add = s;
-            }
-        }
-        // shrink add for accuracy
-        while (add.length > 2) {
-            s = s.substring(0, s.length - (add.length/2));
-            while (test(s)) {
-                s += add;
-            }
-            add = add.substring(add.length/2);
-        }
-        _.remove(localStorage, "__test__");
-        return s.length + 8;
-    };
-    store.quota = function(){ return store.existing() + store.remaining(); };
 
 })(window.store, window.store._);

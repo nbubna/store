@@ -12,7 +12,9 @@
 ;(function(_) {
     var prefix = 'exp@',
         suffix = ';',
-        parse = _.parse;
+        parse = _.parse,
+        _get = _.get,
+        _set = _.set;
     _.parse = function(s) {
         if (s && s.indexOf(prefix) === 0) {
             s = s.substring(s.indexOf(suffix)+1);
@@ -30,7 +32,8 @@
         return min ? new Date((now+min)*60000) : now;
     };
     _.cache = function(area, key) {
-        var s = area.getItem(key), min = _.expires(s);
+        var s = _get(area, key),
+            min = _.expires(s);
         if (min && _.when() >= min) {
             return area.removeItem(key);
         }
@@ -45,7 +48,7 @@
             if (min) {
                 string = prefix + (_.when()+min) + suffix + string;
             }
-            area.setItem(key, string);
+            _set(area, key, string);
         } catch (e) {
             if (e.name === 'QUOTA_EXCEEDED_ERR' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
                 var changed = false;

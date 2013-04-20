@@ -103,7 +103,8 @@ Contributions are welcome, of course.
 ## Release History
 * 2010-02-10 v0.1 (extraction from esha.js)
 * 2010-05-25 v1.0 (internal release)
-* 2013-04-09 v2.0.3 (public)
+* 2013-04-09 v2.0.3 (public) - First GitHub release
+* 2013-04-20 v2.1.0 (public) - Drops flawed/confusing/unused key(i) method, fixes extension problems.
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

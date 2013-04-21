@@ -62,7 +62,7 @@
         var overflow = _.overflow(area);
         if (overflow) {
             var l = _length.call(this, area);
-            if (i > l) {
+            if (i >= l) {
                 i = i - l;// make i overflow-relative
                 for (var j=0, m=_length.call(this, overflow); j<m; j++) {
                     if (j === i) {// j is overflow index

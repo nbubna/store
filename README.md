@@ -32,10 +32,10 @@ store.getAll();                    // === store();
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data
-store.each(callback);              // callback receives key and data args
+store.each(callback);              // called with key and data args, return false to exit early
 store.keys();                      // returns array of keys
 store.size();                      // number of keys, not length of data
-store.clearAll();                  // clears *ALL* areas
+store.clearAll();                  // clears *ALL* areas (but still namespace sensitive)
 ```
 
 Passing in ```false``` for the optional overwrite parameters will cause ```set``` actions to be skipped 
@@ -88,7 +88,7 @@ Contributions are welcome, of course.
 * [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. [Safari private mode][safari])
 * [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
 * [store.bind.js][bind] - Better, cross-browser storage event handling (in browsers that have such events)
-* [store.quota.js][quota] - Add handlers for quota errors, experiments in measuring data use
+* [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
 * [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
 
 
@@ -103,7 +103,8 @@ Contributions are welcome, of course.
 ## Release History
 * 2010-02-10 v0.1 (extraction from esha.js)
 * 2010-05-25 v1.0 (internal release)
-* 2013-04-09 v2.0.3 (public)
+* 2013-04-09 v2.0.3 (public) - First GitHub release
+* 2013-04-20 v2.1.0 (public) - Drops flawed/confusing/unused key(i) method, fixes extension problems.
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

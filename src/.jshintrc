@@ -11,5 +11,8 @@
   "boss": true,
   "eqnull": true,
   "browser": true,
+  "globals": {
+    "module": true
+  },
   "predef": ["jQuery"]
 }

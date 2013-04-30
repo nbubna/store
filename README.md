@@ -80,23 +80,26 @@ If localStorage or sessionStorage are unavailable, they will be faked to prevent
 but data stored will NOT persist beyond the life of the current document/page. Use the 
 [store.old.js][old] extension to add persistent backing for the store API in older browsers.
 
-## Extensions & Experiments
-Documentation on these is yet to be written. Some have tests in the repo already.
-Contributions are welcome, of course.
+## Extensions
+These mostly could use further documentation and abuse...er...testing.
+Contributions are welcome!
 
+#### Beta - Stable and definitely useful
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for older browsers
-* [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. [Safari private mode][safari])
+* [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. very useful for [Safari private mode][safari])
 * [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
+
+#### Alpha - Either incomplete or unstable or both
 * [store.bind.js][bind] - Better, cross-browser storage event handling (in browsers that have such events)
 * [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
 * [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
 
 
 [old]: https://raw.github.com/nbubna/store/master/src/store.old.js
+[overflow]: https://raw.github.com/nbubna/store/master/src/store.overflow.js
 [cache]: https://raw.github.com/nbubna/store/master/src/store.cache.js
 [bind]: https://raw.github.com/nbubna/store/master/src/store.bind.js
 [quota]: https://raw.github.com/nbubna/store/master/src/store.quota.js
-[overflow]: https://raw.github.com/nbubna/store/master/src/store.overflow.js
 [measure]: https://raw.github.com/nbubna/store/master/src/store.measure.js
 [safari]: https://github.com/marcuswestin/store.js/issues/66
 

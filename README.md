@@ -15,11 +15,11 @@ The main store function can handle ```set```, ```get```, ```setAll```, ```getAll
 actions directly. Respectively, these are called like so:
 
 ```javascript
-store(key, data);
-store(key);
-store({key: data, key2: data2});
-store();
-store(false);
+store(key, data);                 // sets stringified data under key
+store(key);                       // gets and parses data stored under key
+store({key: data, key2: data2});  // sets all key/data pairs in the object
+store();                          // gets all stored key/data pairs as an object
+store(false);                     // clears all items from storage
 ```
 
 There are also more explicit and versatile functions available:
@@ -105,6 +105,7 @@ Contributions are welcome, of course.
 * 2010-05-25 v1.0 (internal release)
 * 2013-04-09 v2.0.3 (public) - First GitHub release
 * 2013-04-20 v2.1.0 (public) - Drops flawed/confusing/unused key(i) method, fixes extension problems.
+* 2013-04-30 v2.1.1 (public) - Browserify (and friends) support (module.exports = store)
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

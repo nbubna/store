@@ -2,7 +2,7 @@
   "name": "store2",
   "description": "Better localStorage",
   "keywords": ["localStorage","sessionStorage","json","namespace","store"],
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": {
     "name": "Nathan Bubna",
     "email": "nathan@esha.com",

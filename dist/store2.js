@@ -1,4 +1,4 @@
-/*! store2 - v2.1.0 - 2013-04-20
+/*! store2 - v2.1.0 - 2013-04-30
 * Copyright (c) 2013 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window) {
     var _ = {
@@ -207,5 +207,9 @@
     store._ = _;// for extenders and debuggers...
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
+
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = store;
+    }
 
 })(window);

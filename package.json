@@ -14,6 +14,7 @@
   "files": [
     "src"
   ],
+  "main": "dist/store2.js",
   "bugs": {
     "url": "http://github.com/nbubna/store/issues",
     "email": "nathan@esharesearch.com"

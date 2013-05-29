@@ -1,10 +1,21 @@
 {
-  "name": "store2",
+  "name": "store",
+  "repo": "nbubna/store",
+  "description": "A better way to use localStorage and sessionStorage",
   "version": "2.1.1",
-  "main": "src/store2.js",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
+  "keywords": ["localStorage","sessionStorage","json","namespace","store"],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "src/component.js",
+  "scripts": [
+    "src/component.js",
+    "src/store2.js",
+    "src/store.bind.js",
+    "src/store.cache.js",
+    "src/store.measure.js",
+    "src/store.old.js",
+    "src/store.overflow.js",
+    "src/store.quota.js"
   ]
 }

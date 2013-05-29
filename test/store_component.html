@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>store.js Test Suite: using component build</title>
+  <!-- Load local jQuery. This can be overridden with a ?jquery=___ param. -->
+  <script src="../libs/jquery-loader.js"></script>
+  <!-- Load local QUnit. -->
+  <link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
+  <script src="../libs/qunit/qunit.js"></script>
+  <!-- Load local lib and tests. Assumes you have run `component build` -->
+  <script src="../build/build.js"></script>
+  <script>
+    require('store');
+    require('store/src/store.bind.js');
+    require('store/src/store.cache.js');
+    require('store/src/store.old.js');
+    require('store/src/store.overflow.js');
+    require('store/src/store.quota.js');
+    require('store/src/store.measure.js');
+  </script>
+  <script src="store_test.js"></script>
+  <!-- Removing access to jQuery and $. But it'll still be available as _$, if
+       you REALLY want to mess around with jQuery in the console. REMEMBER WE
+       ARE TESTING A PLUGIN HERE, THIS HELPS ENSURE BEST PRACTICES. REALLY. -->
+  <script>window._$ = jQuery.noConflict(true);</script>
+</head>
+<body>
+  <h1 id="qunit-header">store.js - tests</h1>
+  <h2 id="qunit-banner"></h2>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+</body>
+</html>

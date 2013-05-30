@@ -14,5 +14,5 @@
   "globals": {
     "module": true
   },
-  "predef": ["jQuery"]
+  "predef": ["jQuery", "require"]
 }

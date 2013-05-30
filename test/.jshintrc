@@ -27,6 +27,7 @@
     "notDeepEqual",
     "strictEqual",
     "notStrictEqual",
-    "throws"
+    "throws",
+    "require"
   ]
 }

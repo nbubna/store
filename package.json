@@ -1,7 +1,13 @@
 {
   "name": "store2",
   "description": "Better localStorage",
-  "keywords": ["localStorage","sessionStorage","json","namespace","store"],
+  "keywords": [
+    "localStorage",
+    "sessionStorage",
+    "json",
+    "namespace",
+    "store"
+  ],
   "version": "2.1.1",
   "author": {
     "name": "Nathan Bubna",
@@ -41,6 +47,7 @@
     "grunt-contrib-clean": "~0.4.0",
     "grunt": "~0.4.1",
     "grunt-lib-phantomjs": "~0.2.0",
-    "phantomjs": "1.8.2-0"
+    "phantomjs": "1.8.2-0",
+    "grunt-component-build": "~0.2.7"
   }
 }

@@ -111,10 +111,12 @@ Contributions are welcome!
 * 2013-04-09 [v2.0.3][] (public) - First GitHub release
 * 2013-04-20 [v2.1.0][] (public) - Drops flawed/confusing/unused key(i) method, fixes extension problems.
 * 2013-04-30 [v2.1.1][] (public) - Browserify (and friends) support (module.exports = store)
+* 2013-05-30 [v2.1.2][] (public) - Component support (old component.json is now bower.json)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
 [v2.1.1]: https://github.com/nbubna/store/tree/2.1.1
+[v2.1.2]: https://github.com/nbubna/store/tree/2.1.2
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.
@@ -125,7 +127,8 @@ to always be useful, as a better way to use localStorage, with polyfilling as an
 to incorporate IE 6/7 improvements from the other store.js into store.old.js at some point,
 but it is not a priority.
 
-To minimize confusion, i will be publishing the library as 'store2', but the main function will always be ```store``` (kind of like json2.js).  My apologies for the
-confusion caused while i was publishing this as another 'store'.
+To minimize confusion, i will be publishing the library as 'store2',
+but the main function will always be `store`.
+My apologies for the confusion caused while i was publishing this as another 'store'.
 
 [other]: https://github.com/marcuswestin/store.js/

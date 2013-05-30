@@ -2,7 +2,7 @@
   "name": "store",
   "repo": "nbubna/store",
   "description": "A better way to use localStorage and sessionStorage",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "keywords": ["localStorage","sessionStorage","json","namespace","store"],
   "dependencies": {},
   "development": {},

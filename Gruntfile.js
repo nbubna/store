@@ -18,6 +18,7 @@ module.exports = function(grunt) {
     concat: {
       options: {
         banner: '<%= banner %>',
+        process: true,
         stripBanners: true
       },
       dist: {

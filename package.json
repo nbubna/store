@@ -25,6 +25,10 @@
     "url": "http://github.com/nbubna/store/issues",
     "email": "nathan@esharesearch.com"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "http://github.com/nbubna/store.git"
+  },
   "licenses": [
     {
       "type": "MIT",

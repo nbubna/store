@@ -10,7 +10,7 @@
   "main": "src/component.js",
   "scripts": [
     "src/component.js",
-    "src/store2.js",
+    "dist/store2.js",
     "src/store.bind.js",
     "src/store.cache.js",
     "src/store.measure.js",

@@ -96,6 +96,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-component-build');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'component_build', 'qunit', 'clean', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'clean', 'concat', 'component_build', 'qunit', 'uglify']);
 
 };

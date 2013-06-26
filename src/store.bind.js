@@ -13,9 +13,10 @@
     _.fn('bind', function(key, fn) {
         if (!fn) { fn = key; key = null; }// shift args when needed
         var s = this,
+            bound,
             id = _.id(this._area);
         if (window.addEventListener) {
-            window.addEventListener("storage", function(e) {
+            window.addEventListener("storage", bound = function(e) {
                 var k = s._out(e.key);
                 if (k && (!key || k === key)) {// must match key if listener has one
                     var eid = _.id(e.storageArea);
@@ -25,11 +26,22 @@
                 }
             }, false);
         } else {
-            document.attachEvent("onstorage", function(){
+            document.attachEvent("onstorage", bound = function() {
                 return fn.call(s, window.event);
             });
         }
+        fn['_'+(key||'')+'listener'] = bound;
         return s;
+    });
+    _.fn('unbind', function(key, fn) {
+        if (!fn) { fn = key; key = null; }// shift args when needed
+        var bound = fn['_'+(key||'')+'listener'];
+        if (window.removeEventListener) {
+            window.removeEventListener("storage", bound);
+        } else {
+            document.detachEvent("onstorage", bound);
+        }
+        return this;
     });
     _.event = function(k, s, e) {
         var event = {

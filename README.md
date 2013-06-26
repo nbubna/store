@@ -92,7 +92,7 @@ Contributions are welcome!
 * [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
 
 #### Alpha - Either incomplete or unstable or both
-* [store.bind.js][bind] - Better, cross-browser storage event handling (in browsers that have such events)
+* [store.on.js][on] - Better, cross-browser storage event handling (in browsers that have such events)
 * [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
 * [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
 
@@ -100,7 +100,7 @@ Contributions are welcome!
 [old]: https://raw.github.com/nbubna/store/master/src/store.old.js
 [overflow]: https://raw.github.com/nbubna/store/master/src/store.overflow.js
 [cache]: https://raw.github.com/nbubna/store/master/src/store.cache.js
-[bind]: https://raw.github.com/nbubna/store/master/src/store.bind.js
+[on]: https://raw.github.com/nbubna/store/master/src/store.on.js
 [quota]: https://raw.github.com/nbubna/store/master/src/store.quota.js
 [measure]: https://raw.github.com/nbubna/store/master/src/store.measure.js
 [safari]: https://github.com/marcuswestin/store.js/issues/66

@@ -10,7 +10,7 @@
  * Status: ALPHA - useful, but browser support is inconsistent
  */
 ;(function(window, document, _) {
-    _.fn('bind', function(key, fn) {
+    _.fn('on', function(key, fn) {
         if (!fn) { fn = key; key = null; }// shift args when needed
         var s = this,
             bound,
@@ -33,7 +33,7 @@
         fn['_'+(key||'')+'listener'] = bound;
         return s;
     });
-    _.fn('unbind', function(key, fn) {
+    _.fn('off', function(key, fn) {
         if (!fn) { fn = key; key = null; }// shift args when needed
         var bound = fn['_'+(key||'')+'listener'];
         if (window.removeEventListener) {

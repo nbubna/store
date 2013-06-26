@@ -217,7 +217,7 @@
                 events(0);
             } else {
                 var foos = 1;
-                events.bind('foo', function(e) {
+                events.on('foo', function(e) {
                     test("event "+e.key+foos, function() {
                        equal('events', e.namespace, "e.namespace should be 'events'");
                        equal('foo', e.key, "e.key should be 'foo'");

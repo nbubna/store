@@ -31,6 +31,27 @@
         }
         return s;
     });
+    _.fn('unbind', function(key, fn) {
+        if (!fn) { fn = key; key = null; }// shift args when needed
+        var s = this,
+            id = _.id(this._area);
+        if (window.removeEventListener) {
+            window.removeEventListener("storage", function(e) {
+                var k = s._out(e.key);
+                if (k && (!key || k === key)) {// must match key if listener has one
+                    var eid = _.id(e.storageArea);
+                    if (!eid || id === eid) {// must match area, if event has a known one
+                        return fn.call(s, _.event(k, s, e));
+                    }
+                }
+            }, false);
+        } else {
+            document.detachEvent("onstorage", function(){
+                return fn.call(s, window.event);
+            });
+        }
+        return s;
+    });
     _.event = function(k, s, e) {
         var event = {
             key: k,

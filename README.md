@@ -90,9 +90,9 @@ Contributions are welcome!
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for older browsers
 * [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. very useful for [Safari private mode][safari])
 * [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
+* [store.on.js][on] - Better, cross-browser storage event handling (does nothing in IE8 or older though)
 
 #### Alpha - Either incomplete or unstable or both
-* [store.on.js][on] - Better, cross-browser storage event handling (in browsers that have such events)
 * [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
 * [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
 

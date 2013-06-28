@@ -11,50 +11,37 @@
  * store.on('foo', function listenToFoo(e){ console.log('foo was changed:', e); });
  * store.off('foo', listenToFoo);
  *
- * // listen to all storage events
+ * // listen to all storage events (also namespace sensitive)
  * store.on(function storageEvent(e){ console.log('web storage:', e); });
  * store.off(storageEvent);
  * 
- * Status: ALPHA - useful, if you don't mind incomplete browser support for events
+ * Status: BETA - useful, if you aren't using IE8 or worse
  */
-;(function(window, document, _) {
-    _.fn('on', function(key, fn) {
-        if (!fn) { fn = key; key = ''; }// shift args when needed
-        var s = this,
-            bound,
-            id = _.id(this._area);
-        if (window.addEventListener) {
-            window.addEventListener("storage", bound = function(e) {
-                var k = s._out(e.key);
-                if (k && (!key || k === key)) {// must match key if listener has one
-                    var eid = _.id(e.storageArea);
-                    if (!eid || id === eid) {// must match area, if event has a known one
-                        return fn.call(s, _.event(k, s, e));
-                    }
-                }
-            }, false);
-        } else {
-            document.attachEvent("onstorage", bound = function() {
-                return fn.call(s, window.event);
-            });
-        }
-        fn['_'+key+'listener'] = bound;
-        return s;
-    });
-    _.fn('off', function(key, fn) {
-        if (!fn) { fn = key; key = ''; }// shift args when needed
-        var bound = fn['_'+key+'listener'];
-        if (window.removeEventListener) {
-            window.removeEventListener("storage", bound);
-        } else {
-            document.detachEvent("onstorage", bound);
-        }
+;(function(window, _) {
+
+    _.on = function(key, fn) {
+        if (!fn) { fn = key; key = ''; }// no key === all keys
+        var listener = function(e) {
+            var k = this._out(e.key);// undefined if key is not in the namespace
+            if ((k && (!key || k === key)) && // match key if listener has one
+                (!e.storageArea || e.storageArea === this._area)) {// match area, if available
+                return fn.call(this, _.event.call(this, k, e));
+            }
+        };
+        window.addEventListener("storage", fn[key+'-listener']=listener, false);
         return this;
-    });
-    _.event = function(k, s, e) {
+    };
+
+    _.off = function(key, fn) {
+        if (!fn) { fn = key; key = ''; }// no key === all keys
+        window.removeEventListener("storage", fn[key+'-listener']);
+        return this;
+    };
+
+    _.event = function(k, e) {
         var event = {
             key: k,
-            namespace: s.namespace(),
+            namespace: this.namespace(),
             newValue: _.parse(e.newValue),
             oldValue: _.parse(e.oldValue),
             url: e.url || e.uri,
@@ -71,11 +58,10 @@
         }
         return event;
     };
-    _.id = function(area) {
-        for (var id in _.areas) {
-            if (area === _.areas[id]) {
-                return id;
-            }
-        }
-    };
-})(window, document, window.store._);
+
+    // store2 policy is to not throw errors on old browsers
+    var old = !window.addEventListener ? function(){} : null;
+    _.fn('on', old || _.on);
+    _.fn('off', old || _.off);
+
+})(window, window.store._);

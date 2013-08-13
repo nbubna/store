@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Store by nbubna</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Store</h1>
+        <p>A better way to use localStorage and sessionStorage</p>
+
+        <p class="view"><a href="https://github.com/nbubna/store">View the Project on GitHub <small>nbubna/store</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/nbubna/store/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/nbubna/store/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/nbubna/store">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>A feature-filled and friendly way to take advantage of localStorage and sessionStorage
+(JSON, namespacing, extensions, etc).</p>
+
+<p>Download: <a href="https://raw.github.com/nbubna/store/master/dist/store2.min.js">store2.min.js</a>  or  <a href="https://raw.github.com/nbubna/store/master/dist/store2.js">store2.js</a><br><a href="https://npmjs.org/package/store2">NPM</a>: <code>npm install store2</code><br>
+Bower: <code>bower install store2</code><br><a href="http://nuget.org/packages/store2/">NuGet</a>: <code>Install-Package store2</code>  </p>
+
+<h2>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>The main store function can handle <code>set</code>, <code>get</code>, <code>setAll</code>, <code>getAll</code> and <code>clear</code>
+actions directly. Respectively, these are called like so:</p>
+
+<div class="highlight"><pre><span class="nx">store</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>                 <span class="c1">// sets stringified data under key</span>
+<span class="nx">store</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>                       <span class="c1">// gets and parses data stored under key</span>
+<span class="nx">store</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">key2</span><span class="o">:</span> <span class="nx">data2</span><span class="p">});</span>  <span class="c1">// sets all key/data pairs in the object</span>
+<span class="nx">store</span><span class="p">();</span>                          <span class="c1">// gets all stored key/data pairs as an object</span>
+<span class="nx">store</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>                     <span class="c1">// clears all items from storage</span>
+</pre></div>
+
+<p>There are also more explicit and versatile functions available:</p>
+
+<div class="highlight"><pre><span class="nx">store</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">[,</span> <span class="nx">overwrite</span><span class="p">]);</span> <span class="c1">// === store(key, data);</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="nx">data</span><span class="p">[,</span> <span class="nx">overwrite</span><span class="p">]);</span>   <span class="c1">// === store({key: data, key2: data});</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">[,</span> <span class="nx">alt</span><span class="p">]);</span>             <span class="c1">// === store(key);</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">getAll</span><span class="p">();</span>                    <span class="c1">// === store();</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>                     <span class="c1">// === store(false);</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>                    <span class="c1">// returns true or false</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>                 <span class="c1">// removes key and its data</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>              <span class="c1">// called with key and data args, return false to exit early</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">keys</span><span class="p">();</span>                      <span class="c1">// returns array of keys</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>                      <span class="c1">// number of keys, not length of data</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">clearAll</span><span class="p">();</span>                  <span class="c1">// clears *ALL* areas (but still namespace sensitive)</span>
+</pre></div>
+
+<p>Passing in <code>false</code> for the optional overwrite parameters will cause <code>set</code> actions to be skipped 
+if the storage already has a value for that key. All <code>set</code> action methods return the previous value 
+for that key, by default. If overwrite is <code>false</code> and there is a previous value, the unused new 
+value will be returned.</p>
+
+<p>All of these use the browser's localStorage (aka "local"). Using sessionStorage merely requires 
+calling the same functions on <code>store.session</code>:</p>
+
+<div class="highlight"><pre><span class="nx">store</span><span class="p">.</span><span class="nx">session</span><span class="p">(</span><span class="s2">"addMeTo"</span><span class="p">,</span> <span class="s2">"sessionStorage"</span><span class="p">);</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">local</span><span class="p">({</span><span class="nx">lots</span><span class="o">:</span> <span class="s1">'of'</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="s1">'altogether'</span><span class="p">});</span><span class="c1">// store.local === store :)</span>
+</pre></div>
+
+<p>All the specific <code>get</code>, <code>set</code>, etc. functions are available on both <code>store.session</code> and <code>store.local</code>, as well as any other storage facility registered via <code>store.area(name, customStorageObject)</code> by an extension, where customStorageObject must implement the <a href="http://dev.w3.org/html5/webstorage/#the-storage-interface">Storage interface</a>. This is how <a href="https://raw.github.com/nbubna/store/master/src/store.old.js">store.old.js</a> extends store.js to support older versions of IE and Firefox.</p>
+
+<p>If you want to put stored data from different pages or areas of your site into separate namespaces, 
+the <code>store.namespace(ns)</code> function is your friend:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">cart</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">'cart'</span><span class="p">);</span>
+<span class="nx">cart</span><span class="p">(</span><span class="s1">'total'</span><span class="p">,</span> <span class="mf">23.25</span><span class="p">);</span><span class="c1">// stores in localStorage as 'cart.total'</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">store</span><span class="p">(</span><span class="s1">'cart.total'</span><span class="p">)</span> <span class="o">==</span> <span class="nx">cart</span><span class="p">(</span><span class="s1">'total'</span><span class="p">));</span><span class="c1">// logs true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">store</span><span class="p">.</span><span class="nx">cart</span><span class="p">.</span><span class="nx">getAll</span><span class="p">());</span><span class="c1">// logs {total: 23.25}</span>
+<span class="nx">cart</span><span class="p">.</span><span class="nx">session</span><span class="p">(</span><span class="s1">'group'</span><span class="p">,</span> <span class="s1">'toys'</span><span class="p">);</span><span class="c1">// stores in sessionStorage as 'cart.group'</span>
+</pre></div>
+
+<p>The namespace provides the same exact API as <code>store</code> but silently adds/removes the namespace prefix as needed.
+It also makes the namespaced API accessible directly via <code>store[namespace]</code> (e.g. <code>store.cart</code>) as long as it
+does not conflict with an existing part of the store API.</p>
+
+<p>The 'namespace' function is one of two "extra" functions that are also part of the "store API":</p>
+
+<div class="highlight"><pre><span class="nx">store</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="nx">prefix</span><span class="p">[,</span> <span class="nx">noSession</span><span class="p">]);</span><span class="c1">// returns a new store API that prefixes all key-based functions</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">isFake</span><span class="p">();</span><span class="c1">// is this storage persistent? (e.g. is this old IE?) </span>
+</pre></div>
+
+<p>If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
+but data stored will NOT persist beyond the life of the current document/page. Use the 
+<a href="https://raw.github.com/nbubna/store/master/src/store.old.js">store.old.js</a> extension to add persistent backing for the store API in older browsers.</p>
+
+<h2>
+<a name="extensions" class="anchor" href="#extensions"><span class="octicon octicon-link"></span></a>Extensions</h2>
+
+<p>These mostly could use further documentation and abuse...er...testing.
+Contributions are welcome!</p>
+
+<h4>
+<a name="beta---stable-and-definitely-useful" class="anchor" href="#beta---stable-and-definitely-useful"><span class="octicon octicon-link"></span></a>Beta - Stable and definitely useful</h4>
+
+<ul>
+<li>
+<a href="https://raw.github.com/nbubna/store/master/src/store.old.js">store.old.js</a> - Add working localStorage and sessionStorage polyfills for older browsers</li>
+<li>
+<a href="https://raw.github.com/nbubna/store/master/src/store.overflow.js">store.overflow.js</a> - Fall back to fake storage on quota errors (e.g. very useful for <a href="https://github.com/marcuswestin/store.js/issues/66">Safari private mode</a>)</li>
+<li>
+<a href="https://raw.github.com/nbubna/store/master/src/store.cache.js">store.cache.js</a> - To make data expire, pass a number of minutes as the overwrite param on <code>set()</code> calls</li>
+<li>
+<a href="https://raw.github.com/nbubna/store/master/src/store.on.js">store.on.js</a> - Superior storage event handling (per key, per namespace, etc in IE9+)</li>
+</ul><h4>
+<a name="alpha---either-incomplete-or-unstable-or-both" class="anchor" href="#alpha---either-incomplete-or-unstable-or-both"><span class="octicon octicon-link"></span></a>Alpha - Either incomplete or unstable or both</h4>
+
+<ul>
+<li>
+<a href="https://raw.github.com/nbubna/store/master/src/store.quota.js">store.quota.js</a> - Register callbacks to handle (and even cancel) quota errors</li>
+<li>
+<a href="https://raw.github.com/nbubna/store/master/src/store.measure.js">store.measure.js</a> - Experimental extension for measuring space used and available (needs work)</li>
+</ul><h2>
+<a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release History</h2>
+
+<ul>
+<li>2010-02-10 v0.1 (extraction from esha.js)</li>
+<li>2010-05-25 v1.0 (internal release)</li>
+<li>2013-04-09 <a href="https://github.com/nbubna/store/tree/2.0.3">v2.0.3</a> (public) - First GitHub release</li>
+<li>2013-04-20 <a href="https://github.com/nbubna/store/tree/2.1.0">v2.1.0</a> (public) - Drops flawed/confusing/unused key(i) method, fixes extension problems.</li>
+<li>2013-04-30 <a href="https://github.com/nbubna/store/tree/2.1.1">v2.1.1</a> (public) - Browserify (and friends) support (module.exports = store)</li>
+<li>2013-05-30 <a href="https://github.com/nbubna/store/tree/2.1.2">v2.1.2</a> (public) - Component support (old component.json is now bower.json)</li>
+</ul><h2>
+<a name="store-vs-store" class="anchor" href="#store-vs-store"><span class="octicon octicon-link"></span></a>Store vs Store</h2>
+
+<p>When i went to publish this on NPM i discovered another <a href="https://github.com/marcuswestin/store.js/">store.js</a> by Marcus Westin.
+To my surprise, even our APIs had notable overlap. His has fewer features and includes superior support
+for IE 6/7 in the main lib. I contacted him with the idea of merging the featuresets, but we agreed it wouldn't work.
+He sees his library as a temporary polyfill meant to fade away with IE 6/7. This project is meant 
+to always be useful, as a better way to use localStorage, with polyfilling as an extension.  I do hope
+to incorporate IE 6/7 improvements from the other store.js into store.old.js at some point,
+but it is not a priority.</p>
+
+<p>To minimize confusion, i will be publishing the library as 'store2',
+but the main function will always be <code>store</code>.
+My apologies for the confusion caused while i was publishing this as another 'store'.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/nbubna">nbubna</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

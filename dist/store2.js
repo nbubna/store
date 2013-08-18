@@ -1,4 +1,4 @@
-/*! store2 - v2.1.2 - 2013-05-30
+/*! store2 - v2.1.2 - 2013-08-18
 * Copyright (c) 2013 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window) {
     var _ = {

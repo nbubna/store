@@ -38,6 +38,15 @@
         return this;
     };
 
+    _.once = function(key, fn) {
+        if (!fn) { fn = key; key = ''; }
+        var s = this, listener;
+        return s.on(key, listener = function() {
+            s.off(key, listener);
+            return fn.apply(this, arguments);
+        });
+    };
+
     _.event = function(k, e) {
         var event = {
             key: k,
@@ -63,5 +72,6 @@
     var old = !window.addEventListener ? function(){} : null;
     _.fn('on', old || _.on);
     _.fn('off', old || _.off);
+    _.fn('once', old || _.once);
 
 })(window, window.store._);

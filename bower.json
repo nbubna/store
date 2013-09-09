@@ -1,6 +1,6 @@
 {
   "name": "store2",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "main": "src/store2.js",
   "ignore": [
     "**/.*",

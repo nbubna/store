@@ -134,3 +134,7 @@ but the main function will always be `store`.
 My apologies for the confusion caused while i was publishing this as another 'store'.
 
 [other]: https://github.com/marcuswestin/store.js/
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nbubna/store/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

@@ -42,7 +42,10 @@
             _set.apply(this, arguments);
         } catch (e) {
             if (e.name === 'QUOTA_EXCEEDED_ERR' ||
-                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+                e.toString().indexOf("QUOTA_EXCEEDED_ERR") != -1 ||
+                e.toString().indexOf("QuotaExceededError") != -1) {
+                // the e.toString is needed for IE9 / IE10, cos name is empty there
                 return _.set(_.overflow(area, true), key, string);
             }
             throw e;

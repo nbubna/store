@@ -18,7 +18,8 @@
     "node": ">= 0.8.0"
   },
   "files": [
-    "src"
+    "src",
+    "dist"
   ],
   "main": "dist/store2.js",
   "bugs": {

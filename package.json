@@ -1,5 +1,6 @@
 {
   "name": "store2",
+  "version": "2.1.4",
   "description": "Better localStorage",
   "keywords": [
     "localStorage",
@@ -8,7 +9,6 @@
     "namespace",
     "store"
   ],
-  "version": "2.1.3",
   "author": {
     "name": "Nathan Bubna",
     "email": "nathan@esha.com",
@@ -27,8 +27,8 @@
     "email": "nathan@esharesearch.com"
   },
   "repository": {
-    "type" : "git",
-    "url" : "http://github.com/nbubna/store.git"
+    "type": "git",
+    "url": "http://github.com/nbubna/store.git"
   },
   "licenses": [
     {

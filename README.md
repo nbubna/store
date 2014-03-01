@@ -113,12 +113,14 @@ Contributions are welcome!
 * 2013-04-30 [v2.1.1][] (public) - Browserify (and friends) support (module.exports = store)
 * 2013-05-30 [v2.1.2][] (public) - Component support (old component.json is now bower.json)
 * 2013-09-08 [v2.1.3][] (public) - Remove unnecessary component.js shim
+* 2014-03-01 [v2.1.4][] (public) - Package definition and store.overlow.js updates
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
 [v2.1.1]: https://github.com/nbubna/store/tree/2.1.1
 [v2.1.2]: https://github.com/nbubna/store/tree/2.1.2
 [v2.1.3]: https://github.com/nbubna/store/tree/2.1.3
+[v2.1.4]: https://github.com/nbubna/store/tree/2.1.4
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

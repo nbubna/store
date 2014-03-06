@@ -16,7 +16,7 @@
   "main": "dist/store2.js",
   "scripts": [
     "dist/store2.js",
-    "src/store.bind.js",
+    "src/store.on.js",
     "src/store.cache.js",
     "src/store.measure.js",
     "src/store.old.js",

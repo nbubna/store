@@ -1,8 +1,8 @@
-/*! store2 - v2.1.2 - 2013-08-18
-* Copyright (c) 2013 Nathan Bubna; Licensed MIT, GPL */
+/*! store2 - v2.1.5 - 2014-03-06
+* Copyright (c) 2014 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window) {
     var _ = {
-        version: "2.1.2",
+        version: "2.1.5",
         areas: {},
         apis: {},
 
@@ -200,7 +200,7 @@
 
     // setup the primary store fn
     if (window.store){ _.conflict = window.store; }
-    var store = window.store =
+    var store =
         // safely set this up (throws error in IE10/32bit mode for local files)
         _.Store("local", (function(){try{ return localStorage; }catch(e){}})());
     store.local = store;// for completeness
@@ -208,8 +208,14 @@
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
-    if (typeof module !== 'undefined' && module.exports) {
+    if (typeof window.define === 'function' && window.define.amd !== undefined) {
+        window.define(function () {
+            return store;
+        });
+    } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = store;
+    } else {
+        window.store = store;
     }
 
 })(window);

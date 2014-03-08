@@ -4,7 +4,7 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  */
-;(function(window) {
+;(function(window, define) {
     var _ = {
         version: "<%= pkg.version %>",
         areas: {},
@@ -212,8 +212,8 @@
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
-    if (typeof window.define === 'function' && window.define.amd !== undefined) {
-        window.define(function () {
+    if (typeof define === 'function' && define.amd !== undefined) {
+        define(function () {
             return store;
         });
     } else if (typeof module !== 'undefined' && module.exports) {
@@ -222,4 +222,4 @@
         window.store = store;
     }
 
-})(window);
+})(window, window.define);

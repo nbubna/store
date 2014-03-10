@@ -115,6 +115,7 @@ Contributions are welcome!
 * 2013-09-08 [v2.1.3][] (public) - Remove unnecessary component.js shim
 * 2014-03-01 [v2.1.4][] (public) - Package definition and store.overlow.js updates
 * 2014-03-06 [v2.1.5][] (public) - AMD support and Component improvements
+* 2014-03-10 [v2.1.6][] (public) - Fix AMD support flaw
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -123,6 +124,7 @@ Contributions are welcome!
 [v2.1.3]: https://github.com/nbubna/store/tree/2.1.3
 [v2.1.4]: https://github.com/nbubna/store/tree/2.1.4
 [v2.1.5]: https://github.com/nbubna/store/tree/2.1.5
+[v2.1.6]: https://github.com/nbubna/store/tree/2.1.6
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

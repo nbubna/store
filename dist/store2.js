@@ -1,8 +1,8 @@
-/*! store2 - v2.1.5 - 2014-03-06
+/*! store2 - v2.1.6 - 2014-03-10
 * Copyright (c) 2014 Nathan Bubna; Licensed MIT, GPL */
-;(function(window) {
+;(function(window, define) {
     var _ = {
-        version: "2.1.5",
+        version: "2.1.6",
         areas: {},
         apis: {},
 
@@ -208,8 +208,8 @@
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
-    if (typeof window.define === 'function' && window.define.amd !== undefined) {
-        window.define(function () {
+    if (typeof define === 'function' && define.amd !== undefined) {
+        define(function () {
             return store;
         });
     } else if (typeof module !== 'undefined' && module.exports) {
@@ -218,4 +218,4 @@
         window.store = store;
     }
 
-})(window);
+})(window, window.define);

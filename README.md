@@ -1,7 +1,7 @@
 A feature-filled and friendly way to take advantage of localStorage and sessionStorage
 (JSON, namespacing, extensions, etc).
 
-Download: [store2.min.js][prod]  or  [store2.js][dev]  
+Download: [store2.min.js][prod]  or  [store2.js][dev] [![Build Status](https://travis-ci.org/nbubna/store.png?branch=master)](https://travis-ci.org/nbubna/store)  
 [NPM][npm]: `npm install store2`  
 Bower: `bower install store2`   
 [NuGet][]: `Install-Package store2`  

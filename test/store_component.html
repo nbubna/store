@@ -8,17 +8,8 @@
   <!-- Load local QUnit. -->
   <link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
   <script src="../libs/qunit/qunit.js"></script>
-  <!-- Load local lib and tests. Assumes you have run `component build` -->
-  <script src="../build/build.js"></script>
-  <script>
-    require('store');
-    require('store/src/store.on.js');
-    require('store/src/store.cache.js');
-    require('store/src/store.old.js');
-    require('store/src/store.overflow.js');
-    require('store/src/store.quota.js');
-    require('store/src/store.measure.js');
-  </script>
+  <!-- Load local lib and tests. -->
+  <script src="../dist/app.js"></script>
   <script src="store_test.js"></script>
   <!-- Removing access to jQuery and $. But it'll still be available as _$, if
        you REALLY want to mess around with jQuery in the console. REMEMBER WE

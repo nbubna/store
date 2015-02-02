@@ -89,7 +89,7 @@ Contributions are welcome!
 #### Beta - Stable and definitely useful
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for older browsers
 * [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. very useful for [Safari private mode][safari])
-* [store.cache.js][cache] - To make data expire, pass a number of minutes as the overwrite param on ```set()``` calls
+* [store.cache.js][cache] - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
 * [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
 
 #### Alpha - Either incomplete or unstable or both
@@ -141,6 +141,4 @@ My apologies for the confusion caused while i was publishing this as another 'st
 
 [other]: https://github.com/marcuswestin/store.js/
 
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nbubna/store/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 

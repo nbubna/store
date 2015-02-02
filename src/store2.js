@@ -206,11 +206,11 @@
     if (window.store){ _.conflict = window.store; }
     var store =
         // safely set this up (throws error in IE10/32bit mode for local files)
-        _.Store("local", (function(){try{ return localStorage; }catch(e){}})());
+        _.Store("local", (function(){try{ if("localStorage" in window){ return localStorage; } }catch(e){}})());
     store.local = store;// for completeness
     store._ = _;// for extenders and debuggers...
     // safely setup store.session (throws exception in FF for file:/// urls)
-    store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
+    store.area("session", (function(){try{ if("sessionStorage" in window){ return sessionStorage; } }catch(e){}})());
 
     if (typeof define === 'function' && define.amd !== undefined) {
         define(function () {

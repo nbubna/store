@@ -28,8 +28,8 @@
         return false;
     };
     _.when = function(min) {// if min, return min->date, else date->min
-        var now = Math.floor((new Date().getTime())/60000);
-        return min ? new Date((now+min)*60000) : now;
+        var now = Math.floor((new Date().getTime())/1000);
+        return min ? new Date((now+min)*1000) : now;
     };
     _.cache = function(area, key) {
         var s = _get(area, key),

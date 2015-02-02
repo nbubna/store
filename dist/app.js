@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.1.6 - 2014-04-08
-* Copyright (c) 2014 Nathan Bubna; Licensed MIT, GPL */
+/*! store2 - v2.2.0 - 2015-02-02
+* Copyright (c) 2015 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window, define) {
     var _ = {
-        version: "2.1.6",
+        version: "2.2.0",
         areas: {},
         apis: {},
 
@@ -531,8 +531,8 @@ require.register("store/src/store.cache.js", function(exports, require, module){
         return false;
     };
     _.when = function(min) {// if min, return min->date, else date->min
-        var now = Math.floor((new Date().getTime())/60000);
-        return min ? new Date((now+min)*60000) : now;
+        var now = Math.floor((new Date().getTime())/1000);
+        return min ? new Date((now+min)*1000) : now;
     };
     _.cache = function(area, key) {
         var s = _get(area, key),
@@ -568,6 +568,7 @@ require.register("store/src/store.cache.js", function(exports, require, module){
         }
     };
 })(window.store._, undefined);
+
 });
 require.register("store/src/store.measure.js", function(exports, require, module){
 /**

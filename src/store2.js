@@ -212,14 +212,15 @@
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
+    //Expose store to the global object
+    window.store = store;
+
     if (typeof define === 'function' && define.amd !== undefined) {
         define(function () {
             return store;
         });
     } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = store;
-    } else {
-        window.store = store;
     }
 
 })(this, this.define);

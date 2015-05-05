@@ -197,7 +197,7 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.2.0 - 2015-02-02
+/*! store2 - v2.2.0 - 2015-05-05
 * Copyright (c) 2015 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window, define) {
     var _ = {
@@ -417,7 +417,7 @@ require.register("store/dist/store2.js", function(exports, require, module){
         window.store = store;
     }
 
-})(window, window.define);
+})(this, this.define);
 
 });
 require.register("store/src/store.on.js", function(exports, require, module){

@@ -1,4 +1,4 @@
-/*! store2 - v2.2.0 - 2015-02-02
+/*! store2 - v2.2.0 - 2015-05-05
 * Copyright (c) 2015 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window, define) {
     var _ = {
@@ -218,4 +218,4 @@
         window.store = store;
     }
 
-})(window, window.define);
+})(this, this.define);

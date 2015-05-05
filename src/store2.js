@@ -222,4 +222,4 @@
         window.store = store;
     }
 
-})(window, window.define);
+})(this, this.define);

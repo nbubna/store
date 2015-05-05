@@ -117,6 +117,7 @@ Contributions are welcome!
 * 2014-03-06 [v2.1.5][] (public) - AMD support and Component improvements
 * 2014-03-10 [v2.1.6][] (public) - Fix AMD support flaw
 * 2015-02-02 [v2.2.0][] (public) - Change store.cache.js to use seconds, not minutes.
+* 2015-05-05 [v2.2.1][] (public) - node.js compatibility
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -127,6 +128,7 @@ Contributions are welcome!
 [v2.1.5]: https://github.com/nbubna/store/tree/2.1.5
 [v2.1.6]: https://github.com/nbubna/store/tree/2.1.6
 [v2.2.0]: https://github.com/nbubna/store/tree/2.2.0
+[v2.2.1]: https://github.com/nbubna/store/tree/2.2.1
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

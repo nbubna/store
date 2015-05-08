@@ -27,10 +27,6 @@
            ok(store);
         });
 
-        test('should not leak globally', function() {
-           equal(window.store, undefined);
-        });
-
         QUnit.start();
 
     });

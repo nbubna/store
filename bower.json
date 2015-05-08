@@ -1,6 +1,6 @@
 {
   "name": "store2",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "main": "dist/store2.js",
   "ignore": [
     "**/.*",

@@ -95,6 +95,7 @@ Contributions are welcome!
 #### Alpha - Either incomplete or unstable or both
 * [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
 * [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
+* [store.onlyreal.js][onlyreal] - When only fake storage is available, silently fail instead of faking it.
 
 
 [old]: https://raw.github.com/nbubna/store/master/src/store.old.js
@@ -103,6 +104,7 @@ Contributions are welcome!
 [on]: https://raw.github.com/nbubna/store/master/src/store.on.js
 [quota]: https://raw.github.com/nbubna/store/master/src/store.quota.js
 [measure]: https://raw.github.com/nbubna/store/master/src/store.measure.js
+[onlyreal]: https://raw.github.com/nbubna/store/master/src/store.onlyreal.js
 [safari]: https://github.com/marcuswestin/store.js/issues/66
 
 ## Release History
@@ -119,6 +121,7 @@ Contributions are welcome!
 * 2015-02-02 [v2.2.0][] (public) - Change store.cache.js to use seconds, not minutes.
 * 2015-05-05 [v2.2.1][] (public) - node.js compatibility
 * 2015-05-08 [v2.2.2][] (public) - Always expose global to allow extensions to always work.
+* 2015-05-22 [v2.3.0][] (public) - Use fake storage for Safari private mode (instead of letting quota exceptions go)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -131,6 +134,7 @@ Contributions are welcome!
 [v2.2.0]: https://github.com/nbubna/store/tree/2.2.0
 [v2.2.1]: https://github.com/nbubna/store/tree/2.2.1
 [v2.2.2]: https://github.com/nbubna/store/tree/2.2.2
+[v2.3.0]: https://github.com/nbubna/store/tree/2.3.0
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

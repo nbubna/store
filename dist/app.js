@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.2.2 - 2015-05-08
+/*! store2 - v2.3.0 - 2015-05-22
 * Copyright (c) 2015 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window, define) {
     var _ = {
-        version: "2.2.2",
+        version: "2.3.0",
         areas: {},
         apis: {},
 
@@ -246,7 +246,15 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 return store.setAll(key, data);// overwrite=data, data=key
             });
             store._id = id;
-            store._area = area || _.inherit(_.storageAPI, { items: {}, name: 'fake' });
+            try {
+                var testKey = '_safariPrivate_';
+                area.setItem(testKey, 'sucks');
+                store._area = area;
+                area.removeItem(testKey);
+            } catch (e) {}
+            if (!store._area) {
+                store._area = _.inherit(_.storageAPI, { items: {}, name: 'fake' });
+            }
             store._ns = namespace || '';
             if (!_.areas[id]) {
                 _.areas[id] = store._area;
@@ -906,6 +914,27 @@ require.register("store/src/store.quota.js", function(exports, require, module){
     };
 
 })(window.store, window.store._);
+});
+require.register("store/src/store.onlyreal.js", function(exports, require, module){
+/**
+ * Copyright (c) 2015 ESHA Research
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Store nothing when storage is not supported.
+ *
+ * Status: ALPHA - due to being of doubtful propriety
+ */
+;(function(_) {
+
+    var _set = _.set;
+    _.set = function(area) {
+        return area.name === 'fake' ? undefined : _set.apply(this, arguments);
+    };
+
+})(window.store._);
+
 });
 require.alias("store/dist/store2.js", "store/index.js");
 

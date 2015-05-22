@@ -51,7 +51,15 @@
                 return store.setAll(key, data);// overwrite=data, data=key
             });
             store._id = id;
-            store._area = area || _.inherit(_.storageAPI, { items: {}, name: 'fake' });
+            try {
+                var testKey = '_safariPrivate_';
+                area.setItem(testKey, 'sucks');
+                store._area = area;
+                area.removeItem(testKey);
+            } catch (e) {}
+            if (!store._area) {
+                store._area = _.inherit(_.storageAPI, { items: {}, name: 'fake' });
+            }
             store._ns = namespace || '';
             if (!_.areas[id]) {
                 _.areas[id] = store._area;

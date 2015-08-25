@@ -83,6 +83,20 @@ module.exports = function(grunt) {
         scripts: true,
         standalone: true
       }
+    },
+    nugetpack: {
+        dist: {
+            src: 'store2.nuspec',
+            dest: 'dist/',
+            options: {
+              version: '<%= pkg.version %>'
+            }
+        }
+    },
+    nugetpush: {
+        dist: {
+            src: 'dist/store2.<%= pkg.version %>.nupkg'
+        }
     }
   });
 
@@ -94,8 +108,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-component-build');
+  grunt.loadNpmTasks('grunt-nuget');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'clean', 'concat', 'component_build', 'qunit', 'uglify']);
+  grunt.registerTask('nuget', ['nugetpack', 'nugetpush']);
 
 };

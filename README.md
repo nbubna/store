@@ -122,7 +122,7 @@ Contributions are welcome!
 * 2015-05-05 [v2.2.1][] (public) - node.js compatibility
 * 2015-05-08 [v2.2.2][] (public) - Always expose global to allow extensions to always work.
 * 2015-05-22 [v2.3.0][] (public) - Use fake storage for Safari private mode (instead of letting quota exceptions go)
-* 2015-05-22 [v2.3.2][] (public) - Add source map
+* 2015-10-27 [v2.3.2][] (public) - Add source map
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0

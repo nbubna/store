@@ -1,8 +1,8 @@
-/*! store2 - v2.3.0 - 2015-05-22
+/*! store2 - v2.3.1 - 2015-10-27
 * Copyright (c) 2015 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window, define) {
     var _ = {
-        version: "2.3.0",
+        version: "2.3.1",
         areas: {},
         apis: {},
 
@@ -42,7 +42,7 @@
             var store = _.inherit(_.storeAPI, function(key, data, overwrite) {
                 if (arguments.length === 0){ return store.getAll(); }
                 if (data !== undefined){ return store.set(key, data, overwrite); }
-                if (typeof key === "string"){ return store.get(key); }
+                if (typeof key === "string" || typeof key === "number"){ return store.get(key); }
                 if (!key){ return store.clear(); }
                 return store.setAll(key, data);// overwrite=data, data=key
             });

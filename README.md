@@ -80,14 +80,14 @@ store.isFake();// is this storage persistent? (e.g. is this old IE?)
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
 but data stored will NOT persist beyond the life of the current document/page. Use the 
-[store.old.js][old] extension to add persistent backing for the store API in older browsers.
+[store.old.js][old] extension to add persistent backing for the store API in ancient browsers.
 
 ## Extensions
 These mostly could use further documentation and abuse...er...testing.
 Contributions are welcome!
 
 #### Beta - Stable and definitely useful
-* [store.old.js][old] - Add working localStorage and sessionStorage polyfills for older browsers
+* [store.old.js][old] - Add working localStorage and sessionStorage polyfills for ancient browsers
 * [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. very useful for [Safari private mode][safari])
 * [store.cache.js][cache] - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
 * [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
@@ -115,13 +115,14 @@ Contributions are welcome!
 * 2013-04-30 [v2.1.1][] (public) - Browserify (and friends) support (module.exports = store)
 * 2013-05-30 [v2.1.2][] (public) - Component support (old component.json is now bower.json)
 * 2013-09-08 [v2.1.3][] (public) - Remove unnecessary component.js shim
-* 2014-03-01 [v2.1.4][] (public) - Package definition and store.overlow.js updates
+* 2014-03-01 [v2.1.4][] (public) - Package definition and store.overflow.js updates
 * 2014-03-06 [v2.1.5][] (public) - AMD support and Component improvements
 * 2014-03-10 [v2.1.6][] (public) - Fix AMD support flaw
 * 2015-02-02 [v2.2.0][] (public) - Change store.cache.js to use seconds, not minutes.
 * 2015-05-05 [v2.2.1][] (public) - node.js compatibility
 * 2015-05-08 [v2.2.2][] (public) - Always expose global to allow extensions to always work.
 * 2015-05-22 [v2.3.0][] (public) - Use fake storage for Safari private mode (instead of letting quota exceptions go)
+* 2015-05-22 [v2.3.1][] (public) - Add source map
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -135,6 +136,7 @@ Contributions are welcome!
 [v2.2.1]: https://github.com/nbubna/store/tree/2.2.1
 [v2.2.2]: https://github.com/nbubna/store/tree/2.2.2
 [v2.3.0]: https://github.com/nbubna/store/tree/2.3.0
+[v2.3.1]: https://github.com/nbubna/store/tree/2.3.1
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

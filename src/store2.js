@@ -224,7 +224,7 @@
     window.store = store;
 
     if (typeof define === 'function' && define.amd !== undefined) {
-        define(function () {
+        define(['store2'], function () {
             return store;
         });
     } else if (typeof module !== 'undefined' && module.exports) {

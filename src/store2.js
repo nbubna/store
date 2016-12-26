@@ -210,8 +210,6 @@
         }// end _.storageAPI
     };
 
-    // setup the primary store fn
-    if (window.store){ _.conflict = window.store; }
     var store =
         // safely set this up (throws error in IE10/32bit mode for local files)
         _.Store("local", (function(){try{ return localStorage; }catch(e){}})());
@@ -220,15 +218,18 @@
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
-    //Expose store to the global object
-    window.store = store;
-
     if (typeof define === 'function' && define.amd !== undefined) {
         define(['store2'], function () {
             return store;
         });
     } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = store;
+    } else {
+        // setup the primary store fn
+        if (window.store){ _.conflict = window.store; }
+        //Expose store to the global object
+        window.store = store;
+
     }
 
 })(this, this.define);

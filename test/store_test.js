@@ -55,6 +55,10 @@
             }
         }
     }
+    function transact(key, fn, s) {
+        var ret = (s || store)(key, fn);
+        strictEqual(ret, s || store, "transact should return this");
+    }
     function get(key, expect, s) {
         (expect && typeof expect === "object" ? deepEqual : equal)
             ((s || store).get(key), expect, "get '"+key+"'");
@@ -143,7 +147,16 @@
                 keys(['foo','fiz']);
                 each([['fiz','wiz'],['foo',false]]);
                 equal(store.size(), 2, "size should be 2");
-                remove('fiz', 'wiz');
+                transact('fiz', function(fiz) {
+                    equal(fiz, 'wiz');
+                    return 'whiz';
+                });
+                remove('fiz', 'whiz');
+                save('obj', {prop:true});
+                transact('obj', function(obj) {
+                    obj.prop = false;
+                });
+                equal(store.get('obj').prop, false);
                 remove('woogie', undefined);
                 get('foo', false);
                 clearAll();

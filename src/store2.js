@@ -45,6 +45,7 @@
         Store: function(id, area, namespace) {
             var store = _.inherit(_.storeAPI, function(key, data, overwrite) {
                 if (arguments.length === 0){ return store.getAll(); }
+                if (typeof data === "function"){ return store.transact(key, data, overwrite); }// fn=data, alt=overwrite
                 if (data !== undefined){ return store.set(key, data, overwrite); }
                 if (typeof key === "string" || typeof key === "number"){ return store.get(key); }
                 if (!key){ return store.clear(); }
@@ -125,6 +126,12 @@
             },
             getAll: function() {
                 return this.each(function(k, all){ all[k] = this.get(k); }, {});
+            },
+            transact: function(key, fn, alt) {
+                var val = this.get(key, alt),
+                    ret = fn(val);
+                this.set(key, ret === undefined ? val : ret);
+                return this;
             },
             set: function(key, data, overwrite) {
                 var d = this.get(key);

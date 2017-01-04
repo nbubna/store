@@ -19,6 +19,7 @@ actions directly. Respectively, these are called like so:
 ```javascript
 store(key, data);                 // sets stringified data under key
 store(key);                       // gets and parses data stored under key
+store(key, fn[, alt]);            // run transaction function on/with data stored under key
 store({key: data, key2: data2});  // sets all key/data pairs in the object
 store();                          // gets all stored key/data pairs as an object
 store(false);                     // clears all items from storage
@@ -31,6 +32,7 @@ store.set(key, data[, overwrite]); // === store(key, data);
 store.setAll(data[, overwrite]);   // === store({key: data, key2: data});
 store.get(key[, alt]);             // === store(key);
 store.getAll();                    // === store();
+store.transact(key, fn[, alt]);    // === store(key, fn[, alt]);
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data
@@ -123,6 +125,7 @@ Contributions are welcome!
 * 2015-05-08 [v2.2.2][] (public) - Always expose global to allow extensions to always work.
 * 2015-05-22 [v2.3.0][] (public) - Use fake storage for Safari private mode (instead of letting quota exceptions go)
 * 2015-10-27 [v2.3.2][] (public) - Add source map
+* 2017-01-04 [v2.4.0][] (public) - Add store.transact(key, fn[, alt])
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -137,6 +140,7 @@ Contributions are welcome!
 [v2.2.2]: https://github.com/nbubna/store/tree/2.2.2
 [v2.3.0]: https://github.com/nbubna/store/tree/2.3.0
 [v2.3.2]: https://github.com/nbubna/store/tree/2.3.2
+[v2.4.0]: https://github.com/nbubna/store/tree/2.4.0
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

@@ -55,8 +55,8 @@
             }
         }
     }
-    function transact(key, fn, s) {
-        var ret = (s || store)(key, fn);
+    function transact(key, fn, alt, s) {
+        var ret = (s || store)(key, fn, alt);
         strictEqual(ret, s || store, "transact should return this");
     }
     function get(key, expect, s) {
@@ -152,10 +152,9 @@
                     return 'whiz';
                 });
                 remove('fiz', 'whiz');
-                save('obj', {prop:true});
                 transact('obj', function(obj) {
                     obj.prop = false;
-                });
+                }, { prop: true });// pass in default
                 equal(store.get('obj').prop, false);
                 remove('woogie', undefined);
                 get('foo', false);

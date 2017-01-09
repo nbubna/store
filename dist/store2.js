@@ -1,8 +1,8 @@
-/*! store2 - v2.4.0 - 2017-01-04
+/*! store2 - v2.5.0 - 2017-01-09
 * Copyright (c) 2017 Nathan Bubna; Licensed MIT, GPL */
 ;(function(window, define) {
     var _ = {
-        version: "2.4.0",
+        version: "2.5.0",
         areas: {},
         apis: {},
 
@@ -213,8 +213,6 @@
         }// end _.storageAPI
     };
 
-    // setup the primary store fn
-    if (window.store){ _.conflict = window.store; }
     var store =
         // safely set this up (throws error in IE10/32bit mode for local files)
         _.Store("local", (function(){try{ return localStorage; }catch(e){}})());
@@ -223,15 +221,16 @@
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
-    //Expose store to the global object
-    window.store = store;
-
     if (typeof define === 'function' && define.amd !== undefined) {
-        define(['store2'], function () {
+        define('store2', [], function () {
             return store;
         });
     } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = store;
+    } else {
+        // expose the primary store fn to the global object and save conflicts
+        if (window.store){ _.conflict = window.store; }
+        window.store = store;
     }
 
 })(this, this.define);

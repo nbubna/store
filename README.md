@@ -87,17 +87,23 @@ but data stored will NOT persist beyond the life of the current document/page. U
 ## Extensions
 These mostly could use further documentation and abuse...er...testing.
 Contributions are welcome!
+In particular, any ES6 user interested in making these [importable in ES6][es6importissue] would be appreciated.
+
+[es6importissue]: https://github.com/nbubna/store/issues/31
 
 #### Beta - Stable and definitely useful
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for ancient browsers
 * [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. very useful for [Safari private mode][safari])
 * [store.cache.js][cache] - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
 * [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
+* [store.array.js][array] - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
 
 #### Alpha - Either incomplete or unstable or both
 * [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
 * [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
 * [store.onlyreal.js][onlyreal] - When only fake storage is available, silently fail instead of faking it.
+* [store.dot.js][dot] - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
+* [store.deep.js][deep] - Allow retrieval of properties from within stored objects (e.g. ```store.get('key.property')```)
 
 
 [old]: https://raw.github.com/nbubna/store/master/src/store.old.js
@@ -107,6 +113,9 @@ Contributions are welcome!
 [quota]: https://raw.github.com/nbubna/store/master/src/store.quota.js
 [measure]: https://raw.github.com/nbubna/store/master/src/store.measure.js
 [onlyreal]: https://raw.github.com/nbubna/store/master/src/store.onlyreal.js
+[array]: https://raw.github.com/nbubna/store/master/src/store.array.js
+[dot]: https://raw.github.com/nbubna/store/master/src/store.dot.js
+[deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
 [safari]: https://github.com/marcuswestin/store.js/issues/66
 
 ## Release History
@@ -126,6 +135,7 @@ Contributions are welcome!
 * 2015-05-22 [v2.3.0][] (public) - Use fake storage for Safari private mode (instead of letting quota exceptions go)
 * 2015-10-27 [v2.3.2][] (public) - Add source map
 * 2017-01-04 [v2.4.0][] (public) - Add store.transact(key, fn[, alt])
+* 2017-01-09 [v2.5.0][] (public) - Update for issue #34; new extensions (array, dot, and deep); only expose global in non-AMD/CommonJS environments (PR #35)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -141,12 +151,13 @@ Contributions are welcome!
 [v2.3.0]: https://github.com/nbubna/store/tree/2.3.0
 [v2.3.2]: https://github.com/nbubna/store/tree/2.3.2
 [v2.4.0]: https://github.com/nbubna/store/tree/2.4.0
+[v2.5.0]: https://github.com/nbubna/store/tree/2.5.0
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.
 To my surprise, even our APIs had notable overlap. His has fewer features and includes superior support
 for IE 6/7 in the main lib. I contacted him with the idea of merging the featuresets, but we agreed it wouldn't work.
-He sees his library as a temporary polyfill meant to fade away with IE 6/7. This project is meant 
+He saw his library as a temporary polyfill meant to fade away with IE 6/7. This project is meant 
 to always be useful, as a better way to use localStorage, with polyfilling as an extension.  I do hope
 to incorporate IE 6/7 improvements from the other store.js into store.old.js at some point,
 but it is not a priority.

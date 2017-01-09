@@ -20,8 +20,13 @@
 */
 (function(store) {
 
-    var API = ['get', 'set', 'has', 'remove', 'each', 'namespace', 'area',
+    var API = ['get', 'set', 'transact', 'has', 'remove', 'each', 'namespace', 'area',
                'getAll', 'setAll', 'keys', 'isFake', 'clear', 'clearAll', 'size'];
+
+    // expose some internals for REPL convenience
+    window._ = store._;
+    window.API = API;
+
     function has(key, s, sn) {
         if (!s) {
             s = store;

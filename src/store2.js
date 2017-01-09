@@ -226,7 +226,7 @@
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
 
     if (typeof define === 'function' && define.amd !== undefined) {
-        define(['store2'], function () {
+        define('store2', [], function () {
             return store;
         });
     } else if (typeof module !== 'undefined' && module.exports) {

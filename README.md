@@ -50,7 +50,7 @@ value will be returned.
 Functions passed to ```transact``` will receive the current value for that key as an argument or
 a passed alternate if there is none. When the passed function is completed, transact will save the returned value
 under the specified key. If the function returns ```undefined```, the original value will be saved.
-This makes it easy for transact to change internal properties in a persistent way:
+This makes it easy for transact functions to change internal properties in a persistent way:
 
 ```javascript
 store.transact(key, function(obj) {

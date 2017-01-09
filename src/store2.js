@@ -236,7 +236,6 @@
         if (window.store){ _.conflict = window.store; }
         //Expose store to the global object
         window.store = store;
-
     }
 
 })(this, this.define);

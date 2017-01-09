@@ -13,7 +13,7 @@ Bower: `bower install store2`
 
 
 ## Documentation
-The main store function can handle ```set```, ```get```, ```setAll```, ```getAll``` and ```clear```
+The main store function can handle ```set```, ```get```, ```transact```, ```setAll```, ```getAll``` and ```clear```
 actions directly. Respectively, these are called like so:
 
 ```javascript
@@ -47,6 +47,16 @@ if the storage already has a value for that key. All ```set``` action methods re
 for that key, by default. If overwrite is ```false``` and there is a previous value, the unused new 
 value will be returned.
 
+Functions passed to ```transact``` will receive the current value for that key as an argument or
+a passed alternate if there is none. When the passed function is completed, transact will save the returned value
+under the specified key. If the function returns ```undefined```, the original value will be saved.
+This makes it easy for transact to change internal properties in a persistent way:
+
+```javascript
+store.transact(key, function(obj) {
+    obj.changed = 'newValue';// this change will be persisted
+});
+```
 All of these use the browser's localStorage (aka "local"). Using sessionStorage merely requires 
 calling the same functions on ```store.session```:
 

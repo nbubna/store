@@ -232,9 +232,8 @@
     } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = store;
     } else {
-        // setup the primary store fn
+        // expose the primary store fn to the global object and save conflicts
         if (window.store){ _.conflict = window.store; }
-        //Expose store to the global object
         window.store = store;
     }
 

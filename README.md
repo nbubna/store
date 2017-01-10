@@ -107,6 +107,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * [store.cache.js][cache] - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
 * [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
 * [store.array.js][array] - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
+* [store.dom.js][dom] - Declarative, persistent DOM element content via store.
 
 #### Alpha - Either incomplete or unstable or both
 * [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
@@ -126,6 +127,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [array]: https://raw.github.com/nbubna/store/master/src/store.array.js
 [dot]: https://raw.github.com/nbubna/store/master/src/store.dot.js
 [deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
+[dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
 [safari]: https://github.com/marcuswestin/store.js/issues/66
 
 ## Release History

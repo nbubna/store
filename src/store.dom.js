@@ -14,7 +14,7 @@
 ;(function(document, store, _, Array) {
 
     // expose internal functions on store._.dom for extensibility
-    DOM = _.dom = function() {
+    var DOM = _.dom = function() {
         var nodes = document.querySelectorAll(DOM.selector),
             array = Array.prototype.slice.call(nodes);
         for (var i=0; i<array.length; i++) {
@@ -34,7 +34,7 @@
             DOM.set(node, value);
         }
         if (!node.storeListener) {
-            node.addEventListener(DOM.event, function(e) {
+            node.addEventListener(DOM.event, function() {
                 area(key, DOM.get(node));
             });
             node.storeListener = true;
@@ -47,8 +47,8 @@
     DOM.key = function(node, i) {
         return node.getAttribute('store') ||
             node.getAttribute('name') || 
-            ('dom.'+node.nodeName.toLowerCase() + (i||''))
-    }
+            ('dom.'+node.nodeName.toLowerCase() + (i||''));
+    };
     // both get and set should prefer value property to innerHTML
     DOM.get = function(node) {
         return node.value || node.innerHTML;

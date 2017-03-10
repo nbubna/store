@@ -1,7 +1,7 @@
 A feature-filled and friendly way to take advantage of localStorage and sessionStorage
 (JSON, namespacing, extensions, etc).
 
-Download: [store2.min.js][prod]  or  [store2.js][dev] [![Build Status](https://travis-ci.org/nbubna/store.png?branch=master)](https://travis-ci.org/nbubna/store)  
+Download: [store2.min.js][prod]  or  [store2.js][dev]  
 [NPM][npm]: `npm install store2`  
 Bower: `bower install store2`   
 [NuGet][]: `Install-Package store2`  
@@ -11,6 +11,9 @@ Bower: `bower install store2`
 [dev]: https://raw.github.com/nbubna/store/master/dist/store2.js
 [npm]: https://npmjs.org/package/store2
 
+[![Build Status](https://travis-ci.org/nbubna/store.png?branch=master)](https://travis-ci.org/nbubna/store)
+[![npm version](https://badge.fury.io/js/store2.svg)](https://badge.fury.io/js/store2)
+[![npm](https://img.shields.io/npm/dm/store2.svg?maxAge=2592000)](https://www.npmjs.com/package/store2)  
 
 ## Documentation
 The main store function can handle ```set```, ```get```, ```transact```, ```setAll```, ```getAll``` and ```clear```

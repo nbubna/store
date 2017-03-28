@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.5.0 - 2017-01-09
-* Copyright (c) 2017 Nathan Bubna; Licensed MIT, GPL */
+/*! store2 - v2.5.1 - 2017-03-28
+* Copyright (c) 2017 Nathan Bubna; Licensed ,  */
 ;(function(window, define) {
     var _ = {
-        version: "2.5.0",
+        version: "2.5.1",
         areas: {},
         apis: {},
 
@@ -603,6 +603,13 @@ require.register("store/src/store.measure.js", function(exports, require, module
  */
 ;(function(store, _) {
 
+    function put(area, s) {
+        try {
+            area.setItem("__test__", s);
+            return true;
+        } catch (e) {}
+    }
+
     _.fn('remainingSpace', function() {
         return this._area.remainingSpace;
     });
@@ -639,13 +646,6 @@ require.register("store/src/store.measure.js", function(exports, require, module
         return store.charsUsed() + store.charsLeft(test);
     });
 
-    function put(area, s) {
-        try {
-            area.setItem("__test__", s);
-            return true;
-        } catch (e) {}
-    }
-
 })(window.store, window.store._);
 });
 require.register("store/src/store.old.js", function(exports, require, module){
@@ -664,6 +664,14 @@ require.register("store/src/store.old.js", function(exports, require, module){
  */
 ;(function(window, document, store, _) {
 
+    function addUpdateFn(area, name, update) {
+        var old = area[name];
+        area[name] = function() {
+            var ret = old.apply(this, arguments);
+            update.apply(this, arguments);
+            return ret;
+        };
+    }
     function create(name, items, update) {
         var length = 0;
         for (var k in items) {
@@ -677,14 +685,6 @@ require.register("store/src/store.old.js", function(exports, require, module){
             addUpdateFn(area, 'removeItem', update);
         }
         return area;
-    }
-    function addUpdateFn(area, name, update) {
-        var old = area[name];
-        area[name] = function() {
-            var ret = old.apply(this, arguments);
-            update.apply(this, arguments);
-            return ret;
-        };
     }
 
     if (store.isFake()) {

@@ -45,6 +45,10 @@
     /*function val(val, name) {
         ok(val !== null && val !== undefined, name);
     }*/
+    function get(key, expect, s) {
+        (expect && typeof expect === "object" ? deepEqual : equal)
+            ((s || store).get(key), expect, "get '"+key+"'");
+    }
     function save(key, val, s) {
         noval((s || store)(key, val), "save value for '"+key+"'");
         get(key, val, s);
@@ -64,10 +68,6 @@
         var ret = (s || store)(key, fn, alt);
         strictEqual(ret, s || store, "transact should return this");
     }
-    function get(key, expect, s) {
-        (expect && typeof expect === "object" ? deepEqual : equal)
-            ((s || store).get(key), expect, "get '"+key+"'");
-    }
     function getAll(expect, s) {
         deepEqual((s || store)(), expect, "getAll");
     }
@@ -80,11 +80,6 @@
         }
         equal(keys.length, expect.length, 'deepEqual length');
     }
-    function each(expect, s) {
-        (s || store).each(function(k, v, i) {
-            ok(inArray(expect, [k,v]), 'contains '+k+':'+v+' at '+i);
-        });
-    }
     function inArray(array, element) {
         for (var i=0,m=array.length; i<m; i++) {
             if (element.toString() === array[i].toString()) {
@@ -92,6 +87,11 @@
             }
         }
         return false;
+    }
+    function each(expect, s) {
+        (s || store).each(function(k, v, i) {
+            ok(inArray(expect, [k,v]), 'contains '+k+':'+v+' at '+i);
+        });
     }
     function remove(key, expect, s) {
         equal((s || store).remove(key), expect, "remove '"+key+"'");

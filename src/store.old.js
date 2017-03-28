@@ -13,6 +13,14 @@
  */
 ;(function(window, document, store, _) {
 
+    function addUpdateFn(area, name, update) {
+        var old = area[name];
+        area[name] = function() {
+            var ret = old.apply(this, arguments);
+            update.apply(this, arguments);
+            return ret;
+        };
+    }
     function create(name, items, update) {
         var length = 0;
         for (var k in items) {
@@ -26,14 +34,6 @@
             addUpdateFn(area, 'removeItem', update);
         }
         return area;
-    }
-    function addUpdateFn(area, name, update) {
-        var old = area[name];
-        area[name] = function() {
-            var ret = old.apply(this, arguments);
-            update.apply(this, arguments);
-            return ret;
-        };
     }
 
     if (store.isFake()) {

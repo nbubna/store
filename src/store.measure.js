@@ -15,6 +15,13 @@
  */
 ;(function(store, _) {
 
+    function put(area, s) {
+        try {
+            area.setItem("__test__", s);
+            return true;
+        } catch (e) {}
+    }
+
     _.fn('remainingSpace', function() {
         return this._area.remainingSpace;
     });
@@ -50,12 +57,5 @@
     _.fn('charsTotal', function(test) {
         return store.charsUsed() + store.charsLeft(test);
     });
-
-    function put(area, s) {
-        try {
-            area.setItem("__test__", s);
-            return true;
-        } catch (e) {}
-    }
 
 })(window.store, window.store._);

@@ -11,7 +11,7 @@ Bower: `bower install store2`
 [dev]: https://raw.github.com/nbubna/store/master/dist/store2.js
 [npm]: https://npmjs.org/package/store2
 
-[![Build Status](https://travis-ci.org/nbubna/store.png?branch=master)](https://travis-ci.org/nbubna/store)
+[![Build Status](https://travis-ci.org/nbubna/store.svg?branch=master)](https://travis-ci.org/nbubna/store)
 [![npm version](https://badge.fury.io/js/store2.svg)](https://badge.fury.io/js/store2)
 [![npm](https://img.shields.io/npm/dm/store2.svg?maxAge=2592000)](https://www.npmjs.com/package/store2)  
 

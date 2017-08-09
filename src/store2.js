@@ -212,7 +212,7 @@
                 }
             },
             getItem: function(k){ return this.has(k) ? this.items[k] : null; },
-            clear: function(){ for (var k in this.list){ this.removeItem(k); } },
+            clear: function(){ for (var k in this.items){ this.removeItem(k); } },
             toString: function(){ return this.length+' items in '+this.name+'Storage'; }
         }// end _.storageAPI
     };

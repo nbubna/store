@@ -193,6 +193,19 @@
                 area('fake', true);
             });
 
+            test("fake area clearing", function() {
+                var fake = area('faketest');
+                fake('key', 'value');
+                fake('key2', 'value2');
+                equal(fake('key'), 'value');
+                equal(fake('key2'), 'value2');
+                equal(fake.size(), 2);
+                fake.clear();
+                equal(fake('key'), undefined);
+                equal(fake('key2'), undefined);
+                equal(fake.size(), 0);
+            });
+
             test("tricky for us", function() {
                 save(null, null);
                 save(undefined, 'undefined');

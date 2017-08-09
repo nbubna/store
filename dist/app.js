@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.5.1 - 2017-03-28
+/*! store2 - v2.5.2 - 2017-08-09
 * Copyright (c) 2017 Nathan Bubna; Licensed ,  */
 ;(function(window, define) {
     var _ = {
-        version: "2.5.1",
+        version: "2.5.2",
         areas: {},
         apis: {},
 
@@ -407,7 +407,7 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 }
             },
             getItem: function(k){ return this.has(k) ? this.items[k] : null; },
-            clear: function(){ for (var k in this.list){ this.removeItem(k); } },
+            clear: function(){ for (var k in this.items){ this.removeItem(k); } },
             toString: function(){ return this.length+' items in '+this.name+'Storage'; }
         }// end _.storageAPI
     };

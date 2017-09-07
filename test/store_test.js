@@ -89,8 +89,8 @@
         return false;
     }
     function each(expect, s) {
-        (s || store).each(function(k, v, i) {
-            ok(inArray(expect, [k,v]), 'contains '+k+':'+v+' at '+i);
+        (s || store).each(function(k, v) {
+            ok(inArray(expect, [k,v]), 'contains '+k+':'+v);
         });
     }
     function remove(key, expect, s) {

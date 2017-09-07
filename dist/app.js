@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.5.2 - 2017-08-09
-* Copyright (c) 2017 Nathan Bubna; Licensed ,  */
+/*! store2 - v2.5.3 - 2017-09-06
+* Copyright (c) 2017 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.5.2",
+        version: "2.5.3",
         areas: {},
         apis: {},
 
@@ -300,17 +300,17 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 return !!(this._in(key) in this._area);
             },
             size: function(){ return this.keys().length; },
-            each: function(fn, and) {
+            each: function(fn, _and) {// _and is purely for internal use (see keys())
                 for (var i=0, m=_.length(this._area); i<m; i++) {
                     var key = this._out(_.key(this._area, i));
                     if (key !== undefined) {
-                        if (fn.call(this, key, and || this.get(key)) === false) {
+                        if (fn.call(this, key, _and || this.get(key)) === false) {
                             break;
                         }
                     }
                     if (m > _.length(this._area)) { m--; i--; }// in case of removeItem
                 }
-                return and || this;
+                return _and || this;
             },
             keys: function() {
                 return this.each(function(k, list){ list.push(k); }, []);

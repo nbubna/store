@@ -1,43 +1,44 @@
-// Type definitions for store2 v2.5.1
-// Project: store2
-// Definitions by: ahstro <http://ahst.ro>
+export as namespace store;
 
-export as namespace store2;
+export = store;
 
-export = store2;
+interface store {
+  set(key: any, data: any, overwrite?: boolean): any;
+  setAll(data: Object, overwrite?: boolean): store.Data;
+  get(key: any, alt?: any): any;
+  getAll(): store.Data;
+  transact(key: any, fn: (data: any) => any, alt?: any): store;
+  clear(): store;
+  has(key: any): boolean;
+  remove(key: any): any;
+  each(callback: (key: any, data: any) => false | any): store;
+  keys(): string[];
+  size(): number;
+  clearAll(): store;
+  isFake(): boolean;
+  namespace(namespace: string, noSession?: true): store;
+}
+interface Storage {
+  getItem(key: string): string;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+  key(index: number): string;
+  length: number;
+  clear(): void;
+}
 
-declare function store2(key: store2.Key, data: store2.Data): store2.Data
-declare function store2(key: store2.Key): store2.Data
-declare function store2<T extends store2.Data, U>(
-  key: store2.Key,
-  fn: (x: T) => U,
-  alt?: T
-): U
-declare function store2(obj: store2.DataObject): store2.Data
-declare function store2(): store2.DataObject
-declare function store2(clearIfFalse: false): any
+declare function store(key: any, data: any): any
+declare function store(key: any): any
+declare function store(key: any, fn: (data: any) => any, alt?: any): store
+declare function store(obj: Object): store.Data
+declare function store(): store.Data
+declare function store(clearIfFalsy: false | 0): store
 
-declare namespace store2 {
-  export type Key = string;
-  export type Data = any;
-  export interface DataObject {
-    [key: string]: Data;
+declare namespace store {
+  export interface Data {
+    [key: string]: any;
   }
-
-  export function set(key: Key, data: Data, overwrite?: boolean): store2.Data;
-  export function setAll(data: DataObject, overwrite?: boolean): store2.Data;
-  export function get(key: Key, alt?: Data): Data;
-  export function getAll(): DataObject;
-  export function transact<T extends Data, U>(
-    key: Key,
-    fn: (x: T) => U,
-    alt?: T
-  ): U;
-  export function clear(): any;
-  export function has(key: Key): boolean;
-  export function remove(key: Key): Data;
-  export function each(callback: (k: Key, d: Data) => false | any): any;
-  export function keys(): Key[];
-  export function size(): number;
-  export function clearAll(): any;
+  export const session: store;
+  export const local: store;
+  export function area(id: string, area: Storage): store;
 }

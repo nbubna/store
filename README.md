@@ -154,6 +154,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * 2017-03-28 [v2.5.1][] (public) - Lint fixes, dependency updates
 * 2017-08-09 [v2.5.2][] (public) - Fix `clear()` in fake storage (thx to Martin Kluska)
 * 2017-09-06 [v2.5.3][] (public) - Add ```index.d.ts``` in root to provide TypeScript bindings
+* 2017-09-12 [v2.5.4][] (public) - Add ```index.d.ts``` to package.json "files" (thx to Anton Strömkvist)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -173,6 +174,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [v2.5.1]: https://github.com/nbubna/store/tree/2.5.1
 [v2.5.2]: https://github.com/nbubna/store/tree/2.5.2
 [v2.5.3]: https://github.com/nbubna/store/tree/2.5.3
+[v2.5.4]: https://github.com/nbubna/store/tree/2.5.4
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

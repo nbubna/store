@@ -1,8 +1,8 @@
-/*! store2 - v2.5.3 - 2017-09-06
+/*! store2 - v2.5.4 - 2017-09-12
 * Copyright (c) 2017 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.5.3",
+        version: "2.5.4",
         areas: {},
         apis: {},
 

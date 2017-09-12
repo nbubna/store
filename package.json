@@ -19,7 +19,8 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "main": "dist/store2.js",
   "types": "index.d.ts",

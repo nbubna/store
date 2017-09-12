@@ -20,10 +20,10 @@
   "files": [
     "src",
     "dist",
-    "index.d.ts"
+    "store.d.ts"
   ],
   "main": "dist/store2.js",
-  "types": "index.d.ts",
+  "types": "store.d.ts",
   "bugs": {
     "url": "http://github.com/nbubna/store/issues",
     "email": "nathan@esharesearch.com"

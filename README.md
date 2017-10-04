@@ -172,7 +172,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [v2.5.0]: https://github.com/nbubna/store/tree/2.5.0
 [v2.5.1]: https://github.com/nbubna/store/tree/2.5.1
 [v2.5.2]: https://github.com/nbubna/store/tree/2.5.2
-[v2.5.6]: https://github.com/nbubna/store/tree/2.5.6
+[v2.5.7]: https://github.com/nbubna/store/tree/2.5.7
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

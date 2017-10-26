@@ -1,12 +1,12 @@
-declare function store(key: any, fn: (data: any) => any, alt?: any): StoreAPI
-declare function store(key: any, data: any): any
-declare function store(clearIfFalsy: false | 0): StoreAPI
-declare function store(key: any): any
-declare function store(obj: Object): StoredData
-declare function store(): StoredData
+export function store(key: any, fn: (data: any) => any, alt?: any): StoreAPI
+export function store(key: any, data: any): any
+export function store(clearIfFalsy: false | 0): StoreAPI
+export function store(key: any): any
+export function store(obj: Object): StoredData
+export function store(): StoredData
 
 // if anyone knows a way to avoid duplicating the StoreAPI interface here that'd be great
-declare namespace store {
+export namespace store {
   const local: StoreAPI;
   const session: StoreAPI;
   function area(id: string, area: Storage): StoreAPI;
@@ -26,7 +26,7 @@ declare namespace store {
   function namespace(namespace: string, noSession?: true): StoreAPI;
 }
 
-declare interface StoreAPI {
+export interface StoreAPI {
   set(key: any, data: any, overwrite?: boolean): any;
   setAll(data: Object, overwrite?: boolean): StoredData;
   get(key: any, alt?: any): any;
@@ -43,11 +43,11 @@ declare interface StoreAPI {
   namespace(namespace: string, noSession?: true): StoreAPI;
 }
 
-declare interface StoredData {
+export interface StoredData {
   [key: string]: any;
 }
 
-declare interface Storage {
+export interface Storage {
   getItem(key: string): string;
   setItem(key: string, value: string): void;
   removeItem(key: string): void;
@@ -56,4 +56,4 @@ declare interface Storage {
   clear(): void;
 }
 
-export = store;
+export default store;

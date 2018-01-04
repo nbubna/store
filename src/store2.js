@@ -20,7 +20,7 @@
             return o;
         },
         stringify: function(d) {
-            return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d);
+            return d === undefined || typeof d === "function" || typeof d === "string" ? d+'' : JSON.stringify(d);
         },
         parse: function(s) {
             // if it doesn't parse, return as is

@@ -1,6 +1,6 @@
 {
   "name": "store2",
-  "version": "2.5.10",
+  "version": "2.5.9",
   "description": "Better localStorage",
   "keywords": [
     "localStorage",
@@ -13,9 +13,6 @@
     "name": "Nathan Bubna",
     "email": "nathan@esha.com",
     "url": "http://www.esha.com/"
-  },
-  "engines": {
-    "node": ">= 0.8.0"
   },
   "files": [
     "src",

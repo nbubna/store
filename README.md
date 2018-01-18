@@ -140,10 +140,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * 2013-04-20 [v2.1.0][] (public) - Drops flawed/confusing/unused key(i) method, fixes extension problems.
 * 2013-04-30 [v2.1.1][] (public) - Browserify (and friends) support (module.exports = store)
 * 2013-05-30 [v2.1.2][] (public) - Component support (old component.json is now bower.json)
-* 2013-09-08 [v2.1.3][] (public) - Remove unnecessary component.js shim
-* 2014-03-01 [v2.1.4][] (public) - Package definition and store.overflow.js updates
-* 2014-03-06 [v2.1.5][] (public) - AMD support and Component improvements
-* 2014-03-10 [v2.1.6][] (public) - Fix AMD support flaw
+* 2014-03-10 [v2.1.6][] (public) - AMD support and Component improvements
 * 2015-02-02 [v2.2.0][] (public) - Change store.cache.js to use seconds, not minutes.
 * 2015-05-05 [v2.2.1][] (public) - node.js compatibility
 * 2015-05-08 [v2.2.2][] (public) - Always expose global to allow extensions to always work.
@@ -151,7 +148,6 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * 2015-10-27 [v2.3.2][] (public) - Add source map
 * 2017-01-04 [v2.4.0][] (public) - Add store.transact(key, fn[, alt])
 * 2017-01-09 [v2.5.0][] (public) - Update for issue #34; new extensions (array, dot, and deep); only expose global in non-AMD/CommonJS environments (PR #35)
-* 2017-03-28 [v2.5.1][] (public) - Lint fixes, dependency updates
 * 2017-08-09 [v2.5.2][] (public) - Fix `clear()` in fake storage (thx to Martin Kluska)
 * 2017-10-26 [v2.5.9][] (public) - Add ```index.d.ts``` in root to provide TypeScript support (thx to Anton Strömkvist)
 
@@ -159,9 +155,6 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
 [v2.1.1]: https://github.com/nbubna/store/tree/2.1.1
 [v2.1.2]: https://github.com/nbubna/store/tree/2.1.2
-[v2.1.3]: https://github.com/nbubna/store/tree/2.1.3
-[v2.1.4]: https://github.com/nbubna/store/tree/2.1.4
-[v2.1.5]: https://github.com/nbubna/store/tree/2.1.5
 [v2.1.6]: https://github.com/nbubna/store/tree/2.1.6
 [v2.2.0]: https://github.com/nbubna/store/tree/2.2.0
 [v2.2.1]: https://github.com/nbubna/store/tree/2.2.1
@@ -170,21 +163,18 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [v2.3.2]: https://github.com/nbubna/store/tree/2.3.2
 [v2.4.0]: https://github.com/nbubna/store/tree/2.4.0
 [v2.5.0]: https://github.com/nbubna/store/tree/2.5.0
-[v2.5.1]: https://github.com/nbubna/store/tree/2.5.1
 [v2.5.2]: https://github.com/nbubna/store/tree/2.5.2
 [v2.5.9]: https://github.com/nbubna/store/tree/2.5.9
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.
-To my surprise, even our APIs had notable overlap. His has fewer features and includes superior support
-for IE 6/7 in the main lib. I contacted him with the idea of merging the featuresets, but we agreed it wouldn't work.
-He saw his library as a temporary polyfill meant to fade away with IE 6/7. This project is meant 
-to always be useful, as a better way to use localStorage, with polyfilling as an extension.  I do hope
-to incorporate IE 6/7 improvements from the other store.js into store.old.js at some point,
-but it is not a priority.
-
-To minimize confusion, i will be publishing the library as 'store2',
-but the main function will always be `store`.
-My apologies for the confusion caused while i was publishing this as another 'store'.
+To my pleasure, even our APIs had notable overlap, but his had fewer features and a focus on polyfilling old
+browsers (e.g. IE 6/7). He saw the library at the time as a temporary polyfill, while i intended mine
+to always be a better way to use localStorage and sessionStorage. We discussed merging the featuresets,
+but we agreed it wouldn't work due to different goals. To minimize confusion, i published this as 'store2',
+but kept the main function as `store`. Marcus' later decision to pivot and adopt the goals and many of
+the features of this library into a v2 of store.js has put these libraries into more direct competition.
+I believe this library to be superior in implementation and interface, though not in all aspects and the
+differences are admittedly small. There is still potential for unification, perhaps in a v3 someday.
 
 [other]: https://github.com/marcuswestin/store.js/

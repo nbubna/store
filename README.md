@@ -149,7 +149,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * 2017-01-04 [v2.4.0][] (public) - Add store.transact(key, fn[, alt])
 * 2017-01-09 [v2.5.0][] (public) - Update for issue #34; new extensions (array, dot, and deep); only expose global in non-AMD/CommonJS environments (PR #35)
 * 2017-08-09 [v2.5.2][] (public) - Fix `clear()` in fake storage (thx to Martin Kluska)
-* 2018-01-18 [v2.5.9][] (public) - Add ```index.d.ts``` in root to provide TypeScript support
+* 2018-01-18 [v2.5.11][] (public) - Add ```index.d.ts``` in root to provide TypeScript support
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -164,7 +164,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [v2.4.0]: https://github.com/nbubna/store/tree/2.4.0
 [v2.5.0]: https://github.com/nbubna/store/tree/2.5.0
 [v2.5.2]: https://github.com/nbubna/store/tree/2.5.2
-[v2.5.10]: https://github.com/nbubna/store/tree/2.5.10
+[v2.5.11]: https://github.com/nbubna/store/tree/2.5.11
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

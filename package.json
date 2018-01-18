@@ -34,7 +34,7 @@
   },
   "license" : "(MIT OR GPL-3.0)",
   "scripts": {
-    "prepublish": "grunt && git commit -m \"$npm_package_version\" README.md *.json dist && git tag $npm_package_version && git push && git push --tags",
+    "prepublishOnly": "grunt && git commit -m \"$npm_package_version\" README.md *.json dist && git tag $npm_package_version && git push && git push --tags",
     "test": "grunt qunit"
   },
   "devDependencies": {

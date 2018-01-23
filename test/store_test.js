@@ -68,17 +68,24 @@
         var ret = (s || store)(key, fn, alt);
         strictEqual(ret, s || store, "transact should return this");
     }
-    function getAll(expect, s) {
-        deepEqual((s || store)(), expect, "getAll");
+    function getAll(expect, s, fillObj) {
+        if (fillObj) {
+            deepEqual((s || store).getAll(fillObj), expect, "getAll(fillObj)");
+        } else {
+            deepEqual((s || store)(), expect, "getAll");
+        }
     }
-    function keys(expect, s) {
-        var _keys = (s || store).keys();
+    function keys(expect, s, fillList) {
+        var _keys = (s || store).keys(fillList);
         for (var i=0,m=expect.length; i<m; i++) {
             if (_keys.indexOf) {
                 ok(_keys.indexOf(expect[i]) >= 0, 'has '+expect[i]);
             }
         }
-        equal(keys.length, expect.length, 'deepEqual length');
+        if (fillList) {
+            strictEqual(fillList, _keys, "should get fillList back");
+        }
+        equal(_keys.length, expect.length, 'deepEqual length');
     }
     function inArray(array, element) {
         for (var i=0,m=array.length; i<m; i++) {
@@ -164,6 +171,35 @@
                 remove('woogie', undefined);
                 get('foo', false);
                 clearAll();
+            });
+
+            test("advanced keys", function() {
+                var ns = space('fancykeys');
+                ns('foo', 'bar');
+                // test w/alternate, non-empty fill list
+                keys(['fig','foo'], ns, ['fig']);
+                // test w/fake list
+                keys(['foo'], ns, {
+                    push: function(key) {
+                        equal('foo', key, 'should have foo pushed');
+                        this.length++;
+                    },
+                    length: 0
+                });
+                ns.clear();
+            });
+
+            test("advanced getAll", function () {
+                var ns = space('getyall');
+                ns('foo', 'bar');
+                // test w/alternate, non-empty fill object
+                var obj = { fig: 'wig' };
+                getAll({ foo:'bar', fig:'wig' }, ns, obj);
+                deepEqual(['fig','foo'], Object.keys(obj), 'obj should have two keys now');
+                ns.clear();
+                var nothing = Object('nothing');
+                var res = ns.getAll(nothing);
+                strictEqual(nothing, res);
             });
 
             test("namespace", function() {

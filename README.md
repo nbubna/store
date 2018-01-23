@@ -34,13 +34,13 @@ There are also more explicit and versatile functions available:
 store.set(key, data[, overwrite]); // === store(key, data);
 store.setAll(data[, overwrite]);   // === store({key: data, key2: data});
 store.get(key[, alt]);             // === store(key);
-store.getAll();                    // === store();
+store.getAll([fillObj]);           // === store();
 store.transact(key, fn[, alt]);    // === store(key, fn[, alt]);
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data
-store.each(callback);              // called with key and data args, return false to exit early
-store.keys();                      // returns array of keys
+store.each(callback[, value]);     // called with key and either value or data args, return false to exit early
+store.keys([fillList]);            // returns array of keys
 store.size();                      // number of keys, not length of data
 store.clearAll();                  // clears *ALL* areas (but still namespace sensitive)
 ```
@@ -54,6 +54,15 @@ Functions passed to ```transact``` will receive the current value for that key a
 a passed alternate if there is none. When the passed function is completed, transact will save the returned value
 under the specified key. If the function returns ```undefined```, the original value will be saved.
 This makes it easy for transact functions to change internal properties in a persistent way:
+
+For ```getAll``` and ```keys```, there is the option to pass in the object or list, respectively,
+that you want the results to be added to. This is instead of an empty list.
+There are only a few special cases where you are likely to need or want this,
+in general, most users should ignore these optional parameters.
+These both use the  second, optional argument ```each``` function,
+which is also a niche feature. The ```value``` argument is passed as
+the second arg to the callback function (in place of the data associated with the current key)
+and is returned at the end. Again, most users should not need this feature.
 
 ```javascript
 store.transact(key, function(obj) {
@@ -150,6 +159,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * 2017-01-09 [v2.5.0][] (public) - Update for issue #34; new extensions (array, dot, and deep); only expose global in non-AMD/CommonJS environments (PR #35)
 * 2017-08-09 [v2.5.2][] (public) - Fix `clear()` in fake storage (thx to Martin Kluska)
 * 2018-01-18 [v2.5.11][] (public) - Add ```index.d.ts``` in root to provide TypeScript support
+* 2018-01-23 [v2.6.0][] (public) - Support ```each(fn,value)```, ```getAll(fillObj)```, and ```keys(fillList)``` to support some advanced/corner cases
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -165,6 +175,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [v2.5.0]: https://github.com/nbubna/store/tree/2.5.0
 [v2.5.2]: https://github.com/nbubna/store/tree/2.5.2
 [v2.5.11]: https://github.com/nbubna/store/tree/2.5.11
+[v2.6.0]: https://github.com/nbubna/store/tree/2.6.0
 
 ## Store vs Store
 When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.

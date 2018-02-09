@@ -1,8 +1,8 @@
-/*! store2 - v2.6.0 - 2018-01-23
+/*! store2 - v2.7.0 - 2018-02-08
 * Copyright (c) 2018 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.6.0",
+        version: "2.7.0",
         areas: {},
         apis: {},
 
@@ -145,6 +145,24 @@
                     }
                 }
                 return changed;
+            },
+            add: function(key, data) {
+                var d = this.get(key);
+                if (d instanceof Array) {
+                    data = d.concat(data);
+                } else if (d !== null) {
+                    var type = typeof d;
+                    if (type === typeof data && type === 'object') {
+                        for (var k in data) {
+                            d[k] = data[k];
+                        }
+                        data = d;
+                    } else {
+                        data = d + data;
+                    }
+                }
+                _.set(this._area, this._in(key), _.stringify(data));
+                return data;
             },
             remove: function(key) {
                 var d = this.get(key);

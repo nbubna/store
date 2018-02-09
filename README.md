@@ -40,6 +40,7 @@ store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data
 store.each(callback[, value]);     // called with key and either value or data args, return false to exit early
+store.add(key, data);              // concats, merges, or adds new value into existing one
 store.keys([fillList]);            // returns array of keys
 store.size();                      // number of keys, not length of data
 store.clearAll();                  // clears *ALL* areas (but still namespace sensitive)

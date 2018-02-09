@@ -5,6 +5,7 @@ declare namespace store {
   export function area(id: string, area: Storage): StoreAPI;
   export function set(key: any, data: any, overwrite?: boolean): any;
   export function setAll(data: Object, overwrite?: boolean): StoredData;
+  export function add(key: any, data: any): any;
   export function get(key: any, alt?: any): any;
   export function getAll(fillObj?: StoredData): StoredData;
   export function transact(key: any, fn: (data: any) => any, alt?: any): StoreAPI;
@@ -31,6 +32,7 @@ declare namespace store {
     remove(key: any): any;
     set(key: any, data: any, overwrite?: boolean): any;
     setAll(data: Object, overwrite?: boolean): StoredData;
+    add(key: any, data: any): any;
     size(): number;
     transact(key: any, fn: (data: any) => any, alt?: any): StoreAPI;
   }

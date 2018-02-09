@@ -53,6 +53,10 @@
         noval((s || store)(key, val), "save value for '"+key+"'");
         get(key, val, s);
     }
+    function add(key, val, expect, s) {
+        (s || store).add(key, val);
+        get(key, expect, s);
+    }
     function update(key, val, s) {
         if (typeof key === 'string' || val !== undefined) {
             ok((s || store)(key, val) != null, "update value for '"+key+"'");
@@ -163,11 +167,18 @@
                     equal(fiz, 'wiz');
                     return 'whiz';
                 });
-                remove('fiz', 'whiz');
+                add('fiz','zy','whizzy');
+                remove('fiz', 'whizzy');
                 transact('obj', function(obj) {
                     obj.prop = false;
                 }, { prop: true });// pass in default
                 equal(store.get('obj').prop, false);
+                add('obj', {b:1}, {prop:false,b:1});
+                add('num', 1, 1);
+                add('num', 1, 2);
+                save('array', [1]);
+                add('array', 2, [1,2]);
+                add('array', [3,4], [1,2,3,4]);
                 remove('woogie', undefined);
                 get('foo', false);
                 clearAll();
@@ -219,6 +230,7 @@
                 update('a', 26.2, ns);
                 clear(ns);
                 getAll({foo:true});
+                clearAll();
             });
 
             test("areas", function() {
@@ -301,7 +313,7 @@
                 });
                 var el = document.createElement('iframe');
                 el.src = window.location.href+'?events=true';
-                el.style.visibility = 'hidden';  
+                el.style.visibility = 'hidden';
                 document.getElementsByTagName('body')[0].appendChild(el);
             }
         }

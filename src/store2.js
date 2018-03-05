@@ -53,8 +53,8 @@
             });
             store._id = id;
             try {
-                var testKey = '_safariPrivate_';
-                area.setItem(testKey, 'sucks');
+                var testKey = '_-bad-_';
+                area.setItem(testKey, 'wolf');
                 store._area = area;
                 area.removeItem(testKey);
             } catch (e) {}

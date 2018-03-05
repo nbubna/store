@@ -1,4 +1,4 @@
-/*! store2 - v2.7.0 - 2018-02-08
+/*! store2 - v2.7.0 - 2018-03-04
 * Copyright (c) 2018 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
@@ -49,8 +49,8 @@
             });
             store._id = id;
             try {
-                var testKey = '_safariPrivate_';
-                area.setItem(testKey, 'sucks');
+                var testKey = '_-bad-_';
+                area.setItem(testKey, 'wolf');
                 store._area = area;
                 area.removeItem(testKey);
             } catch (e) {}

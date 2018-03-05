@@ -9,9 +9,7 @@
  * because it is more burdensome for localStorage to recover from quota errors
  * than incomplete caches. In other words, it is wiser to rely on store.js
  * never complaining than never missing data. You should already be checking
- * the integrity of cached data on every page load. Also note that quota errors
- * are thrown by Safari for *every* setItem when user is in private browsing mode.
- * http://spin.atomicobject.com/2013/01/23/ios-private-browsing-localstorage/
+ * the integrity of cached data on every page load.
  *
  * Status: BETA
  */

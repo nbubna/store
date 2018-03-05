@@ -197,7 +197,7 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.7.0 - 2018-02-08
+/*! store2 - v2.7.0 - 2018-03-04
 * Copyright (c) 2018 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
@@ -248,8 +248,8 @@ require.register("store/dist/store2.js", function(exports, require, module){
             });
             store._id = id;
             try {
-                var testKey = '_safariPrivate_';
-                area.setItem(testKey, 'sucks');
+                var testKey = '_-bad-_';
+                area.setItem(testKey, 'wolf');
                 store._area = area;
                 area.removeItem(testKey);
             } catch (e) {}
@@ -812,9 +812,7 @@ require.register("store/src/store.overflow.js", function(exports, require, modul
  * because it is more burdensome for localStorage to recover from quota errors
  * than incomplete caches. In other words, it is wiser to rely on store.js
  * never complaining than never missing data. You should already be checking
- * the integrity of cached data on every page load. Also note that quota errors
- * are thrown by Safari for *every* setItem when user is in private browsing mode.
- * http://spin.atomicobject.com/2013/01/23/ios-private-browsing-localstorage/
+ * the integrity of cached data on every page load.
  *
  * Status: BETA
  */

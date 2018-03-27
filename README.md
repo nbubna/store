@@ -38,7 +38,7 @@ store.getAll([fillObj]);           // === store();
 store.transact(key, fn[, alt]);    // === store(key, fn[, alt]);
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
-store.remove(key);                 // removes key and its data
+store.remove(key);                 // removes key and its data, then returns the data
 store.each(callback[, value]);     // called with key and either value or data args, return false to exit early
 store.add(key, data);              // concats, merges, or adds new value into existing one
 store.keys([fillList]);            // returns array of keys
@@ -142,6 +142,24 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
 [dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
 [safari]: https://github.com/marcuswestin/store.js/issues/66
+
+#### Write Your Own Extension
+To write your own extension, you can use or carefully override internal functions exposed as ```store._```.
+In particular, the ```store._.fn(fnName, fn)``` method is available to automatically add your new function
+to every instance of the ```store``` interface (e.g. ```store```, ```store.session```
+and all existing and future namespaces). Take care using this, as it will override existing methods.
+Here is a simple example:
+
+```javascript
+(function(_) {
+    _.fn('falsy', function(key) {
+        return !this.get(key);
+    });
+    _.fn('truthy', function(key) {
+        return !this.falsy(key);
+    });
+})(store._);
+```
 
 ## Release History
 * 2010-02-10 v0.1 (extraction from esha.js)

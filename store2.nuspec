@@ -7,6 +7,8 @@
     <authors>Nathan Bubna</authors>
     <owners>nbubna</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>2018</copyright>
+    <projectUrl>https://github.com/nbubna/store</projectUrl>
     <description>A feature-filled and friendly way to use localStorage and sessionStorage
 (JSON, namespacing, extensions, etc).</description>
     <tags>localStorage sessionStorage json javascript namespace html5 store browser client persistence</tags>

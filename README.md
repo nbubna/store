@@ -116,7 +116,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 
 #### Beta - Stable and definitely useful
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for ancient browsers
-* [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. very useful for [Safari private mode][safari])
+* [store.overflow.js][overflow] - Fall back to fake storage on quota errors
 * [store.cache.js][cache] - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
 * [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
 * [store.array.js][array] - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
@@ -141,7 +141,6 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [dot]: https://raw.github.com/nbubna/store/master/src/store.dot.js
 [deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
 [dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
-[safari]: https://github.com/marcuswestin/store.js/issues/66
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.

@@ -159,6 +159,17 @@ Here is a simple example:
     });
 })(store._);
 ```
+This extension would be used like so:
+```javascript
+store('foo', 1);
+store.falsy('foo'); // returns false
+
+store.session('bar', 'one');
+store.session.truthy('bar'); // return true;
+
+const widgetStore = store.namespace('widget');
+widgetStore.falsy('state'); // returns true
+```
 
 ## Release History
 * 2010-02-10 v0.1 (extraction from esha.js)

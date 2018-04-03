@@ -28,7 +28,7 @@ store();                          // gets all stored key/data pairs as an object
 store(false);                     // clears all items from storage
 ```
 
-There are also more explicit and versatile functions available:
+Parameters in [brackets] are optional. There are also more explicit and versatile functions available:
 
 ```javascript
 store.set(key, data[, overwrite]); // === store(key, data);

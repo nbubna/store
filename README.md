@@ -39,7 +39,7 @@ store.transact(key, fn[, alt]);    // === store(key, fn[, alt]);
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data, then returns the data
-store.each(callback[, value]);     // called with key and either value or data args, return false to exit early
+store.each(fn[, fill]);            // fn receives key and data (or fill), return false to exit early
 store.add(key, data);              // concats, merges, or adds new value into existing one
 store.keys([fillList]);            // returns array of keys
 store.size();                      // number of keys, not length of data
@@ -56,6 +56,26 @@ a passed alternate if there is none. When the passed function is completed, tran
 under the specified key. If the function returns ```undefined```, the original value will be saved.
 This makes it easy for transact functions to change internal properties in a persistent way:
 
+```javascript
+store.transact(key, function(obj) {
+    obj.changed = 'newValue';// this change will be persisted
+});
+```
+
+Functions passed to ```each``` will receive the key as first argument and current value as the second,
+unless a `fill` parameter is specified, in which case that will be the second argument (few will ever
+need a `fill` parameter). If the function returns ```false``` at any point during the iteration, the
+loop will exit early and not continue on to the next key/value pair.
+
+```javascript
+store.each(function(key, value) {
+    console.log(key, '->', value);
+    if (key === 'stopLoop') {
+        return false;// this will cause each to stop calling this function
+    }
+});
+```
+
 For ```getAll``` and ```keys```, there is the option to pass in the object or list, respectively,
 that you want the results to be added to. This is instead of an empty list.
 There are only a few special cases where you are likely to need or want this,
@@ -64,12 +84,6 @@ These both use the  second, optional argument ```each``` function,
 which is also a niche feature. The ```value``` argument is passed as
 the second arg to the callback function (in place of the data associated with the current key)
 and is returned at the end. Again, most users should not need this feature.
-
-```javascript
-store.transact(key, function(obj) {
-    obj.changed = 'newValue';// this change will be persisted
-});
-```
 All of these use the browser's localStorage (aka "local"). Using sessionStorage merely requires 
 calling the same functions on ```store.session```:
 

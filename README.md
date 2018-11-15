@@ -28,7 +28,7 @@ store();                          // gets all stored key/data pairs as an object
 store(false);                     // clears all items from storage
 ```
 
-There are also more explicit and versatile functions available:
+Parameters in [brackets] are optional. There are also more explicit and versatile functions available:
 
 ```javascript
 store.set(key, data[, overwrite]); // === store(key, data);
@@ -39,7 +39,7 @@ store.transact(key, fn[, alt]);    // === store(key, fn[, alt]);
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data, then returns the data
-store.each(callback[, value]);     // called with key and either value or data args, return false to exit early
+store.each(fn[, fill]);            // fn receives key and data (or fill), return false to exit early
 store.add(key, data);              // concats, merges, or adds new value into existing one
 store.keys([fillList]);            // returns array of keys
 store.size();                      // number of keys, not length of data
@@ -56,6 +56,26 @@ a passed alternate if there is none. When the passed function is completed, tran
 under the specified key. If the function returns ```undefined```, the original value will be saved.
 This makes it easy for transact functions to change internal properties in a persistent way:
 
+```javascript
+store.transact(key, function(obj) {
+    obj.changed = 'newValue';// this change will be persisted
+});
+```
+
+Functions passed to ```each``` will receive the key as first argument and current value as the second,
+unless a `fill` parameter is specified, in which case that will be the second argument (few will ever
+need a `fill` parameter). If the function returns ```false``` at any point during the iteration, the
+loop will exit early and not continue on to the next key/value pair.
+
+```javascript
+store.each(function(key, value) {
+    console.log(key, '->', value);
+    if (key === 'stopLoop') {
+        return false;// this will cause each to stop calling this function
+    }
+});
+```
+
 For ```getAll``` and ```keys```, there is the option to pass in the object or list, respectively,
 that you want the results to be added to. This is instead of an empty list.
 There are only a few special cases where you are likely to need or want this,
@@ -64,12 +84,6 @@ These both use the  second, optional argument ```each``` function,
 which is also a niche feature. The ```value``` argument is passed as
 the second arg to the callback function (in place of the data associated with the current key)
 and is returned at the end. Again, most users should not need this feature.
-
-```javascript
-store.transact(key, function(obj) {
-    obj.changed = 'newValue';// this change will be persisted
-});
-```
 All of these use the browser's localStorage (aka "local"). Using sessionStorage merely requires 
 calling the same functions on ```store.session```:
 
@@ -116,7 +130,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 
 #### Beta - Stable and definitely useful
 * [store.old.js][old] - Add working localStorage and sessionStorage polyfills for ancient browsers
-* [store.overflow.js][overflow] - Fall back to fake storage on quota errors (e.g. very useful for [Safari private mode][safari])
+* [store.overflow.js][overflow] - Fall back to fake storage on quota errors
 * [store.cache.js][cache] - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
 * [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
 * [store.array.js][array] - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
@@ -141,7 +155,6 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [dot]: https://raw.github.com/nbubna/store/master/src/store.dot.js
 [deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
 [dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
-[safari]: https://github.com/marcuswestin/store.js/issues/66
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.
@@ -159,6 +172,17 @@ Here is a simple example:
         return !this.falsy(key);
     });
 })(store._);
+```
+This extension would be used like so:
+```javascript
+store('foo', 1);
+store.falsy('foo'); // returns false
+
+store.session('bar', 'one');
+store.session.truthy('bar'); // return true;
+
+const widgetStore = store.namespace('widget');
+widgetStore.falsy('state'); // returns true
 ```
 
 ## Release History

@@ -255,4 +255,4 @@
         window.store = store;
     }
 
-})(this, this.define);
+})(this, this && this.define);

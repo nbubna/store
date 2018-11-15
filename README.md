@@ -203,7 +203,7 @@ widgetStore.falsy('state'); // returns true
 * 2017-08-09 [v2.5.2][] (public) - Fix `clear()` in fake storage (thx to Martin Kluska)
 * 2018-01-18 [v2.5.11][] (public) - Add ```index.d.ts``` in root to provide TypeScript support
 * 2018-01-23 [v2.6.0][] (public) - Support ```each(fn,value)```, ```getAll(fillObj)```, and ```keys(fillList)``` to support some advanced/corner cases
-* 2018-11-15 [v2.7.1][] (public) - Add ```add(key, data)``` for common case of saving a combination of existing and new data. Fix issue #60
+* 2018-11-15 [v2.7.1][] (public) - Add ```add(key, data)``` for common case of saving a combination of existing and new data. Fix issue #60.
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0

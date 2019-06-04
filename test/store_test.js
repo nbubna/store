@@ -120,6 +120,7 @@
     }
     function space(ns) {
         equal(store.namespace(ns), store[ns], "Create space: '"+ns+"'");
+        equal(store.isFake(), store[ns].isFake(), "isFake() should return '"+store.isFake()+"' for ns and parent");
         return store[ns];
     }
     function area(id) {

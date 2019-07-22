@@ -14,7 +14,7 @@
         inherit: function(api, o) {
             for (var p in api) {
                 if (!o.hasOwnProperty(p)) {
-                    o[p] = api[p];
+                    Object.defineProperty(o, p, Object.getOwnPropertyDescriptor(api, p));
                 }
             }
             return o;

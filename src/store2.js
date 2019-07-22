@@ -105,27 +105,27 @@
                 return !!(this._in(key) in this._area);
             },
             size: function(){ return this.keys().length; },
-            each: function(fn, value) {// value is used by keys(fillList) and getAll(fillList))
+            each: function(fn, fill) {// fill is used by keys(fillList) and getAll(fillList))
                 for (var i=0, m=_.length(this._area); i<m; i++) {
                     var key = this._out(_.key(this._area, i));
                     if (key !== undefined) {
-                        if (fn.call(this, key, value || this.get(key)) === false) {
+                        if (fn.call(this, key, this.get(key), fill) === false) {
                             break;
                         }
                     }
                     if (m > _.length(this._area)) { m--; i--; }// in case of removeItem
                 }
-                return value || this;
+                return fill || this;
             },
             keys: function(fillList) {
-                return this.each(function(k, list){ list.push(k); }, fillList || []);
+                return this.each(function(k, v, list){ list.push(k); }, fillList || []);
             },
             get: function(key, alt) {
                 var s = _.get(this._area, this._in(key));
                 return s !== null ? _.parse(s) : alt || s;// support alt for easy default mgmt
             },
             getAll: function(fillObj) {
-                return this.each(function(k, all){ all[k] = this.get(k); }, fillObj || {});
+                return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});
             },
             transact: function(key, fn, alt) {
                 var val = this.get(key, alt),

@@ -1,8 +1,8 @@
-/*! store2 - v2.7.1 - 2018-11-15
-* Copyright (c) 2018 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
+/*! store2 - v2.8.0 - 2019-07-23
+* Copyright (c) 2019 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.7.1",
+        version: "2.8.0",
         areas: {},
         apis: {},
 
@@ -10,7 +10,7 @@
         inherit: function(api, o) {
             for (var p in api) {
                 if (!o.hasOwnProperty(p)) {
-                    o[p] = api[p];
+                    Object.defineProperty(o, p, Object.getOwnPropertyDescriptor(api, p));
                 }
             }
             return o;
@@ -44,6 +44,7 @@
                 if (typeof data === "function"){ return store.transact(key, data, overwrite); }// fn=data, alt=overwrite
                 if (data !== undefined){ return store.set(key, data, overwrite); }
                 if (typeof key === "string" || typeof key === "number"){ return store.get(key); }
+                if (typeof key === "function"){ return store.each(key); }
                 if (!key){ return store.clear(); }
                 return store.setAll(key, data);// overwrite=data, data=key
             });
@@ -101,27 +102,27 @@
                 return !!(this._in(key) in this._area);
             },
             size: function(){ return this.keys().length; },
-            each: function(fn, value) {// value is used by keys(fillList) and getAll(fillList))
+            each: function(fn, fill) {// fill is used by keys(fillList) and getAll(fillList))
                 for (var i=0, m=_.length(this._area); i<m; i++) {
                     var key = this._out(_.key(this._area, i));
                     if (key !== undefined) {
-                        if (fn.call(this, key, value || this.get(key)) === false) {
+                        if (fn.call(this, key, this.get(key), fill) === false) {
                             break;
                         }
                     }
                     if (m > _.length(this._area)) { m--; i--; }// in case of removeItem
                 }
-                return value || this;
+                return fill || this;
             },
             keys: function(fillList) {
-                return this.each(function(k, list){ list.push(k); }, fillList || []);
+                return this.each(function(k, v, list){ list.push(k); }, fillList || []);
             },
             get: function(key, alt) {
                 var s = _.get(this._area, this._in(key));
                 return s !== null ? _.parse(s) : alt || s;// support alt for easy default mgmt
             },
             getAll: function(fillObj) {
-                return this.each(function(k, all){ all[k] = this.get(k); }, fillObj || {});
+                return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});
             },
             transact: function(key, fn, alt) {
                 var val = this.get(key, alt),

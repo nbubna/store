@@ -1,6 +1,6 @@
 {
   "name": "store",
-  "version": "2.7.1",
+  "version": "2.8.0",
   "description": "A better way to use localStorage and sessionStorage",
   "repo": "nbubna/store",
   "keywords": [
@@ -22,6 +22,11 @@
     "src/store.old.js",
     "src/store.overflow.js",
     "src/store.quota.js",
-    "src/store.onlyreal.js"
+    "src/store.array.js",
+    "src/store.onlyreal.js",
+    "src/store.dot.js",
+    "src/store.deep.js",
+    "src/store.dom.js",
+    "src/store.async.js"
   ]
 }

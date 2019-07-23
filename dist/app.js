@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.7.1 - 2018-11-15
-* Copyright (c) 2018 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
+/*! store2 - v2.8.0 - 2019-07-23
+* Copyright (c) 2019 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.7.1",
+        version: "2.8.0",
         areas: {},
         apis: {},
 
@@ -209,7 +209,7 @@ require.register("store/dist/store2.js", function(exports, require, module){
         inherit: function(api, o) {
             for (var p in api) {
                 if (!o.hasOwnProperty(p)) {
-                    o[p] = api[p];
+                    Object.defineProperty(o, p, Object.getOwnPropertyDescriptor(api, p));
                 }
             }
             return o;
@@ -243,6 +243,7 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 if (typeof data === "function"){ return store.transact(key, data, overwrite); }// fn=data, alt=overwrite
                 if (data !== undefined){ return store.set(key, data, overwrite); }
                 if (typeof key === "string" || typeof key === "number"){ return store.get(key); }
+                if (typeof key === "function"){ return store.each(key); }
                 if (!key){ return store.clear(); }
                 return store.setAll(key, data);// overwrite=data, data=key
             });
@@ -300,27 +301,27 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 return !!(this._in(key) in this._area);
             },
             size: function(){ return this.keys().length; },
-            each: function(fn, value) {// value is used by keys(fillList) and getAll(fillList))
+            each: function(fn, fill) {// fill is used by keys(fillList) and getAll(fillList))
                 for (var i=0, m=_.length(this._area); i<m; i++) {
                     var key = this._out(_.key(this._area, i));
                     if (key !== undefined) {
-                        if (fn.call(this, key, value || this.get(key)) === false) {
+                        if (fn.call(this, key, this.get(key), fill) === false) {
                             break;
                         }
                     }
                     if (m > _.length(this._area)) { m--; i--; }// in case of removeItem
                 }
-                return value || this;
+                return fill || this;
             },
             keys: function(fillList) {
-                return this.each(function(k, list){ list.push(k); }, fillList || []);
+                return this.each(function(k, v, list){ list.push(k); }, fillList || []);
             },
             get: function(key, alt) {
                 var s = _.get(this._area, this._in(key));
                 return s !== null ? _.parse(s) : alt || s;// support alt for easy default mgmt
             },
             getAll: function(fillObj) {
-                return this.each(function(k, all){ all[k] = this.get(k); }, fillObj || {});
+                return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});
             },
             transact: function(key, fn, alt) {
                 var val = this.get(key, alt),
@@ -937,6 +938,61 @@ require.register("store/src/store.quota.js", function(exports, require, module){
 
 })(window.store, window.store._);
 });
+require.register("store/src/store.array.js", function(exports, require, module){
+/**
+ * Copyright (c) 2017 ESHA Research
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Adds shortcut for safely applying all available Array functions to stored values. If there is no
+ * value, the functions will act as if upon an empty one. If there is a non, array value, it is put
+ * into an array before the function is applied. If the function results in an empty array, the
+ * key/value is removed from the storage, otherwise the array is restored.
+ *
+ *   store.push('array', 'a', 1, true);// == store.set('array', (store.get('array')||[]).push('a', 1, true]));
+ *   store.indexOf('array', true);// === store.get('array').indexOf(true)
+ * 
+ * This will add all functions of Array.prototype that are specific to the Array interface and have no
+ * conflict with existing store functions.
+ *
+ * Status: BETA - useful, but adds more functions than reasonable
+ */
+;(function(_, Array) {
+
+    // expose internals on the underscore to allow extensibility
+    _.array = function(fnName, key, args) {
+        var value = this.get(key, []),
+            array = Array.isArray(value) ? value : [value],
+            ret = array[fnName].apply(array, args);
+        if (array.length > 0) {
+            this.set(key, array.length > 1 ? array : array[0]);
+        } else {
+            this.remove(key);
+        }
+        return ret;
+    };
+    _.arrayFn = function(fnName) {
+        return function(key) {
+            return this.array(fnName, key,
+                arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : null);
+        };
+    };
+
+    // add function(s) to the store interface
+    _.fn('array', _.array);
+    Object.getOwnPropertyNames(Array.prototype).forEach(function(name) {
+        // add Array interface functions w/o existing conflicts
+        if (typeof Array.prototype[name] === "function") {
+            if (!(name in _.storeAPI)) {
+                _.fn(name, _.array[name] = _.arrayFn(name));
+            }
+        }
+    });
+
+})(window.store._, window.Array);
+
+});
 require.register("store/src/store.onlyreal.js", function(exports, require, module){
 /**
  * Copyright (c) 2015 ESHA Research
@@ -956,6 +1012,238 @@ require.register("store/src/store.onlyreal.js", function(exports, require, modul
     };
 
 })(window.store._);
+
+});
+require.register("store/src/store.dot.js", function(exports, require, module){
+/**
+ * Copyright (c) 2017 ESHA Research
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Adds getters and setters for existing keys (and newly set() ones) to enable dot access to stored properties.
+ *
+ *   store.dot('foo','bar');// makes store aware of keys (could also do store.set('foo',''))
+ *   store.foo = { is: true };// == store.set('foo', { is: true });
+ *   console.log(store.foo.is);// logs 'true'
+ * 
+ * This will not create accessors that conflict with existing properties of the store object.
+ *
+ * Status: ALPHA - good, but ```store.foo.is=false``` won't persist while looking like it would 
+ */
+;(function(_, Object, Array) {
+
+    // expose internals on the underscore to allow extensibility
+    _.dot = function(key) {
+        var keys = !key ? this.keys() :
+            Array.isArray(key) ? key :
+            Array.prototype.slice.call(arguments),
+            target = this;
+        keys.forEach(function(key) {
+            _.dot.define(target, key);
+        });
+        return this;
+    };
+    _.dot.define = function(target, key) {
+        if (!(key in target)) {
+            Object.defineProperty(target, key, {
+                enumerable: true,
+                get: function(){ return this.get(key); },
+                set: function(value){ this.set(key, value); }
+            });
+        }
+    };
+
+    // add function(s) to the store interface
+    _.fn('dot', _.dot);
+
+})(window.store._, window.Object, window.Array);
+
+});
+require.register("store/src/store.deep.js", function(exports, require, module){
+/**
+ * Copyright (c) 2017 ESHA Research
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Allows retrieval of values from within a stored object.
+ *
+ *   store.set('foo', { is: { not: { quite: false }}});
+ *   console.log(store.get('foo.is.not.quite'));// logs false
+ *
+ * Status: ALPHA - currently only supports get, inefficient, uses eval
+ */
+;(function(_) {
+
+    // save original core accessor
+    var _get = _.get;
+    // replace with enhanced version
+    _.get = function(area, key, kid) {
+        var s = _get(area, key);
+        if (s == null) {
+            var parts = _.split(key);
+            if (parts) {
+                key = parts[0];
+                kid = kid ? parts[1] + '.' + kid : parts[1];
+                return _.get(area, parts[0], kid);
+            }
+        } else if (kid) {
+            var val = _.parse(s);
+            /*jshint evil:true */
+            val = eval("val."+kid);
+            s = _.stringify(val);
+        }
+        return s;
+    };
+
+    // expose internals on the underscore to allow extensibility
+    _.split = function(key) {
+        var dot = key.lastIndexOf('.');
+        if (dot > 0) {
+            var kid = key.substring(dot+1, key.length);
+            key = key.substring(0, dot);
+            return [key, kid];
+        }
+    };
+
+})(window.store._);
+
+});
+require.register("store/src/store.dom.js", function(exports, require, module){
+/**
+ * Copyright (c) 2017 ESHA Research
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Declarative, persistent DOM content.
+ *
+ *   <input store name="whatever">
+ *   <div store="somekey" store-area="session" contenteditable>Some content</div>
+ *
+ * Status: BETA - uses store, doesn't extend it, deserves standalone project
+ */
+;(function(document, store, _, Array) {
+
+    // expose internal functions on store._.dom for extensibility
+    var DOM = _.dom = function() {
+        var nodes = document.querySelectorAll(DOM.selector),
+            array = Array.prototype.slice.call(nodes);
+        for (var i=0; i<array.length; i++) {
+            DOM.node(array[i], i);
+        }
+        return array;
+    };
+    DOM.selector = '[store],[store-area]';
+    DOM.event = 'input';// beforeunload is tempting
+    DOM.node = function(node, i) {
+        var key = DOM.key(node, i),
+            area = DOM.area(node),
+            value = area(key);
+        if (value == null) {
+            value = DOM.get(node);
+        } else {
+            DOM.set(node, value);
+        }
+        if (!node.storeListener) {
+            node.addEventListener(DOM.event, function() {
+                area(key, DOM.get(node));
+            });
+            node.storeListener = true;
+        }
+    };
+    DOM.area = function(node) {
+        return store[node.getAttribute('store-area') || 'local'];
+    };
+    // prefer store attribute value, then name attribute, use nodeName+index as last resort
+    DOM.key = function(node, i) {
+        return node.getAttribute('store') ||
+            node.getAttribute('name') || 
+            ('dom.'+node.nodeName.toLowerCase() + (i||''));
+    };
+    // both get and set should prefer value property to innerHTML
+    DOM.get = function(node) {
+        return node.value || node.innerHTML;
+    };
+    DOM.set = function(node, value) {
+        if ('value' in node) {
+            node.value = value;
+        } else {
+            node.innerHTML = typeof value === "string" ? value : _.stringify(value);
+        }
+    };
+
+    // initialize
+    document.addEventListener('DOMContentLoaded', DOM);
+
+})(document, window.store, window.store._, Array);
+
+});
+require.register("store/src/store.async.js", function(exports, require, module){
+/**
+ * Copyright (c) 2019 ESHA Research
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Adds an 'async' duplicate on all store APIs that
+ * performs storage-related operations asynchronously and returns
+ * a promise.
+ *
+ * Status: BETA - works great, but lacks justification for existence
+ */
+;(function(window, _) {
+
+    var dontPromisify = ['async', 'area', 'namespace', 'isFake', 'toString'];
+    _.promisify = function(api) {
+        var async = api.async = _.Store(api._id, api._area, api._ns);
+        async._async = true;
+        Object.keys(api).forEach(function(name) {
+            if (name.charAt(0) !== '_' && dontPromisify.indexOf(name) < 0) {
+                var fn = api[name];
+                if (typeof fn === "function") {
+                    async[name] = _.promiseFn(name, fn, api);
+                }
+            }
+        });
+        return async;
+    };
+    _.promiseFn = function(name, fn, self) {
+        return function promised() {
+            var args = arguments;
+            return new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    try {
+                        resolve(fn.apply(self, args));
+                    } catch (e) {
+                        reject(e);
+                    }
+                }, 0);
+            });
+        };
+    };
+
+    // promisify existing apis
+    for (var apiName in _.apis) {
+        _.promisify(_.apis[apiName]);
+    }
+    // ensure future apis are promisified
+    Object.defineProperty(_.storeAPI, 'async', {
+        enumerable: true,
+        configurable: true,
+        get: function() {
+            var async = _.promisify(this);
+            // overwrite getter to avoid re-promisifying
+            Object.defineProperty(this, 'async', {
+                enumerable: true,
+                value: async
+            });
+            return async;
+        }
+    });
+
+})(window, window.store._);
 
 });
 require.alias("store/dist/store2.js", "store/index.js");

@@ -143,6 +143,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * [store.onlyreal.js][onlyreal] - When only fake storage is available, silently fail instead of faking it.
 * [store.dot.js][dot] - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
 * [store.deep.js][deep] - Allow retrieval of properties from within stored objects (e.g. ```store.get('key.property')```)
+* [store.async.js][async] - Adds ```store.async``` duplicate to each store and namespace that performs functions asynchronously and returns a Promise that resolves when complete.
 
 
 [old]: https://raw.github.com/nbubna/store/master/src/store.old.js
@@ -156,6 +157,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [dot]: https://raw.github.com/nbubna/store/master/src/store.dot.js
 [deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
 [dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
+[async]: https://raw.github.com/nbubna/store/master/src/store.async.js
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.

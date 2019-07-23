@@ -25,6 +25,7 @@ store(key);                       // gets and parses data stored under key
 store(key, fn[, alt]);            // run transaction function on/with data stored under key
 store({key: data, key2: data2});  // sets all key/data pairs in the object
 store();                          // gets all stored key/data pairs as an object
+store(fn);                        // calls fn for each key/data in storage, return false to exit early
 store(false);                     // clears all items from storage
 ```
 
@@ -39,7 +40,7 @@ store.transact(key, fn[, alt]);    // === store(key, fn[, alt]);
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key);                 // removes key and its data, then returns the data
-store.each(fn[, fill]);            // fn receives key and data (or fill), return false to exit early
+store.each(fn[, fill]);            // === store(fn); optional call arg will be 3rd fn arg (e.g. for gathering values)
 store.add(key, data);              // concats, merges, or adds new value into existing one
 store.keys([fillList]);            // returns array of keys
 store.size();                      // number of keys, not length of data

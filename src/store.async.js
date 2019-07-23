@@ -8,7 +8,7 @@
  * performs storage-related operations asynchronously and returns
  * a promise.
  *
- * Status: BETA - needs testing and better docs
+ * Status: BETA - works great, but lacks justification for existence
  */
 ;(function(window, _) {
 

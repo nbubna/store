@@ -3,7 +3,6 @@ A feature-filled and friendly way to take advantage of localStorage and sessionS
 
 Download: [store2.min.js][prod]  or  [store2.js][dev]  
 [NPM][npm]: `npm install store2`  
-Bower: `bower install store2`   
 [NuGet][]: `Install-Package store2`  
 
 [NuGet]: http://nuget.org/packages/store2/

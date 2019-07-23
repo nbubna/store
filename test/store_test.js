@@ -153,6 +153,41 @@
                 has('version', store._);
             });
 
+            test("shortcuts", function() {
+                equal(store('new','key'), null, "return null for new set");
+                equal(store('new','notsomuch'), 'key', "return old value for new set on existing key");
+                equal(store('new'), 'notsomuch', 'single string arg gets value');
+                equal(store('nonesuch'), null, 'null for unknown key');
+                store(false);
+                equal(store.size(), 0, 'store(false) should clear it');
+                store({key:1,key2:2});
+                equal(store.size(), 2, "bulk set should leave just two keys");
+                store('key', function(v){
+                    equal(v, 1, 'transact should get key value as arg');
+                    return 'one';
+                });
+                equal(store('key'), 'one', 'transact should have updated the value via the return statement');
+                store('key3', function(v) {
+                    equal(v, 'alt', 'transact should use alt value when no matching key in store');
+                }, 'alt');
+                ok(store('key3', 'alt'), 'transact sets alts as new value');
+                store.remove('key3');
+                var first = false,
+                    second = false;
+                store(function(k, v) {
+                    if (k === 'key') {
+                        equal(v, 'one', 'key has "one"');
+                        first = true;
+                    } else if (k === 'key2') {
+                        equal(v, 2, 'key2 has 2');
+                        second = true;
+                    } else {
+                        ok(false, 'should not have other keys');
+                    }
+                });
+                ok(first && second, 'each should have seen both keys');
+            });
+
             test("basics", function() {
                 clear();
                 deepEqual(store._id, 'local', 'id should be local');

@@ -63,8 +63,7 @@ store.transact(key, function(obj) {
 });
 ```
 
-Functions passed to ```each``` will receive the key as first argument and current value as the second,
-unless a `fill` parameter is specified, in which case that will be the second argument (few will ever
+Functions passed to ```each``` will receive the key as first argument and current value as the second; if a `fill` parameter is specified, it's value will be the third argument for every call (few should ever
 need a `fill` parameter). If the function returns ```false``` at any point during the iteration, the
 loop will exit early and not continue on to the next key/value pair.
 

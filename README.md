@@ -225,15 +225,3 @@ widgetStore.falsy('state'); // returns true
 [v2.7.1]: https://github.com/nbubna/store/tree/2.7.1
 [v2.8.0]: https://github.com/nbubna/store/tree/2.8.0
 
-## Store vs Store
-When i went to publish this on NPM i discovered another [store.js][other] by Marcus Westin.
-To my pleasure, even our APIs had notable overlap, but his had fewer features and a focus on polyfilling old
-browsers (e.g. IE 6/7). He saw the library at the time as a temporary polyfill, while i intended mine
-to always be a better way to use localStorage and sessionStorage. We discussed merging the featuresets,
-but we agreed it wouldn't work due to different goals. To minimize confusion, i published this as 'store2',
-but kept the main function as `store`. Marcus' later decision to pivot and adopt the goals and many of
-the features of this library into a v2 of store.js has put these libraries into more direct competition.
-I believe this library to be superior in implementation and interface, though not in all aspects and the
-differences are admittedly small. There is still potential for unification, perhaps in a v3 someday.
-
-[other]: https://github.com/marcuswestin/store.js/

@@ -24,7 +24,7 @@ store(key);                       // gets and parses data stored under key
 store(key, fn[, alt]);            // run transaction function on/with data stored under key
 store({key: data, key2: data2});  // sets all key/data pairs in the object
 store();                          // gets all stored key/data pairs as an object
-store(fn);                        // calls fn for each key/data in storage, return false to exit early
+store((key, data)=>{ });          // calls function for each key/data in storage, return false to exit
 store(false);                     // clears all items from storage
 ```
 

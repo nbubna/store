@@ -206,6 +206,7 @@ widgetStore.falsy('state'); // returns true
 * 2018-01-23 [v2.6.0][] (public) - Support ```each(fn,value)```, ```getAll(fillObj)```, and ```keys(fillList)``` to support some advanced/corner cases
 * 2018-11-15 [v2.7.1][] (public) - Add ```add(key, data)``` for common case of saving a combination of existing and new data. Fix issue #60.
 * 2019-07-23 [v2.8.0][] (public) - Add ```store(fn)``` shortcut for ```store.each```, copy properties when inheriting, and make ```store.each(fn, fill)``` always send fill as 3rd arg instead of replacing values.
+* 2019-08-21 [v2.9.0][] (public) - Add store.remove(key, alt) to match behavior of store.get(key, alt) (Issue #68)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -224,4 +225,4 @@ widgetStore.falsy('state'); // returns true
 [v2.6.0]: https://github.com/nbubna/store/tree/2.6.0
 [v2.7.1]: https://github.com/nbubna/store/tree/2.7.1
 [v2.8.0]: https://github.com/nbubna/store/tree/2.8.0
-
+[v2.9.0]: https://github.com/nbubna/store/tree/2.9.0

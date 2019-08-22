@@ -38,7 +38,7 @@ store.getAll([fillObj]);           // === store();
 store.transact(key, fn[, alt]);    // === store(key, fn[, alt]);
 store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
-store.remove(key);                 // removes key and its data, then returns the data
+store.remove(key[, alt]);          // removes key and its data, then returns the data or alt, if none
 store.each(fn[, fill]);            // === store(fn); optional call arg will be 3rd fn arg (e.g. for gathering values)
 store.add(key, data);              // concats, merges, or adds new value into existing one
 store.keys([fillList]);            // returns array of keys

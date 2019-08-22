@@ -205,6 +205,7 @@
                 });
                 add('fiz','zy','whizzy');
                 remove('fiz', 'whizzy');
+                equal(store.remove('fiz','alt'), 'alt', "should get 'alt' back when no such key");
                 transact('obj', function(obj) {
                     obj.prop = false;
                 }, { prop: true });// pass in default

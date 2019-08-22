@@ -11,7 +11,7 @@ declare namespace store {
   export function transact(key: any, fn: (data: any) => any, alt?: any): StoreAPI;
   export function clear(): StoreAPI;
   export function has(key: any): boolean;
-  export function remove(key: any): any;
+  export function remove(key: any, alt?: any): any;
   export function each(callback: (key: any, data: any) => false | any, value?: any): StoreAPI;
   export function keys(fillList?: string[]): string[];
   export function size(): number;
@@ -29,7 +29,7 @@ declare namespace store {
     isFake(): boolean;
     keys(fillList?: string[]): string[];
     namespace(namespace: string, noSession?: true): StoreAPI;
-    remove(key: any): any;
+    remove(key: any, alt?: any): any;
     set(key: any, data: any, overwrite?: boolean): any;
     setAll(data: Object, overwrite?: boolean): StoredData;
     add(key: any, data: any): any;

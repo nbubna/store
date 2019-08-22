@@ -169,8 +169,8 @@
                 _.set(this._area, this._in(key), _.stringify(data));
                 return data;
             },
-            remove: function(key) {
-                var d = this.get(key);
+            remove: function(key, alt) {
+                var d = this.get(key, alt);
                 _.remove(this._area, this._in(key));
                 return d;
             },

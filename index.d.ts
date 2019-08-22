@@ -56,6 +56,6 @@ declare function store(key: any, data: any): any
 declare function store(clearIfFalsy: false | 0): store.StoreAPI
 declare function store(key: any): any
 declare function store(obj: Object): store.StoredData
-declare function store(): store.StoredData
+declare function store(eachFn: (key: any, data: any) => false | any, value?: any): store.StoredData
 
 export = store;

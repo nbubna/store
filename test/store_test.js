@@ -276,6 +276,10 @@
                 var session = area('session');
                 ok(session !== store, 'store should not equal store.session');
                 area('fake', true);
+                var page = area('page');
+                ok(page !== store, 'store should not equal store.page');
+                ok(page !== store.session, 'store.session should not equal store.page');
+                ok(!page.isFake());
             });
 
             test("fake area clearing", function() {

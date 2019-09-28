@@ -90,7 +90,13 @@ calling the same functions on ```store.session```:
 store.session("addMeTo", "sessionStorage");
 store.local({lots: 'of', data: 'altogether'});// store.local === store :)
 ```
-All the specific ```get```, ```set```, etc. functions are available on both ```store.session``` and ```store.local```, as well as any other storage facility registered via ```store.area(name, customStorageObject)``` by an extension, where customStorageObject must implement the [Storage interface][storage]. This is how [store.old.js][old] extends store.js to support older versions of IE and Firefox.
+There is also a store API automatically available for keeping non-persistent information,
+meant only to last until page reload.
+```javascript
+store.page("until","reload");
+```
+
+All the specific ```get```, ```set```, etc. functions are available on ```store.session```, ```store.local```, and ```store.page```, as well as any other storage facility registered via ```store.area(name, customStorageObject)``` by an extension, where customStorageObject must implement the [Storage interface][storage]. This is how [store.old.js][old] extends store.js to support older versions of IE and Firefox.
 
 [storage]: http://dev.w3.org/html5/webstorage/#the-storage-interface
 
@@ -112,8 +118,8 @@ does not conflict with an existing part of the store API.
 The 'namespace' function is one of two "extra" functions that are also part of the "store API":
 
 ```javascript
-store.namespace(prefix[, noSession]);// returns a new store API that prefixes all key-based functions
-store.isFake();// is this storage persistent? (e.g. is this old IE?) 
+store.namespace(prefix);// returns a new store API that prefixes all key-based functions
+store.isFake();// is this actually localStorage/sessionStorage or an in-memory fallback?
 ```
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,

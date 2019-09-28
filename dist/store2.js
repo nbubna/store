@@ -1,8 +1,8 @@
-/*! store2 - v2.9.0 - 2019-08-21
+/*! store2 - v2.10.0 - 2019-09-27
 * Copyright (c) 2019 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.9.0",
+        version: "2.10.0",
         areas: {},
         apis: {},
 
@@ -56,7 +56,7 @@
                 area.removeItem(testKey);
             } catch (e) {}
             if (!store._area) {
-                store._area = _.inherit(_.storageAPI, { items: {}, name: 'fake' });
+                store._area = _.storage('fake');
             }
             store._ns = namespace || '';
             if (!_.areas[id]) {
@@ -77,7 +77,7 @@
                 }
                 return store;
             },
-            namespace: function(namespace, noSession) {
+            namespace: function(namespace, singleArea) {
                 if (!namespace){
                     return this._ns ? this._ns.substring(0,this._ns.length-1) : '';
                 }
@@ -85,7 +85,11 @@
                 if (!store || !store.namespace) {
                     store = _.Store(this._id, this._area, this._ns+ns+'.');//new namespaced api
                     if (!this[ns]){ this[ns] = store; }
-                    if (!noSession){ store.area('session', _.areas.session); }
+                    if (!singleArea) {
+                        for (var name in _.areas) {
+                            store.area(name, _.areas[name]);
+                        }
+                    }
                 }
                 return store;
             },
@@ -203,6 +207,9 @@
                     k;
             }
         },// end _.storeAPI
+        storage: function(name) {
+            return _.inherit(_.storageAPI, { items: {}, name: name });
+        },
         storageAPI: {
             length: 0,
             has: function(k){ return this.items.hasOwnProperty(k); },
@@ -227,8 +234,7 @@
                 }
             },
             getItem: function(k){ return this.has(k) ? this.items[k] : null; },
-            clear: function(){ for (var k in this.items){ this.removeItem(k); } },
-            toString: function(){ return this.length+' items in '+this.name+'Storage'; }
+            clear: function(){ for (var k in this.items){ this.removeItem(k); } }
         }// end _.storageAPI
     };
 
@@ -239,6 +245,7 @@
     store._ = _;// for extenders and debuggers...
     // safely setup store.session (throws exception in FF for file:/// urls)
     store.area("session", (function(){try{ return sessionStorage; }catch(e){}})());
+    store.area("page", _.storage("page"));
 
     if (typeof define === 'function' && define.amd !== undefined) {
         define('store2', [], function () {

@@ -21,11 +21,12 @@
 
     _.on = function(key, fn) {
         if (!fn) { fn = key; key = ''; }// no key === all keys
-        var listener = function(e) {
-            var k = this._out(e.key);// undefined if key is not in the namespace
+        var s = this,
+            listener = function(e) {
+            var k = s._out(e.key);// undefined if key is not in the namespace
             if ((k && (!key || k === key)) && // match key if listener has one
-                (!e.storageArea || e.storageArea === this._area)) {// match area, if available
-                return fn.call(this, _.event.call(this, k, e));
+                (!e.storageArea || e.storageArea === s._area)) {// match area, if available
+                return fn.call(s, _.event.call(s, k, e));
             }
         };
         window.addEventListener("storage", fn[key+'-listener']=listener, false);

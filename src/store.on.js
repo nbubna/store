@@ -24,7 +24,8 @@
         var s = this,
             listener = function(e) {
             var k = s._out(e.key);// undefined if key is not in the namespace
-            if ((k && (!key || k === key)) && // match key if listener has one
+            if ((k && (k === key ||// match key if listener has one
+                       (!key && k !== '_-bad-_'))) &&// match catch-all, except internal test
                 (!e.storageArea || e.storageArea === s._area)) {// match area, if available
                 return fn.call(s, _.event.call(s, k, e));
             }

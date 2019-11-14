@@ -15,7 +15,7 @@ Download: [store2.min.js][prod]  or  [store2.js][dev]
 [![npm](https://img.shields.io/npm/dm/store2.svg?maxAge=2592000)](https://www.npmjs.com/package/store2)  
 
 ## Documentation
-The main store function can handle ```set```, ```get```, ```transact```, ```setAll```, ```getAll``` and ```clear```
+The main store function can handle ```set```, ```get```, ```transact```, ```setAll```, ```getAll```, ```each```, and ```clear```
 actions directly. Respectively, these are called like so:
 
 ```javascript

@@ -51,6 +51,8 @@ if the storage already has a value for that key. All ```set``` action methods re
 for that key, by default. If overwrite is ```false``` and there is a previous value, the unused new 
 value will be returned.
 
+All functions which take an optional ```alt``` parameter can also use that parameter to specify a "reviver" function. These receive each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of parsing that string. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.parse docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) for more information and examples. Alternately, you can set a global reviver to the ```store._.revive``` property to handle all ```get```, ```getAll```, and ```transact``` calls.
+
 Functions passed to ```transact``` will receive the current value for that key as an argument or
 a passed alternate if there is none. When the passed function is completed, transact will save the returned value
 under the specified key. If the function returns ```undefined```, the original value will be saved.

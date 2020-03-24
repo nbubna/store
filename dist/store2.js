@@ -1,8 +1,8 @@
-/*! store2 - v2.10.0 - 2019-09-27
-* Copyright (c) 2019 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
+/*! store2 - v2.11.0 - 2020-03-23
+* Copyright (c) 2020 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.10.0",
+        version: "2.11.0",
         areas: {},
         apis: {},
 
@@ -18,9 +18,9 @@
         stringify: function(d) {
             return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d);
         },
-        parse: function(s) {
+        parse: function(s, fn) {
             // if it doesn't parse, return as is
-            try{ return JSON.parse(s); }catch(e){ return s; }
+            try{ return JSON.parse(s,fn||_.revive); }catch(e){ return s; }
         },
 
         // extension hooks
@@ -122,8 +122,13 @@
                 return this.each(function(k, v, list){ list.push(k); }, fillList || []);
             },
             get: function(key, alt) {
-                var s = _.get(this._area, this._in(key));
-                return s !== null ? _.parse(s) : alt || s;// support alt for easy default mgmt
+                var s = _.get(this._area, this._in(key)),
+                    fn;
+                if (typeof alt === "function") {
+                    fn = alt;
+                    alt = null;
+                }
+                return s !== null ? _.parse(s, fn) : alt || s;// support alt for easy default mgmt
             },
             getAll: function(fillObj) {
                 return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});

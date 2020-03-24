@@ -216,6 +216,7 @@ widgetStore.falsy('state'); // returns true
 * 2019-07-23 [v2.8.0][] (public) - Add ```store(fn)``` shortcut for ```store.each```, copy properties when inheriting, and make ```store.each(fn, fill)``` always send fill as 3rd arg instead of replacing values.
 * 2019-08-21 [v2.9.0][] (public) - Add store.remove(key, alt) to match behavior of store.get(key, alt) (Issue #68)
 * 2019-09-27 [v2.10.0][] (public) - Add ```store.page``` to provide page scope storage to complement local and session scope storage. (Issue #69)
+* 2020-03-23 [v2.11.0][] (public) - Add ```store.get(key, reviveFn)``` and ```store._.revive`` to support parsing for rich types (e.g. Date)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -236,3 +237,4 @@ widgetStore.falsy('state'); // returns true
 [v2.8.0]: https://github.com/nbubna/store/tree/2.8.0
 [v2.9.0]: https://github.com/nbubna/store/tree/2.9.0
 [v2.10.0]: https://github.com/nbubna/store/tree/2.10.0
+[v2.11.0]: https://github.com/nbubna/store/tree/2.11.0

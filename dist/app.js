@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.10.0 - 2019-09-27
-* Copyright (c) 2019 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
+/*! store2 - v2.11.0 - 2020-03-23
+* Copyright (c) 2020 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.10.0",
+        version: "2.11.0",
         areas: {},
         apis: {},
 
@@ -217,9 +217,9 @@ require.register("store/dist/store2.js", function(exports, require, module){
         stringify: function(d) {
             return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d);
         },
-        parse: function(s) {
+        parse: function(s, fn) {
             // if it doesn't parse, return as is
-            try{ return JSON.parse(s); }catch(e){ return s; }
+            try{ return JSON.parse(s,fn||_.revive); }catch(e){ return s; }
         },
 
         // extension hooks
@@ -321,8 +321,13 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 return this.each(function(k, v, list){ list.push(k); }, fillList || []);
             },
             get: function(key, alt) {
-                var s = _.get(this._area, this._in(key));
-                return s !== null ? _.parse(s) : alt || s;// support alt for easy default mgmt
+                var s = _.get(this._area, this._in(key)),
+                    fn;
+                if (typeof alt === "function") {
+                    fn = alt;
+                    alt = null;
+                }
+                return s !== null ? _.parse(s, fn) : alt || s;// support alt for easy default mgmt
             },
             getAll: function(fillObj) {
                 return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});
@@ -485,11 +490,13 @@ require.register("store/src/store.on.js", function(exports, require, module){
 
     _.on = function(key, fn) {
         if (!fn) { fn = key; key = ''; }// no key === all keys
-        var listener = function(e) {
-            var k = this._out(e.key);// undefined if key is not in the namespace
-            if ((k && (!key || k === key)) && // match key if listener has one
-                (!e.storageArea || e.storageArea === this._area)) {// match area, if available
-                return fn.call(this, _.event.call(this, k, e));
+        var s = this,
+            listener = function(e) {
+            var k = s._out(e.key);// undefined if key is not in the namespace
+            if ((k && (k === key ||// match key if listener has one
+                       (!key && k !== '_-bad-_'))) &&// match catch-all, except internal test
+                (!e.storageArea || e.storageArea === s._area)) {// match area, if available
+                return fn.call(s, _.event.call(s, k, e));
             }
         };
         window.addEventListener("storage", fn[key+'-listener']=listener, false);
@@ -559,11 +566,11 @@ require.register("store/src/store.cache.js", function(exports, require, module){
         parse = _.parse,
         _get = _.get,
         _set = _.set;
-    _.parse = function(s) {
+    _.parse = function(s, fn) {
         if (s && s.indexOf(prefix) === 0) {
             s = s.substring(s.indexOf(suffix)+1);
         }
-        return parse(s);
+        return parse(s, fn);
     };
     _.expires = function(s) {
         if (s && s.indexOf(prefix) === 0) {

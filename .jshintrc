@@ -11,5 +11,5 @@
   "boss": true,
   "eqnull": true,
   "node": true,
-  "es5": true
+  "esversion": 6
 }

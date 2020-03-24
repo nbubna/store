@@ -324,6 +324,32 @@
                 store.remove("dated");
             });
 
+            test("rich reviver", function() {
+                var obj = { woogie: { rich: { bar: true} }};
+                store.session.set("obj", obj);
+                function RichType(){}
+                RichType.prototype.set = function(k,v) {
+                    this[k] = v;
+                };
+                RichType.prototype.get = function(k) {
+                    return this[k];
+                };
+                function reviver(key, value) {
+                    if (key === "rich") {
+                        var rich = new RichType();
+                        Object.keys(value).forEach(function(key) {
+                            rich.set(key, value[key]);
+                        });
+                        return rich;
+                    }
+                    return value;
+                }
+                var revived = store.session.get("obj", reviver);
+                equal(revived.woogie.rich.constructor.name, "RichType");
+                equal(revived.woogie.rich.get("bar"), true);
+                store.session.remove("obj");
+            });
+
             test("global revive", function() {
                 var dateRE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$/;
                 store._.revive = function reviveDates(key, value) {

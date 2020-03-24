@@ -306,6 +306,42 @@
                 clear();
             });
 
+            test("per-call reviver", function() {
+                var dateRE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$/;
+                function revive(key, value) {
+                    if (typeof value === "string" && dateRE.test(value)) {
+                        return new Date(value);
+                    }
+                    return value;
+                }
+                store.set("date", new Date());
+                var revived = store.get("date", revive);
+                equal(revived.constructor.name, "Date");
+                store.set("dated", { date: new Date() });
+                revived = store.get("dated", revive);
+                equal(typeof revived.date, "object");
+                store.remove("date");
+                store.remove("dated");
+            });
+
+            test("global revive", function() {
+                var dateRE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$/;
+                store._.revive = function reviveDates(key, value) {
+                    if (typeof value === "string" && dateRE.test(value)) {
+                        return new Date(value);
+                    }
+                    return value;
+                };
+                store.set("date", new Date());
+                var revived = store.get("date");
+                equal(revived.constructor.name, "Date");
+                store.set("dated", { date: new Date() });
+                revived = store.get("dated");
+                equal(typeof revived.date, "object");
+                store.remove("date");
+                store.remove("dated");
+            });
+
             //2011.06.09 these wreck most browsers localStorage interface
             var is_firefox = (navigator.userAgent.toLowerCase().indexOf('firefox') > -1);
             if (is_firefox) {

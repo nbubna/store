@@ -15,11 +15,11 @@
         parse = _.parse,
         _get = _.get,
         _set = _.set;
-    _.parse = function(s) {
+    _.parse = function(s, fn) {
         if (s && s.indexOf(prefix) === 0) {
             s = s.substring(s.indexOf(suffix)+1);
         }
-        return parse(s);
+        return parse(s, fn);
     };
     _.expires = function(s) {
         if (s && s.indexOf(prefix) === 0) {

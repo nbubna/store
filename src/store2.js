@@ -22,9 +22,9 @@
         stringify: function(d) {
             return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d);
         },
-        parse: function(s) {
+        parse: function(s, fn) {
             // if it doesn't parse, return as is
-            try{ return JSON.parse(s); }catch(e){ return s; }
+            try{ return JSON.parse(s,fn||_.revive); }catch(e){ return s; }
         },
 
         // extension hooks
@@ -126,8 +126,13 @@
                 return this.each(function(k, v, list){ list.push(k); }, fillList || []);
             },
             get: function(key, alt) {
-                var s = _.get(this._area, this._in(key));
-                return s !== null ? _.parse(s) : alt || s;// support alt for easy default mgmt
+                var s = _.get(this._area, this._in(key)),
+                    fn;
+                if (typeof alt === "function") {
+                    fn = alt;
+                    alt = null;
+                }
+                return s !== null ? _.parse(s, fn) : alt || s;// support alt for easy default mgmt
             },
             getAll: function(fillObj) {
                 return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});

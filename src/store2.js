@@ -132,7 +132,8 @@
                     fn = alt;
                     alt = null;
                 }
-                return s !== null ? _.parse(s, fn) : alt || s;// support alt for easy default mgmt
+                return s !== null ? _.parse(s, fn) :
+                    alt != null ? alt : s;
             },
             getAll: function(fillObj) {
                 return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});

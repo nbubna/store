@@ -368,6 +368,20 @@
                 store.remove("dated");
             });
 
+            test("#74 falsy alt support", function() {
+                strictEqual(null, store.get('noValue'));
+                strictEqual(false, store.get('noValue', false));
+                strictEqual(0, store.get('noValue', 0));
+                strictEqual("", store.get('noValue', ""));
+                // just for completion, make sure the fix didn't go too far
+                store.set('noValue', 'value');
+                strictEqual('value', store.get('noValue'));
+                strictEqual('value', store.get('noValue', false));
+                strictEqual('value', store.get('noValue', 0));
+                strictEqual('value', store.get('noValue', ""));
+                clear();
+            });
+
             //2011.06.09 these wreck most browsers localStorage interface
             var is_firefox = (navigator.userAgent.toLowerCase().indexOf('firefox') > -1);
             if (is_firefox) {

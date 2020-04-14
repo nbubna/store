@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.11.0 - 2020-03-23
+/*! store2 - v2.11.1 - 2020-04-14
 * Copyright (c) 2020 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.11.0",
+        version: "2.11.1",
         areas: {},
         apis: {},
 
@@ -327,7 +327,8 @@ require.register("store/dist/store2.js", function(exports, require, module){
                     fn = alt;
                     alt = null;
                 }
-                return s !== null ? _.parse(s, fn) : alt || s;// support alt for easy default mgmt
+                return s !== null ? _.parse(s, fn) :
+                    alt != null ? alt : s;
             },
             getAll: function(fillObj) {
                 return this.each(function(k, v, all){ all[k] = v; }, fillObj || {});

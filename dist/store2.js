@@ -1,8 +1,8 @@
-/*! store2 - v2.11.1 - 2020-04-14
+/*! store2 - v2.11.2 - 2020-05-11
 * Copyright (c) 2020 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.11.1",
+        version: "2.11.2",
         areas: {},
         apis: {},
 

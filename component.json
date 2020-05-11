@@ -1,6 +1,6 @@
 {
   "name": "store",
-  "version": "2.11.1",
+  "version": "2.11.2",
   "description": "A better way to use localStorage and sessionStorage",
   "repo": "nbubna/store",
   "keywords": [

@@ -1,6 +1,7 @@
 declare namespace store {
   export const local: StoreAPI;
   export const session: StoreAPI;
+  export const page: StoreAPI;
 
   export function area(id: string, area: Storage): StoreAPI;
   export function set(key: any, data: any, overwrite?: boolean): any;

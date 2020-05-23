@@ -58,8 +58,7 @@
                 area.setItem(testKey, 'ok');
                 store._area = area;
                 area.removeItem(testKey);
-            } catch (e) {}
-            if (!store._area) {
+            } catch (e) {
                 store._area = _.storage('fake');
             }
             store._ns = namespace || '';

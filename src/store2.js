@@ -54,8 +54,8 @@
             });
             store._id = id;
             try {
-                var testKey = '_-bad-_';
-                area.setItem(testKey, 'wolf');
+                var testKey = '__store2_test';
+                area.setItem(testKey, 'ok');
                 store._area = area;
                 area.removeItem(testKey);
             } catch (e) {}

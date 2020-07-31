@@ -3,7 +3,7 @@ declare namespace store {
   export const session: StoreAPI;
   export const page: StoreAPI;
 
-  export function area(id: string, area: Storage): StoreAPI;
+  export function area(id: string, area: globalThis.Storage): StoreAPI;
   export function set(key: any, data: any, overwrite?: boolean): any;
   export function setAll(data: Object, overwrite?: boolean): StoredData;
   export function add(key: any, data: any): any;
@@ -40,15 +40,6 @@ declare namespace store {
 
   export interface StoredData {
     [key: string]: any;
-  }
-
-  export interface Storage {
-    length: number;
-    clear(): void;
-    getItem(key: string): string;
-    key(index: number): string;
-    removeItem(key: string): void;
-    setItem(key: string, value: string): void;
   }
 }
 

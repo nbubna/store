@@ -219,6 +219,7 @@ widgetStore.falsy('state'); // returns true
 * 2020-03-23 [v2.11.0][] (public) - Add ```store.get(key, reviveFn)``` and ```store._.revive`` to support parsing for rich types (e.g. Date)
 * 2020-04-14 [v2.11.1][] (public) - Fix falsey alt value support in ```store.get(key, alt)```
 * 2020-05-11 [v2.11.2][] (public) - Fix missing TS declaration of new page scope storage.
+* 2020-08-12 [v2.12.0][] (public) - PRs for better Storage typing, better testKey, and dev dependency updates.
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -241,3 +242,4 @@ widgetStore.falsy('state'); // returns true
 [v2.10.0]: https://github.com/nbubna/store/tree/2.10.0
 [v2.11.1]: https://github.com/nbubna/store/tree/2.11.1
 [v2.11.2]: https://github.com/nbubna/store/tree/2.11.2
+[v2.12.0]: https://github.com/nbubna/store/tree/2.12.0

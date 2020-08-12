@@ -1,8 +1,8 @@
-/*! store2 - v2.11.2 - 2020-05-11
+/*! store2 - v2.12.0 - 2020-08-12
 * Copyright (c) 2020 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.11.2",
+        version: "2.12.0",
         areas: {},
         apis: {},
 
@@ -50,12 +50,11 @@
             });
             store._id = id;
             try {
-                var testKey = '_-bad-_';
-                area.setItem(testKey, 'wolf');
+                var testKey = '__store2_test';
+                area.setItem(testKey, 'ok');
                 store._area = area;
                 area.removeItem(testKey);
-            } catch (e) {}
-            if (!store._area) {
+            } catch (e) {
                 store._area = _.storage('fake');
             }
             store._ns = namespace || '';

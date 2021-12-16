@@ -97,6 +97,15 @@
                 return store;
             },
             isFake: function(){ return this._area.name === 'fake'; },
+            setFake: function(fake) {
+                if (fake === false) {
+                    this._area = this._real || this._area;
+                } else {
+                    this._real = this._area;
+                    this._area = _.storage('fake');
+                }
+                return this;
+            },
             toString: function() {
                 return 'store'+(this._ns?'.'+this.namespace():'')+'['+this._id+']';
             },

@@ -434,6 +434,23 @@
                 clear();
             });
 
+            test("#94 setFake support", function() {
+                equal(false, store.isFake(), "should start not fake");
+                store.set("foo", "bar");
+                equal("bar", store.get("foo"), "should have foo");
+                store.setFake();
+                equal(true, store.isFake(), "should be fake now");
+                equal(null, store.get("foo"), "shouldn't have foo now");
+                store.set("bar", "foo");
+                equal("foo", store.get("bar"), "should have bar in fake");
+                store.setFake(false);
+                equal("bar", store.get("foo"), "should be back to having foo");
+                equal(false, store.isFake(), "shouldn't be fake anymore");
+                store.setFake(true);
+                equal(true, store.isFake(), "should be fake again");
+                equal(null, store.get("bar"), "should not have bar, new fake storage");
+            });
+
             //2011.06.09 these wreck most browsers localStorage interface
             var is_firefox = (navigator.userAgent.toLowerCase().indexOf('firefox') > -1);
             if (is_firefox) {

@@ -19,8 +19,8 @@
             }
             return o;
         },
-        stringify: function(d) {
-            return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d);
+        stringify: function(d, fn) {
+            return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d,fn||_.replace);
         },
         parse: function(s, fn) {
             // if it doesn't parse, return as is
@@ -144,11 +144,15 @@
                 return this;
             },
             set: function(key, data, overwrite) {
-                var d = this.get(key);
+                var d = this.get(key),
+                    fn;
                 if (d != null && overwrite === false) {
                     return data;
                 }
-                return _.set(this._area, this._in(key), _.stringify(data), overwrite) || d;
+                if (typeof overwrite === "function") {
+                    fn = overwrite;
+                }
+                return _.set(this._area, this._in(key), _.stringify(data, fn)) || d;
             },
             setAll: function(data, overwrite) {
                 var changed, val;

@@ -324,6 +324,19 @@
                 store.remove("dated");
             });
 
+            test("per-call replacer", function() {
+                function replace(key, value) {
+                    if (key === "foo") {
+                        return "bar";
+                    }
+                    return value;
+                }
+                store.set("test", {foo: "foo"}, replace);
+                var replaced = store.get("test");
+                equal(replaced.foo, "bar");
+                store.remove("test");
+            });
+
             test("rich reviver", function() {
                 var obj = { woogie: { rich: { bar: true} }};
                 store.session.set("obj", obj);
@@ -350,6 +363,29 @@
                 store.session.remove("obj");
             });
 
+            test("rich replacer", function() {
+                function TestType(){}
+                TestType.prototype.test = function() {
+                    return true;
+                };
+                store.set("test", {test:new TestType()}, function replace(key, value) {
+                    if (key === "test") {
+                        return "TestType";
+                    }
+                    return value;
+                });
+                deepEqual(store.get("test"), {test:"TestType"});
+                var got = store.get("test", function revive(key, value) {
+                    if (value === "TestType") {
+                        return new TestType();
+                    }
+                    return value;
+                });
+                equal(got.test instanceof TestType, true);
+                equal(got.test.test(), true);
+                store.remove("test");
+            });
+
             test("global revive", function() {
                 var dateRE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$/;
                 store._.revive = function reviveDates(key, value) {
@@ -366,6 +402,22 @@
                 equal(typeof revived.date, "object");
                 store.remove("date");
                 store.remove("dated");
+            });
+
+            test("global replace", function() {
+                function TestType(){}
+                TestType.prototype.test = function() {
+                    return true;
+                };
+                store._.replace = function replace(key, value) {
+                    if (value instanceof TestType) {
+                        return "TestType";
+                    }
+                    return value;
+                };
+                store.set("obj", {prop: new TestType()});
+                var obj = store.get("obj");
+                equal(obj.prop, "TestType");
             });
 
             test("#74 falsy alt support", function() {

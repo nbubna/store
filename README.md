@@ -51,8 +51,6 @@ if the storage already has a value for that key. All ```set``` action methods re
 for that key, by default. If overwrite is ```false``` and there is a previous value, the unused new 
 value will be returned.
 
-All functions which take an optional ```alt``` parameter can also use that parameter to specify a "reviver" function. These receive each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of parsing that string. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.parse docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) for more information and examples. Alternately, you can set a global reviver to the ```store._.revive``` property to handle all ```get```, ```getAll```, and ```transact``` calls.
-
 Functions passed to ```transact``` will receive the current value for that key as an argument or
 a passed alternate if there is none. When the passed function is completed, transact will save the returned value
 under the specified key. If the function returns ```undefined```, the original value will be saved.
@@ -76,6 +74,10 @@ store.each(function(key, value) {
     }
 });
 ```
+
+All retrieval functions which take an optional ```alt``` parameter can also use that parameter to specify a "reviver" function. These receive each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of parsing that string. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.parse docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) for more information and examples. Alternately, you can set a global reviver to the ```store._.revive``` property to handle all ```get```, ```getAll```, ```remove```, and ```transact``` calls.
+
+Likewise, all setter functions which take an optional ```overwrite``` parameter can also use that parameter to accept a "replacer" function that receives each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of stringifying the values. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.stringify docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) for more information and examples. Alternately, you can set a global replacer to the ```store._.replacer``` property to handle all ```set```, ```setAll```, and ```transact``` calls.
 
 For ```getAll``` and ```keys```, there is the option to pass in the object or list, respectively,
 that you want the results to be added to. This is instead of an empty list.
@@ -117,12 +119,16 @@ The namespace provides the same exact API as ```store``` but silently adds/remov
 It also makes the namespaced API accessible directly via ```store[namespace]``` (e.g. ```store.cart```) as long as it
 does not conflict with an existing part of the store API.
 
-The 'namespace' function is one of two "extra" functions that are also part of the "store API":
+The 'namespace' function is one of three "extra" functions that are also part of the "store API":
 
 ```javascript
 store.namespace(prefix);// returns a new store API that prefixes all key-based functions
 store.isFake();// is this actually localStorage/sessionStorage or an in-memory fallback?
+store.setFake([false]);// force this store API to use a new 'fake' in-memory storage area
 ```
+
+```setFake``` is particularly useful in testing situations, to prevent cluttering actual storage.
+Call ```setFake(false)``` on the store instance to stop using fake storage.
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
 but data stored will NOT persist beyond the life of the current document/page. Use the 

@@ -1,59 +1,43 @@
-declare namespace store {
-  export const local: StoreAPI;
-  export const session: StoreAPI;
-  export const page: StoreAPI;
+export interface StoredData {
+  [key: string]: any;
+}
+export type Replacer = (key: any, value: any) => string | String[] | number[];
+export type Reviver = (key: string, value: any) => any;
+export type EachFn = (key: any, data: any) => false | any;
+export type TransactFn = (data: any) => any | undefined;
 
-  export function area(id: string, area: globalThis.Storage): StoreAPI;
-  export function set(key: any, data: any, overwrite?: boolean): any;
-  export function setAll(data: Object, overwrite?: boolean): StoredData;
-  export function add(key: any, data: any): any;
-  export function get(key: any, alt?: any): any;
-  export function getAll(fillObj?: StoredData): StoredData;
-  export function transact(key: any, fn: (data: any) => any, alt?: any): StoreAPI;
-  export function clear(): StoreAPI;
-  export function has(key: any): boolean;
-  export function remove(key: any, alt?: any): any;
-  export function each(callback: (key: any, data: any) => false | any, value?: any): StoreAPI;
-  export function keys(fillList?: string[]): string[];
-  export function size(): number;
-  export function clearAll(): StoreAPI;
-  export function isFake(): boolean;
-  export function namespace(namespace: string, noSession?: true): StoreInstance;
+type BaseSet = (key: any, data: any) => any;
+type BaseGet = (key: any) => any;
+type BaseSetAll = (obj: Object) => StoredData;
+type BaseGetAll = () => StoredData;
+type BaseTransact = (fn: EachFn, value?: any) => StoredData;
+type BaseClear = (clear: false) => StoreBase;
+export type Base = BaseSet & BaseGet & BaseSetAll & BaseGetAll & BaseTransact & BaseClear;
 
-  export interface StoreAPI {
-    clear(): StoreAPI;
-    clearAll(): StoreAPI;
-    each(callback: (key: any, data: any) => false | any): StoreAPI;
-    get(key: any, alt?: any): any;
-    getAll(fillObj?: StoredData): StoredData;
-    has(key: any): boolean;
-    isFake(): boolean;
-    keys(fillList?: string[]): string[];
-    namespace(namespace: string, noSession?: true): StoreInstance;
-    remove(key: any, alt?: any): any;
-    set(key: any, data: any, overwrite?: boolean): any;
-    setAll(data: Object, overwrite?: boolean): StoredData;
-    add(key: any, data: any): any;
-    size(): number;
-    transact(key: any, fn: (data: any) => any, alt?: any): StoreAPI;
-  }
-
-  export interface StoreInstance extends StoreAPI{
-    local: StoreAPI;
-    session: StoreAPI;
-    page: StoreAPI;
-  }
-
-  export interface StoredData {
-    [key: string]: any;
-  }
+export interface StoreAPI {
+  clear(): StoreBase;
+  clearAll(): StoreBase;
+  each(callback: EachFn): StoreBase;
+  get(key: any, alt?: any|Reviver): any;
+  getAll(fillObj?: StoredData): StoredData;
+  has(key: any): boolean;
+  isFake(force?: boolean): boolean;
+  keys(fillList?: string[]): string[];
+  namespace(namespace: string, noSession?: true): store;
+  remove(key: any, alt?: any|Reviver): any;
+  set(key: any, data: any, overwrite?: boolean|Replacer): any;
+  setAll(data: Object, overwrite?: boolean|Replacer): StoredData;
+  add(key: any, data: any): any;
+  size(): number;
+  transact(key: any, fn: TransactFn, alt?: any|Reviver): StoreBase;
 }
 
-declare function store(key: any, fn: (data: any) => any, alt?: any): store.StoreAPI
-declare function store(key: any, data: any): any
-declare function store(clearIfFalsy: false | 0): store.StoreAPI
-declare function store(key: any): any
-declare function store(obj: Object): store.StoredData
-declare function store(eachFn: (key: any, data: any) => false | any, value?: any): store.StoredData
+export type StoreBase = StoreAPI & Base;
 
-export = store;
+export type store = StoreBase & {
+  local: StoreBase;
+  session: StoreBase;
+  page: StoreBase;
+};
+
+export default store;

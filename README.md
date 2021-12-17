@@ -123,16 +123,15 @@ The 'namespace' function is one of three "extra" functions that are also part of
 
 ```javascript
 store.namespace(prefix);// returns a new store API that prefixes all key-based functions
-store.isFake();// is this actually localStorage/sessionStorage or an in-memory fallback?
-store.setFake([false]);// force this store API to use a new 'fake' in-memory storage area
+store.isFake([force]);// test or set whether localStorage/sessionStorage or an in-memory, 'fake' storage is used
 ```
-
-```setFake``` is particularly useful in testing situations, to prevent cluttering actual storage.
-Call ```setFake(false)``` on the store instance to stop using fake storage.
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
 but data stored will NOT persist beyond the life of the current document/page. Use the 
 [store.old.js][old] extension to add persistent backing for the store API in ancient browsers.
+
+```isFake(true|false)``` is particularly useful to force use of a temporary, fake storage in testing situations,
+to prevent cluttering actual storage.
 
 ## Extensions
 These mostly could use further documentation and abuse...er...testing.

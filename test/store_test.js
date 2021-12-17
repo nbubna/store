@@ -434,19 +434,17 @@
                 clear();
             });
 
-            test("#94 setFake support", function() {
+            test("#94 isFake(force) support", function() {
                 equal(false, store.isFake(), "should start not fake");
                 store.set("foo", "bar");
                 equal("bar", store.get("foo"), "should have foo");
-                store.setFake();
-                equal(true, store.isFake(), "should be fake now");
+                equal(true, store.isFake(true), "should be forced to fake now");
                 equal(null, store.get("foo"), "shouldn't have foo now");
                 store.set("bar", "foo");
                 equal("foo", store.get("bar"), "should have bar in fake");
-                store.setFake(false);
+                equal(false, store.isFake(false), "shouldn't be fake anymore");
                 equal("bar", store.get("foo"), "should be back to having foo");
-                equal(false, store.isFake(), "shouldn't be fake anymore");
-                store.setFake(true);
+                store.isFake(true);
                 equal(true, store.isFake(), "should be fake again");
                 equal(null, store.get("bar"), "should not have bar, new fake storage");
             });

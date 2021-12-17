@@ -96,15 +96,14 @@
                 }
                 return store;
             },
-            isFake: function(){ return this._area.name === 'fake'; },
-            setFake: function(fake) {
-                if (fake === false) {
-                    this._area = this._real || this._area;
-                } else {
+            isFake: function(force) {
+                if (force) {
                     this._real = this._area;
                     this._area = _.storage('fake');
+                } else if (force === false) {
+                    this._area = this._real || this._area;
                 }
-                return this;
+                return this._area.name === 'fake';
             },
             toString: function() {
                 return 'store'+(this._ns?'.'+this.namespace():'')+'['+this._id+']';

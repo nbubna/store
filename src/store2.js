@@ -153,14 +153,14 @@
             },
             set: function(key, data, overwrite) {
                 var d = this.get(key),
-                    fn;
+                    replacer;
                 if (d != null && overwrite === false) {
                     return data;
                 }
-                if (typeof overwrite === "function") {
-                    fn = overwrite;
+                if (typeof overwrite !== "boolean") {
+                    replacer = overwrite;
                 }
-                return _.set(this._area, this._in(key), _.stringify(data, fn)) || d;
+                return _.set(this._area, this._in(key), _.stringify(data, replacer)) || d;
             },
             setAll: function(data, overwrite) {
                 var changed, val;
@@ -172,7 +172,7 @@
                 }
                 return changed;
             },
-            add: function(key, data) {
+            add: function(key, data, replacer) {
                 var d = this.get(key);
                 if (d instanceof Array) {
                     data = d.concat(data);
@@ -187,7 +187,7 @@
                         data = d + data;
                     }
                 }
-                _.set(this._area, this._in(key), _.stringify(data));
+                _.set(this._area, this._in(key), _.stringify(data, replacer));
                 return data;
             },
             remove: function(key, alt) {

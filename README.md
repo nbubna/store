@@ -40,7 +40,7 @@ store.clear();                     // === store(false);
 store.has(key);                    // returns true or false
 store.remove(key[, alt]);          // removes key and its data, then returns the data or alt, if none
 store.each(fn[, fill]);            // === store(fn); optional call arg will be 3rd fn arg (e.g. for gathering values)
-store.add(key, data);              // concats, merges, or adds new value into existing one
+store.add(key, data[, replacer]);  // concats, merges, or adds new value into existing one
 store.keys([fillList]);            // returns array of keys
 store.size();                      // number of keys, not length of data
 store.clearAll();                  // clears *ALL* areas (but still namespace sensitive)
@@ -77,7 +77,7 @@ store.each(function(key, value) {
 
 All retrieval functions which take an optional ```alt``` parameter can also use that parameter to specify a "reviver" function. These receive each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of parsing that string. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.parse docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) for more information and examples. Alternately, you can set a global reviver to the ```store._.revive``` property to handle all ```get```, ```getAll```, ```remove```, and ```transact``` calls.
 
-Likewise, all setter functions which take an optional ```overwrite``` parameter can also use that parameter to accept a "replacer" function that receives each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of stringifying the values. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.stringify docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) for more information and examples. Alternately, you can set a global replacer to the ```store._.replacer``` property to handle all ```set```, ```setAll```, and ```transact``` calls.
+Likewise, setter functions which take an optional ```overwrite``` parameter can also use that parameter to accept a "replacer" function that receives each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of stringifying the values. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.stringify docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) for more information and examples. Alternately, you can set a global replacer to the ```store._.replacer``` property to handle all ```set```, ```setAll```, ```add```, and ```transact``` calls.
 
 For ```getAll``` and ```keys```, there is the option to pass in the object or list, respectively,
 that you want the results to be added to. This is instead of an empty list.

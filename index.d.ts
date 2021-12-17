@@ -18,7 +18,7 @@ declare namespace store {
   export function size(): number;
   export function clearAll(): StoreAPI;
   export function isFake(): boolean;
-  export function namespace(namespace: string, noSession?: true): StoreAPI;
+  export function namespace(namespace: string, noSession?: true): StoreInstance;
 
   export interface StoreAPI {
     clear(): StoreAPI;
@@ -29,13 +29,19 @@ declare namespace store {
     has(key: any): boolean;
     isFake(): boolean;
     keys(fillList?: string[]): string[];
-    namespace(namespace: string, noSession?: true): StoreAPI;
+    namespace(namespace: string, noSession?: true): StoreInstance;
     remove(key: any, alt?: any): any;
     set(key: any, data: any, overwrite?: boolean): any;
     setAll(data: Object, overwrite?: boolean): StoredData;
     add(key: any, data: any): any;
     size(): number;
     transact(key: any, fn: (data: any) => any, alt?: any): StoreAPI;
+  }
+
+  export interface StoreInstance extends StoreAPI{
+    local: StoreAPI;
+    session: StoreAPI;
+    page: StoreAPI;
   }
 
   export interface StoredData {

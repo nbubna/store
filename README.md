@@ -156,7 +156,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * [store.dot.js][dot] - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
 * [store.deep.js][deep] - Allow retrieval of properties from within stored objects (e.g. ```store.get('key.property')```)
 * [store.async.js][async] - Adds ```store.async``` duplicate to each store and namespace that performs functions asynchronously and returns a Promise that resolves when complete.
-
+* [store.cookies.js][cookies] - Support managing all cookies as a storage area with the store API (e.g. ```store.cookies.get('user')```)
 
 [old]: https://raw.github.com/nbubna/store/master/src/store.old.js
 [overflow]: https://raw.github.com/nbubna/store/master/src/store.overflow.js
@@ -171,6 +171,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
 [async]: https://raw.github.com/nbubna/store/master/src/store.async.js
 [cookie]: https://raw.github.com/nbubna/store/master/src/store.cookie.js
+[cookies]: https://raw.github.com/nbubna/store/master/src/store.cookies.js
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.

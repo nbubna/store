@@ -5,8 +5,8 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  * Creates a store area that uses a single cookie as the backing storage.
- * This gives you the store API for a cookie that your backend can access too.
- * It could definitely use more testing.
+ * This gives you the store API for a specific 'store' cookie that your backend
+ * can access too. It could definitely use more testing.
  *
  * Status: BETA - unsupported, useful, needs testing
  */

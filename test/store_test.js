@@ -449,6 +449,30 @@
                 equal(null, store.get("bar"), "should not have bar, new fake storage");
             });
 
+            // test("#95 for messing with each implementations", function() {
+            //     var s = store.session;
+            //     s.clear();
+            //     var o = {};
+            //     var total = 10;
+            //     for (var i=1; i<total; i++) {
+            //         s.set(i, i);
+            //         o[""+i] = i;
+            //     }
+            //     var count = 0;
+            //     s.each(function(key, value) {
+            //         count++;
+            //         equal(true, key in o, "should have "+key);
+            //         equal(value, o[key], "o should also have "+key);
+            //         equal(false, key.startsWith("new"), "not expecting new keys yet");
+            //         s.set("new"+key, value);
+            //         o["new"+key] = value;
+            //         delete o[key];
+            //         s.remove(key);
+            //     });
+            //     s.clear();
+            //     equal(count, total, "only iterated over those present at start");
+            // });
+
             //2011.06.09 these wreck most browsers localStorage interface
             var is_firefox = (navigator.userAgent.toLowerCase().indexOf('firefox') > -1);
             if (is_firefox) {

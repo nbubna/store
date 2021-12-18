@@ -147,6 +147,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 * [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
 * [store.array.js][array] - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
 * [store.dom.js][dom] - Declarative, persistent DOM element content via store.
+* [store.cookie.js][cookie] - Support for a cookie as a storage area: ```store.cookie('num',1)``` to make sharing with backend easier.
 
 #### Alpha - Either incomplete or unstable or both
 * [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
@@ -169,6 +170,7 @@ In particular, any ES6 user interested in making these [importable in ES6][es6im
 [deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
 [dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
 [async]: https://raw.github.com/nbubna/store/master/src/store.async.js
+[cookie]: https://raw.github.com/nbubna/store/master/src/store.cookie.js
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.

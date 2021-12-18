@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.12.0 - 2020-08-12
-* Copyright (c) 2020 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
+/*! store2 - v2.13.0 - 2021-12-18
+* Copyright (c) 2021 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.12.0",
+        version: "2.13.0",
         areas: {},
         apis: {},
 
@@ -214,8 +214,8 @@ require.register("store/dist/store2.js", function(exports, require, module){
             }
             return o;
         },
-        stringify: function(d) {
-            return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d);
+        stringify: function(d, fn) {
+            return d === undefined || typeof d === "function" ? d+'' : JSON.stringify(d,fn||_.replace);
         },
         parse: function(s, fn) {
             // if it doesn't parse, return as is
@@ -291,7 +291,15 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 }
                 return store;
             },
-            isFake: function(){ return this._area.name === 'fake'; },
+            isFake: function(force) {
+                if (force) {
+                    this._real = this._area;
+                    this._area = _.storage('fake');
+                } else if (force === false) {
+                    this._area = this._real || this._area;
+                }
+                return this._area.name === 'fake';
+            },
             toString: function() {
                 return 'store'+(this._ns?'.'+this.namespace():'')+'['+this._id+']';
             },
@@ -339,11 +347,15 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 return this;
             },
             set: function(key, data, overwrite) {
-                var d = this.get(key);
+                var d = this.get(key),
+                    replacer;
                 if (d != null && overwrite === false) {
                     return data;
                 }
-                return _.set(this._area, this._in(key), _.stringify(data), overwrite) || d;
+                if (typeof overwrite !== "boolean") {
+                    replacer = overwrite;
+                }
+                return _.set(this._area, this._in(key), _.stringify(data, replacer)) || d;
             },
             setAll: function(data, overwrite) {
                 var changed, val;
@@ -355,7 +367,7 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 }
                 return changed;
             },
-            add: function(key, data) {
+            add: function(key, data, replacer) {
                 var d = this.get(key);
                 if (d instanceof Array) {
                     data = d.concat(data);
@@ -370,7 +382,7 @@ require.register("store/dist/store2.js", function(exports, require, module){
                         data = d + data;
                     }
                 }
-                _.set(this._area, this._in(key), _.stringify(data));
+                _.set(this._area, this._in(key), _.stringify(data, replacer));
                 return data;
             },
             remove: function(key, alt) {

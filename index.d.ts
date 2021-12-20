@@ -23,7 +23,7 @@ export interface StoreAPI {
   has(key: any): boolean;
   isFake(force?: boolean): boolean;
   keys(fillList?: string[]): string[];
-  namespace(namespace: string, noSession?: true): store;
+  namespace(namespace: string, noSession?: true): StoreType;
   remove(key: any, alt?: any|Reviver): any;
   set(key: any, data: any, overwrite?: boolean|Replacer): any;
   setAll(data: Object, overwrite?: boolean|Replacer): StoredData;
@@ -34,10 +34,11 @@ export interface StoreAPI {
 
 export type StoreBase = StoreAPI & Base;
 
-export type store = StoreBase & {
+export type StoreType = StoreBase & {
   local: StoreBase;
   session: StoreBase;
   page: StoreBase;
 };
 
-export default store;
+declare const store: StoreType
+export default store

@@ -30,6 +30,7 @@ export interface StoreAPI {
   add(key: any, data: any): any;
   size(): number;
   transact(key: any, fn: TransactFn, alt?: any|Reviver): StoreBase;
+  area(id: string, area: Storage): StoreBase
 }
 
 export type StoreBase = StoreAPI & Base;

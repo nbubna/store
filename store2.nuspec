@@ -7,7 +7,7 @@
     <authors>Nathan Bubna</authors>
     <owners>nbubna</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>2021</copyright>
+    <copyright>2022</copyright>
     <projectUrl>https://github.com/nbubna/store</projectUrl>
     <description>A feature-filled and friendly way to use localStorage and sessionStorage
 (JSON, namespacing, extensions, etc).</description>

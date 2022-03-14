@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, ESHA Research
+ * Copyright (c) 2022, ESHA Research
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html

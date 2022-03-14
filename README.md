@@ -229,6 +229,7 @@ widgetStore.falsy('state'); // returns true
 * 2020-05-11 [v2.11.2][] (public) - Fix missing TS declaration of new page scope storage.
 * 2020-08-12 [v2.12.0][] (public) - PRs for better Storage typing, better testKey, and dev dependency updates.
 * 2021-12-16 [v2.13.1][] (public) - Add ```store.set(key, value, replacerFn)```, ```store._replacer```, and ```isFake([force])``` to support stringifying rich types and easier testing. And cookie-based extensions for using store backed by a single 'store' cookie or store API for all cookies.
+* 2022-03-14 [v2.13.2][] (public) - Restore missing TS declaration of store.area(id[, area])
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -253,3 +254,4 @@ widgetStore.falsy('state'); // returns true
 [v2.11.2]: https://github.com/nbubna/store/tree/2.11.2
 [v2.12.0]: https://github.com/nbubna/store/tree/2.12.0
 [v2.13.1]: https://github.com/nbubna/store/tree/2.13.1
+[v2.13.2]: https://github.com/nbubna/store/tree/2.13.2

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, ESHA Research
+ * Copyright (c) 2022, ESHA Research
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
@@ -9,6 +9,7 @@
         version: "<%= pkg.version %>",
         areas: {},
         apis: {},
+        nsdelim: '.',
 
         // utilities
         inherit: function(api, o) {
@@ -86,7 +87,7 @@
                 }
                 var ns = namespace, store = this[ns];
                 if (!store || !store.namespace) {
-                    store = _.Store(this._id, this._area, this._ns+ns+'.');//new namespaced api
+                    store = _.Store(this._id, this._area, this._ns+ns+_.nsdelim);//new namespaced api
                     if (!this[ns]){ this[ns] = store; }
                     if (!singleArea) {
                         for (var name in _.areas) {

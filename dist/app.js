@@ -197,13 +197,14 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.13.1 - 2021-12-20
-* Copyright (c) 2021 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
+/*! store2 - v2.14.0 - 2022-05-11
+* Copyright (c) 2022 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.13.1",
+        version: "2.14.0",
         areas: {},
         apis: {},
+        nsdelim: '.',
 
         // utilities
         inherit: function(api, o) {
@@ -281,7 +282,7 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 }
                 var ns = namespace, store = this[ns];
                 if (!store || !store.namespace) {
-                    store = _.Store(this._id, this._area, this._ns+ns+'.');//new namespaced api
+                    store = _.Store(this._id, this._area, this._ns+ns+_.nsdelim);//new namespaced api
                     if (!this[ns]){ this[ns] = store; }
                     if (!singleArea) {
                         for (var name in _.areas) {

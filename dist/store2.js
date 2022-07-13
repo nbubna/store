@@ -1,4 +1,4 @@
-/*! store2 - v2.14.0 - 2022-05-11
+/*! store2 - v2.14.0 - 2022-07-13
 * Copyright (c) 2022 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {

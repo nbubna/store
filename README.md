@@ -77,7 +77,7 @@ store.each(function(key, value) {
 
 All retrieval functions which take an optional ```alt``` parameter can also use that parameter to specify a "reviver" function. These receive each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of parsing that string. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.parse docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) for more information and examples. Alternately, you can set a global reviver to the ```store._.revive``` property to handle all ```get```, ```getAll```, ```remove```, and ```transact``` calls.
 
-Likewise, setter functions which take an optional ```overwrite``` parameter can also use that parameter to accept a "replacer" function that receives each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of stringifying the values. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.stringify docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) for more information and examples. Alternately, you can set a global replacer to the ```store._.replacer``` property to handle all ```set```, ```setAll```, ```add```, and ```transact``` calls.
+Likewise, setter functions which take an optional ```overwrite``` parameter can also use that parameter to accept a "replacer" function that receives each key and value (yes, nested ones too) as arguments and allow you to provide an alternate means of stringifying the values. This is particularly useful for rich objects like ```Date``` types. See [MDN's JSON.stringify docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) for more information and examples. Alternately, you can set a global replacer to the ```store._.replace``` property to handle all ```set```, ```setAll```, ```add```, and ```transact``` calls.
 
 For ```getAll``` and ```keys```, there is the option to pass in the object or list, respectively,
 that you want the results to be added to. This is instead of an empty list.
@@ -104,7 +104,7 @@ All the specific ```get```, ```set```, etc. functions are available on ```store.
 
 [storage]: http://dev.w3.org/html5/webstorage/#the-storage-interface
 
-If you want to put stored data from different pages or areas of your site into separate namespaces, 
+If you want to put stored data from different pages or areas f your site into separate namespaces, 
 the ```store.namespace(ns)``` function is your friend:
 
 ```javascript
@@ -125,6 +125,9 @@ The 'namespace' function is one of three "extra" functions that are also part of
 store.namespace(prefix);// returns a new store API that prefixes all key-based functions
 store.isFake([force]);// test or set whether localStorage/sessionStorage or an in-memory, 'fake' storage is used
 ```
+
+```store.namespace``` can also take extra params to only create the namespace in the called-on storage area, and
+to pass in an alternate namespace delimiter for advanced use-cases (e.g. ```store.page.namespace("subpage", true, ":")```).
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
 but data stored will NOT persist beyond the life of the current document/page. Use the 
@@ -228,9 +231,11 @@ widgetStore.falsy('state'); // returns true
 * 2020-04-14 [v2.11.1][] (public) - Fix falsey alt value support in ```store.get(key, alt)```
 * 2020-05-11 [v2.11.2][] (public) - Fix missing TS declaration of new page scope storage.
 * 2020-08-12 [v2.12.0][] (public) - PRs for better Storage typing, better testKey, and dev dependency updates.
-* 2021-12-16 [v2.13.1][] (public) - Add ```store.set(key, value, replacerFn)```, ```store._replacer```, and ```isFake([force])``` to support stringifying rich types and easier testing. And cookie-based extensions for using store backed by a single 'store' cookie or store API for all cookies.
+* 2021-12-16 [v2.13.1][] (public) - Add ```store.set(key, value, replacerFn)```, ```store._replace```, and ```isFake([force])``` to support stringifying rich types and easier testing. And cookie-based extensions for using store backed by a single 'store' cookie or store API for all cookies.
 * 2022-03-14 [v2.13.2][] (public) - Restore missing TS declaration of store.area(id[, area])
 * 2022-05-11 [v2.14.0][] (public) - Allow namespace delimiter to be changed via store._.nsdelim
+* 2022-07-14 [v2.14.1][] (public) - Fix change to ```set``` that broke store.cache.js, and allow namespace delimiter to be passed to ```namespace(name, thisAreaOnly, delim)``` for a single namespace, to avoid conflicts.
+
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -257,3 +262,4 @@ widgetStore.falsy('state'); // returns true
 [v2.13.1]: https://github.com/nbubna/store/tree/2.13.1
 [v2.13.2]: https://github.com/nbubna/store/tree/2.13.2
 [v2.14.0]: https://github.com/nbubna/store/tree/2.14.0
+[v2.14.1]: https://github.com/nbubna/store/tree/2.14.1

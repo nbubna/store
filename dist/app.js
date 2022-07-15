@@ -197,11 +197,11 @@ require.relative = function(parent) {
   return localRequire;
 };
 require.register("store/dist/store2.js", function(exports, require, module){
-/*! store2 - v2.14.0 - 2022-07-13
+/*! store2 - v2.14.1 - 2022-07-15
 * Copyright (c) 2022 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.14.0",
+        version: "2.14.1",
         areas: {},
         apis: {},
         nsdelim: '.',
@@ -355,10 +355,11 @@ require.register("store/dist/store2.js", function(exports, require, module){
                 if (d != null && overwrite === false) {
                     return data;
                 }
-                if (typeof overwrite !== "boolean") {
+                if (typeof overwrite === "function") {
                     replacer = overwrite;
+                    overwrite = undefined;
                 }
-                return _.set(this._area, this._in(key), _.stringify(data, replacer)) || d;
+                return _.set(this._area, this._in(key), _.stringify(data, replacer), overwrite) || d;
             },
             setAll: function(data, overwrite) {
                 var changed, val;
@@ -570,8 +571,8 @@ require.register("store/src/store.cache.js", function(exports, require, module){
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * Allows use of the 'overwrite' param on set calls to give an enforced expiration date
- * without breaking existing 'overwrite' functionality.
+ * Allows use of a number as 'overwrite' param on set calls to give time in seconds after
+ * which the value should not be retrievable again (an expiration time).
  *
  * Status: BETA - useful, needs testing
  */
@@ -593,14 +594,14 @@ require.register("store/src/store.cache.js", function(exports, require, module){
         }
         return false;
     };
-    _.when = function(min) {// if min, return min->date, else date->min
+    _.when = function(sec) {// if sec, return sec->date, else date->sec
         var now = Math.floor((new Date().getTime())/1000);
-        return min ? new Date((now+min)*1000) : now;
+        return sec ? new Date((now+sec)*1000) : now;
     };
     _.cache = function(area, key) {
         var s = _get(area, key),
-            min = _.expires(s);
-        if (min && _.when() >= min) {
+            sec = _.expires(s);
+        if (sec && _.when() >= sec) {
             return area.removeItem(key);
         }
         return s;
@@ -609,10 +610,10 @@ require.register("store/src/store.cache.js", function(exports, require, module){
         var s = _.cache(area, key);
         return s === undefined ? null : s;
     };
-    _.set = function(area, key, string, min) {
+    _.set = function(area, key, string, sec) {
         try {
-            if (min) {
-                string = prefix + (_.when()+min) + suffix + string;
+            if (sec) {
+                string = prefix + (_.when()+sec) + suffix + string;
             }
             _set(area, key, string);
         } catch (e) {

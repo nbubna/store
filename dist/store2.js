@@ -1,8 +1,8 @@
-/*! store2 - v2.14.0 - 2022-07-13
+/*! store2 - v2.14.1 - 2022-07-15
 * Copyright (c) 2022 Nathan Bubna; Licensed (MIT OR GPL-3.0) */
 ;(function(window, define) {
     var _ = {
-        version: "2.14.0",
+        version: "2.14.1",
         areas: {},
         apis: {},
         nsdelim: '.',
@@ -156,10 +156,11 @@
                 if (d != null && overwrite === false) {
                     return data;
                 }
-                if (typeof overwrite !== "boolean") {
+                if (typeof overwrite === "function") {
                     replacer = overwrite;
+                    overwrite = undefined;
                 }
-                return _.set(this._area, this._in(key), _.stringify(data, replacer)) || d;
+                return _.set(this._area, this._in(key), _.stringify(data, replacer), overwrite) || d;
             },
             setAll: function(data, overwrite) {
                 var changed, val;

@@ -4,8 +4,8 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * Allows use of the 'overwrite' param on set calls to give an enforced expiration date
- * without breaking existing 'overwrite' functionality.
+ * Allows use of a number as 'overwrite' param on set calls to give time in seconds after
+ * which the value should not be retrievable again (an expiration time).
  *
  * Status: BETA - useful, needs testing
  */
@@ -27,14 +27,14 @@
         }
         return false;
     };
-    _.when = function(min) {// if min, return min->date, else date->min
+    _.when = function(sec) {// if sec, return sec->date, else date->sec
         var now = Math.floor((new Date().getTime())/1000);
-        return min ? new Date((now+min)*1000) : now;
+        return sec ? new Date((now+sec)*1000) : now;
     };
     _.cache = function(area, key) {
         var s = _get(area, key),
-            min = _.expires(s);
-        if (min && _.when() >= min) {
+            sec = _.expires(s);
+        if (sec && _.when() >= sec) {
             return area.removeItem(key);
         }
         return s;
@@ -43,10 +43,10 @@
         var s = _.cache(area, key);
         return s === undefined ? null : s;
     };
-    _.set = function(area, key, string, min) {
+    _.set = function(area, key, string, sec) {
         try {
-            if (min) {
-                string = prefix + (_.when()+min) + suffix + string;
+            if (sec) {
+                string = prefix + (_.when()+sec) + suffix + string;
             }
             _set(area, key, string);
         } catch (e) {

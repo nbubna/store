@@ -275,6 +275,16 @@
                 clearAll();
             });
 
+            test('advanced namespace', function() {
+                save('foo', true);
+                var ns = space('lonely', true, ':');
+                equal(store.session.lonely, null);
+                equal(store.local.lonely, ns);
+                notEqual(null, ns);
+                store.lonely('foo', 'bar');
+                equal(store('lonely:foo'), 'bar');
+            });
+
             test("areas", function() {
                 var local = area('local');
                 equal(local, store, 'store should equal store.local');
@@ -452,6 +462,7 @@
                 store.isFake(true);
                 equal(true, store.isFake(), "should be fake again");
                 equal(null, store.get("bar"), "should not have bar, new fake storage");
+                store.isFake(false);
             });
 
             // test("#95 for messing with each implementations", function() {
@@ -492,6 +503,23 @@
                 clear();
             });
             }
+        }
+
+        if (store._.cache) {
+        test("store.cache", function() {
+            clear();
+            store.set("time", "in", 100);
+            ok(store.has("time"));
+            equal(store("time"), "in");
+            var val = localStorage.getItem("time");
+            notEqual(val, null);
+            ok(val.indexOf("exp@") === 0, "has prefix");
+            ok(val.indexOf(";") > 4, "has suffix");
+            if (String.prototype.startsWith) {// grunt qunity is too fast to test this reliably, it seems
+                store.set("time", "out", 0.001);
+                equal(store.get("time"), null);
+            }
+        });
         }
 
         // clean slate before event tests

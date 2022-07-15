@@ -23,7 +23,7 @@ export interface StoreAPI {
   has(key: any): boolean;
   isFake(force?: boolean): boolean;
   keys(fillList?: string[]): string[];
-  namespace(namespace: string, noSession?: true): StoreType;
+  namespace(namespace: string, singleArea?: true, delim?: string): StoreType;
   remove(key: any, alt?: any|Reviver): any;
   set(key: any, data: any, overwrite?: boolean|Replacer): any;
   setAll(data: Object, overwrite?: boolean|Replacer): StoredData;
@@ -35,20 +35,33 @@ export interface StoreAPI {
 
 export type StoreBase = StoreAPI & Base;
 
-export interface Tools {
+// these are not guaranteed to be stable across minor versions
+// but historically, they have been pretty much so
+export interface DeveloperTools {
   readonly version: string;
+  readonly areas: { [name: string]: Storage };
+  readonly apis: { [name: string]: StoreAPI };
   nsdelim: string;
   revive: Reviver;
-  replacer: Replacer;
-  fn(name: string, fn: (key: any) => boolean);
+  replace: Replacer;
+  readonly fn: (name: string, fn: Function) => void;
   storeAPI: StoreAPI;
+  get: (area: Storage, key: string) => string;
+  set: (area: Storage, key: string, string: string) => void;
+  remove: (area: Storage, key: string) => void;
+  key: (area: Storage, i: index) => string;
+  length: (area: Storage) => number;
+  clear: (area: Storage) => void;
+  parse: (s: string, fn?: Reviver) => any;
+  stringify: (d: any, fn?: Replacer) => string;
+  inherit: (api: StoreAPI, o: object) => object;
 }
 
 export type StoreType = StoreBase & {
   local: StoreBase;
   session: StoreBase;
   page: StoreBase;
-  _: Tools,
+  readonly _: DeveloperTools,
 };
 
 declare const store: StoreType

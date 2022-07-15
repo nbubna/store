@@ -160,10 +160,11 @@
                 if (d != null && overwrite === false) {
                     return data;
                 }
-                if (typeof overwrite !== "boolean") {
+                if (typeof overwrite === "function") {
                     replacer = overwrite;
+                    overwrite = undefined;
                 }
-                return _.set(this._area, this._in(key), _.stringify(data, replacer)) || d;
+                return _.set(this._area, this._in(key), _.stringify(data, replacer), overwrite) || d;
             },
             setAll: function(data, overwrite) {
                 var changed, val;

@@ -35,10 +35,20 @@ export interface StoreAPI {
 
 export type StoreBase = StoreAPI & Base;
 
+export interface Tools {
+  readonly version: string;
+  nsdelim: string;
+  revive: Reviver;
+  replacer: Replacer;
+  fn(name: string, fn: (key: any) => boolean);
+  storeAPI: StoreAPI;
+}
+
 export type StoreType = StoreBase & {
   local: StoreBase;
   session: StoreBase;
   page: StoreBase;
+  _: Tools,
 };
 
 declare const store: StoreType

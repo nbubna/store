@@ -118,9 +118,14 @@
         getAll({}, s);
         equal((s || store).size(), 0, "size should be 0 after clear");
     }
-    function space(ns) {
-        equal(store.namespace(ns), store[ns], "Create space: '"+ns+"'");
+    function space(ns, singleArea, delim) {
+        equal(store.namespace(ns, singleArea, delim), store[ns], "Create space: '"+ns+"'");
         equal(store.isFake(), store[ns].isFake(), "isFake() should return '"+store.isFake()+"' for ns and parent");
+        if (delim) {
+            equal(store[ns]._delim, delim);
+        } else {
+            equal(store[ns]._delim, store._.nsdelim);
+        }
         return store[ns];
     }
     function area(id) {

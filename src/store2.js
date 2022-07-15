@@ -81,13 +81,15 @@
                 }
                 return store;
             },
-            namespace: function(namespace, singleArea) {
+            namespace: function(namespace, singleArea, delim) {
+                delim = delim || this._delim || _.nsdelim;
                 if (!namespace){
-                    return this._ns ? this._ns.substring(0,this._ns.length-1) : '';
+                    return this._ns ? this._ns.substring(0,this._ns.length-delim.length) : '';
                 }
                 var ns = namespace, store = this[ns];
                 if (!store || !store.namespace) {
-                    store = _.Store(this._id, this._area, this._ns+ns+_.nsdelim);//new namespaced api
+                    store = _.Store(this._id, this._area, this._ns+ns+delim);//new namespaced api
+                    store._delim = delim;
                     if (!this[ns]){ this[ns] = store; }
                     if (!singleArea) {
                         for (var name in _.areas) {

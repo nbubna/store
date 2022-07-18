@@ -49,7 +49,7 @@ export interface DeveloperTools {
   get: (area: Storage, key: string) => string;
   set: (area: Storage, key: string, string: string) => void;
   remove: (area: Storage, key: string) => void;
-  key: (area: Storage, i: index) => string;
+  key: (area: Storage, i: number) => string;
   length: (area: Storage) => number;
   clear: (area: Storage) => void;
   parse: (s: string, fn?: Reviver) => any;

@@ -9,6 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <copyright>2022</copyright>
     <projectUrl>https://github.com/nbubna/store</projectUrl>
+    <licenseUrl>https://mit-license.org/</licenseUrl>
     <description>A feature-filled and friendly way to use localStorage and sessionStorage
 (JSON, namespacing, extensions, etc).</description>
     <tags>localStorage sessionStorage json javascript namespace html5 store browser client persistence</tags>

@@ -435,6 +435,29 @@
                 equal(obj.prop, "TestType");
             });
 
+            test("#117 global replace surprises like Date/toJSON", function() {
+                function TestType() {}
+                TestType.prototype.toJSON = function() {
+                    return "toJSON'ed!";
+                };
+                store._.replace = function replace(key, value) {
+                    if (value instanceof Date) {
+                        return "A Date!";
+                    }
+                    if (value instanceof TestType) {
+                        return "TestType";
+                    }
+                    return value;
+                };
+                store.set("obj", {prop: new Date()});
+                var obj = store.get("obj");
+                notEqual(obj.prop, "A Date!");
+                store.set("obj", {prop: new TestType()});
+                obj = store.get("obj");
+                notEqual(obj.prop, "TestType");
+                equal(obj.prop, "toJSON'ed!");
+            });
+
             test("#74 falsy alt support", function() {
                 strictEqual(null, store.get('noValue'));
                 strictEqual(false, store.get('noValue', false));

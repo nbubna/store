@@ -29,7 +29,7 @@
     "type": "git",
     "url": "http://github.com/nbubna/store.git"
   },
-  "license": "(MIT OR GPL-3.0)",
+  "license": "MIT",
   "scripts": {
     "prepublishOnly": "grunt && git commit -m \"$npm_package_version\" README.md *.json dist && git tag $npm_package_version && git push && git push --tags",
     "test": "grunt qunit"

@@ -83,14 +83,6 @@ module.exports = function(grunt) {
         tasks: ['jshint:test', 'qunit']
       }
     },
-    component_build: {
-      app: {
-        output: './dist/',
-        styles: false,
-        scripts: true,
-        standalone: true
-      }
-    },
     nugetpack: {
         dist: {
             src: 'store2.nuspec',
@@ -111,7 +103,7 @@ module.exports = function(grunt) {
   grunt.loadTasks('tasks');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'clean', 'concat', 'component_build', 'qunit', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'clean', 'concat', 'qunit', 'uglify']);
   grunt.registerTask('nuget', ['nugetpack', 'nugetpush']);
 
 };

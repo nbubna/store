@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/nbubna/store.git"
+    "url": "git+ssh://git@github.com/nbubna/store.git"
   },
   "license": "MIT",
   "scripts": {

@@ -237,6 +237,7 @@ widgetStore.falsy('state'); // returns true
 * 2022-07-14 [v2.14.1][] (public) - Fix change to ```set``` that broke store.cache.js, and allow namespace delimiter to be passed to ```namespace(name, thisAreaOnly, delim)``` for a single namespace, to avoid conflicts.
 * 2022-07-18 [v2.14.2][] (public) - Fix typo in ```index.d.ts``` typings.
 * 2024-02-14 [v2.14.3][] (public) - Cut license options to just MIT, also removed Bower and Component support since those are long dead.
+* 2024-12-26 [v2.14.4][] (public) - Remove use of eval from store.deep.js
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -266,3 +267,4 @@ widgetStore.falsy('state'); // returns true
 [v2.14.1]: https://github.com/nbubna/store/tree/2.14.1
 [v2.14.2]: https://github.com/nbubna/store/tree/2.14.2
 [v2.14.3]: https://github.com/nbubna/store/tree/2.14.3
+[v2.14.4]: https://github.com/nbubna/store/tree/2.14.4

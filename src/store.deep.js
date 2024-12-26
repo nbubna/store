@@ -11,12 +11,12 @@
  *
  * Status: ALPHA - currently only supports get
  */
-; (function (_) {
+;(function(_) {
 
     // save original core accessor
     var _get = _.get;
     // replace with enhanced version
-    _.get = function (area, key, kid) {
+    _.get = function(area, key, kid) {
         var s = _get(area, key);
         if (s == null) {
             var parts = _.split(key);
@@ -31,7 +31,7 @@
                 val = _.resolvePath(val, kid);
                 s = _.stringify(val);
             } catch (e) {
-                console.error("Error accessing nested property:", e);
+                window.console.error("Error accessing nested property:", e);
                 return null;
             }
         }
@@ -39,12 +39,12 @@
     };
 
     // Helper function to resolve nested paths safely
-    _.resolvePath = function (obj, path) {
-        return path.split('.').reduce((acc, key) => acc && acc[key], obj);
+    _.resolvePath = function(obj, path) {
+        return path.split('.').reduce(function(acc, key) { return acc && acc[key]; }, obj);
     };
 
     // expose internals on the underscore to allow extensibility
-    _.split = function (key) {
+    _.split = function(key) {
         var dot = key.lastIndexOf('.');
         if (dot > 0) {
             var kid = key.substring(dot + 1, key.length);

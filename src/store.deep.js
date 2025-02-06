@@ -9,7 +9,7 @@
  *   store.set('foo', { is: { not: { quite: false }}});
  *   console.log(store.get('foo.is.not.quite'));// logs false
  *
- * Status: ALPHA - currently only supports get, inefficient, uses eval
+ * Status: ALPHA - currently only supports get
  */
 ;(function(_) {
 
@@ -26,19 +26,28 @@
                 return _.get(area, parts[0], kid);
             }
         } else if (kid) {
-            var val = _.parse(s);
-            /*jshint evil:true */
-            val = eval("val."+kid);
-            s = _.stringify(val);
+            try {
+                var val = _.parse(s);
+                val = _.resolvePath(val, kid);
+                s = _.stringify(val);
+            } catch (e) {
+                window.console.error("Error accessing nested property:", e);
+                return null;
+            }
         }
         return s;
+    };
+
+    // Helper function to resolve nested paths safely
+    _.resolvePath = function(obj, path) {
+        return path.split('.').reduce(function(acc, key) { return acc && acc[key]; }, obj);
     };
 
     // expose internals on the underscore to allow extensibility
     _.split = function(key) {
         var dot = key.lastIndexOf('.');
         if (dot > 0) {
-            var kid = key.substring(dot+1, key.length);
+            var kid = key.substring(dot + 1, key.length);
             key = key.substring(0, dot);
             return [key, kid];
         }

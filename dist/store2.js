@@ -1,8 +1,8 @@
-/*! store2 - v2.14.3 - 2024-02-14
+/*! store2 - v2.14.4 - 2024-12-26
 * Copyright (c) 2024 Nathan Bubna; Licensed MIT */
 ;(function(window, define) {
     var _ = {
-        version: "2.14.3",
+        version: "2.14.4",
         areas: {},
         apis: {},
         nsdelim: '.',

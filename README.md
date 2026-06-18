@@ -5,6 +5,8 @@ Download: [store2.min.js][prod]  or  [store2.js][dev]
 [NPM][npm]: `npm install store2`  
 [NuGet][]: `Install-Package store2`  
 
+> **Deprecation:** The CommonJS build (`require('store2')`, `*.cjs` files) is deprecated and will be removed in **v3.0**. Use ESM: `import store from 'store2'`. Script-tag usage is unchanged (`store2.js` / `store2.min.js`).
+
 [NuGet]: http://nuget.org/packages/store2/
 [prod]: https://raw.github.com/nbubna/store/master/dist/store2.min.js
 [dev]: https://raw.github.com/nbubna/store/master/dist/store2.js
@@ -100,7 +102,7 @@ meant only to last until page reload.
 store.page("until","reload");
 ```
 
-All the specific ```get```, ```set```, etc. functions are available on ```store.session```, ```store.local```, and ```store.page```, as well as any other storage facility registered via ```store.area(name, customStorageObject)``` by an extension, where customStorageObject must implement the [Storage interface][storage]. This is how [store.old.js][old] extends store.js to support older versions of IE and Firefox.
+All the specific ```get```, ```set```, etc. functions are available on ```store.session```, ```store.local```, and ```store.page```, as well as any other storage facility registered via ```store.area(name, customStorageObject)``` by an extension, where customStorageObject must implement the [Storage interface][storage]. This is how the ```store2/old``` extension extends store to support older versions of IE and Firefox.
 
 [storage]: http://dev.w3.org/html5/webstorage/#the-storage-interface
 
@@ -131,50 +133,39 @@ to pass in an alternate namespace delimiter for advanced use-cases (e.g. ```stor
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
 but data stored will NOT persist beyond the life of the current document/page. Use the 
-[store.old.js][old] extension to add persistent backing for the store API in ancient browsers.
+Use the ```store2/old``` extension to add persistent backing for the store API in ancient browsers.
 
 ```isFake(true|false)``` is particularly useful to force use of a temporary, fake storage in testing situations,
 to prevent cluttering actual storage.
 
 ## Extensions
-These mostly could use further documentation and abuse...er...testing.
-Contributions are welcome!
-In particular, any ES6 user interested in making these [importable in ES6][es6importissue] would be appreciated.
+Extensions are optional and loaded via ESM subpath imports after the core module:
 
-[es6importissue]: https://github.com/nbubna/store/issues/31
+```javascript
+import store from 'store2';
+import 'store2/cache';
+import 'store2/on';
+```
+
+Contributions are welcome!
 
 #### Beta - Stable and definitely useful
-* [store.old.js][old] - Add working localStorage and sessionStorage polyfills for ancient browsers
-* [store.overflow.js][overflow] - Fall back to fake storage on quota errors
-* [store.cache.js][cache] - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
-* [store.on.js][on] - Superior storage event handling (per key, per namespace, etc in IE9+)
-* [store.array.js][array] - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
-* [store.dom.js][dom] - Declarative, persistent DOM element content via store.
-* [store.cookie.js][cookie] - Support for a cookie as a storage area: ```store.cookie('num',1)``` to make sharing with backend easier.
+* `store2/old` - Add working localStorage and sessionStorage polyfills for ancient browsers
+* `store2/overflow` - Fall back to fake storage on quota errors
+* `store2/cache` - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
+* `store2/on` - Superior storage event handling (per key, per namespace, etc in IE9+)
+* `store2/array` - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
+* `store2/dom` - Declarative, persistent DOM element content via store.
+* `store2/cookie` - Support for a cookie as a storage area: ```store.cookie('num',1)``` to make sharing with backend easier.
 
 #### Alpha - Either incomplete or unstable or both
-* [store.quota.js][quota] - Register callbacks to handle (and even cancel) quota errors
-* [store.measure.js][measure] - Experimental extension for measuring space used and available (needs work)
-* [store.onlyreal.js][onlyreal] - When only fake storage is available, silently fail instead of faking it.
-* [store.dot.js][dot] - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
-* [store.deep.js][deep] - Allow retrieval of properties from within stored objects (e.g. ```store.get('key.property')```)
-* [store.async.js][async] - Adds ```store.async``` duplicate to each store and namespace that performs functions asynchronously and returns a Promise that resolves when complete.
-* [store.cookies.js][cookies] - Support managing all cookies as a storage area with the store API (e.g. ```store.cookies.get('user')```)
-
-[old]: https://raw.github.com/nbubna/store/master/src/store.old.js
-[overflow]: https://raw.github.com/nbubna/store/master/src/store.overflow.js
-[cache]: https://raw.github.com/nbubna/store/master/src/store.cache.js
-[on]: https://raw.github.com/nbubna/store/master/src/store.on.js
-[quota]: https://raw.github.com/nbubna/store/master/src/store.quota.js
-[measure]: https://raw.github.com/nbubna/store/master/src/store.measure.js
-[onlyreal]: https://raw.github.com/nbubna/store/master/src/store.onlyreal.js
-[array]: https://raw.github.com/nbubna/store/master/src/store.array.js
-[dot]: https://raw.github.com/nbubna/store/master/src/store.dot.js
-[deep]: https://raw.github.com/nbubna/store/master/src/store.deep.js
-[dom]: https://raw.github.com/nbubna/store/master/src/store.dom.js
-[async]: https://raw.github.com/nbubna/store/master/src/store.async.js
-[cookie]: https://raw.github.com/nbubna/store/master/src/store.cookie.js
-[cookies]: https://raw.github.com/nbubna/store/master/src/store.cookies.js
+* `store2/quota` - Register callbacks to handle (and even cancel) quota errors
+* `store2/measure` - Experimental extension for measuring space used and available (needs work)
+* `store2/onlyreal` - When only fake storage is available, silently fail instead of faking it.
+* `store2/dot` - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
+* `store2/deep` - Allow retrieval of properties from within stored objects (e.g. ```store.get('key.property')```)
+* `store2/async` - Adds ```store.async``` duplicate to each store and namespace that performs functions asynchronously and returns a Promise that resolves when complete.
+* `store2/cookies` - Support managing all cookies as a storage area with the store API (e.g. ```store.cookies.get('user')```)
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.

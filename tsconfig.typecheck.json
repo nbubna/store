@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": false
+  },
+  "include": [
+    "src/store2.ts",
+    "src/types.ts",
+    "src/internal.ts",
+    "src/globals.d.ts",
+    "src/extensions/**/*.ts"
+  ]
+}

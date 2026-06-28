@@ -1,18 +1,20 @@
 A feature-filled and friendly way to take advantage of localStorage and sessionStorage
 (JSON, namespacing, extensions, etc).
 
-Download: [store2.min.js][prod]  or  [store2.js][dev]  
+Download: [store2.min.js on jsDelivr][jsdelivr] · [unpkg][unpkg] · [GitHub raw][prod]  
 [NPM][npm]: `npm install store2`  
 [NuGet][]: `Install-Package store2`  
 
-> **Deprecation:** The CommonJS build (`require('store2')`, `*.cjs` files) is deprecated and will be removed in **v3.0**. Use ESM: `import store from 'store2'`. Script-tag usage is unchanged (`store2.js` / `store2.min.js`).
+> **ESM only:** `import store from 'store2'`. Node **≥ 20.19.0** (`require('store2')` works via [`require(esm)`](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require) as `require('store2').default`). Script tags: `store2.js` / `store2.min.js`. See [MIGRATION-v3.md](./MIGRATION-v3.md) if upgrading from older releases.
 
 [NuGet]: http://nuget.org/packages/store2/
+[jsdelivr]: https://cdn.jsdelivr.net/npm/store2/dist/store2.min.js
+[unpkg]: https://unpkg.com/store2/dist/store2.min.js
 [prod]: https://raw.github.com/nbubna/store/master/dist/store2.min.js
 [dev]: https://raw.github.com/nbubna/store/master/dist/store2.js
 [npm]: https://npmjs.org/package/store2
 
-[![Build Status](https://travis-ci.org/nbubna/store.svg?branch=master)](https://travis-ci.org/nbubna/store)
+[![CI](https://github.com/nbubna/store/actions/workflows/ci.yml/badge.svg)](https://github.com/nbubna/store/actions/workflows/ci.yml)
 [![npm version](https://badge.fury.io/js/store2.svg)](https://badge.fury.io/js/store2)
 [![npm](https://img.shields.io/npm/dm/store2.svg?maxAge=2592000)](https://www.npmjs.com/package/store2)  
 
@@ -149,23 +151,27 @@ import 'store2/on';
 
 Contributions are welcome!
 
-#### Beta - Stable and definitely useful
-* `store2/old` - Add working localStorage and sessionStorage polyfills for ancient browsers
-* `store2/overflow` - Fall back to fake storage on quota errors
+### Useful
 * `store2/cache` - To make data expire, pass a number of seconds as the overwrite (third) param on ```set()``` calls
-* `store2/on` - Superior storage event handling (per key, per namespace, etc in IE9+)
-* `store2/array` - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
+* `store2/on` - Superior storage event handling (per key, per namespace, etc)
+* `store2/proxy` - Get/set via properties, not functions (e.g. ```store.foo = 1```, ```store.foo++```, ```delete store.foo```)
 * `store2/dom` - Declarative, persistent DOM element content via store.
-* `store2/cookie` - Support for a cookie as a storage area: ```store.cookie('num',1)``` to make sharing with backend easier.
+* `store2/onlyreal` - When only fake storage is available, silently fail instead of faking it.
+* `store2/array` - Easy, powerful array functions for any and all data (e.g. ```store.push(key, v1, v2)```).
+* `store2/cookie` - Support for a single cookie as a storage area: ```store.cookie('num',1)``` to make sharing with backend easier.
 
-#### Alpha - Either incomplete or unstable or both
+### Experiments
+* `store2/cookies` - Support managing all cookies separately as a storage area with the store API (e.g. ```store.cookies.get('user')```)
+* `store2/overflow` - Fall back to fake storage on quota errors
 * `store2/quota` - Register callbacks to handle (and even cancel) quota errors
 * `store2/measure` - Experimental extension for measuring space used and available (needs work)
-* `store2/onlyreal` - When only fake storage is available, silently fail instead of faking it.
-* `store2/dot` - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
 * `store2/deep` - Allow retrieval of properties from within stored objects (e.g. ```store.get('key.property')```)
 * `store2/async` - Adds ```store.async``` duplicate to each store and namespace that performs functions asynchronously and returns a Promise that resolves when complete.
-* `store2/cookies` - Support managing all cookies as a storage area with the store API (e.g. ```store.cookies.get('user')```)
+
+### Deprecated
+* `store2/dot` - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
+* `store2/bind` - Older event support
+* `store2/old` - Add working localStorage and sessionStorage polyfills for ancient browsers
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.
@@ -229,6 +235,7 @@ widgetStore.falsy('state'); // returns true
 * 2022-07-18 [v2.14.2][] (public) - Fix typo in ```index.d.ts``` typings.
 * 2024-02-14 [v2.14.3][] (public) - Cut license options to just MIT, also removed Bower and Component support since those are long dead.
 * 2024-12-26 [v2.14.4][] (public) - Remove use of eval from store.deep.js
+* 2026-07-04 [v3.0.0][] (public) - Full TypeScript, modernized build, ESM only, new proxy and devalue extensions
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0
@@ -259,3 +266,4 @@ widgetStore.falsy('state'); // returns true
 [v2.14.2]: https://github.com/nbubna/store/tree/2.14.2
 [v2.14.3]: https://github.com/nbubna/store/tree/2.14.3
 [v2.14.4]: https://github.com/nbubna/store/tree/2.14.4
+[v3.0.0]: https://github.com/nbubna/store/tree/3.0.0

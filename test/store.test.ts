@@ -1,4 +1,6 @@
+import "./helpers/load-all-extensions";
 import { store } from "./setup";
+import { expect, describe, it } from "vitest";
 
 const API = [
   "get",
@@ -567,7 +569,7 @@ describe("store2", () => {
     const prior = { prior: true };
     (window as Window & { store: unknown }).store = prior;
     vi.resetModules();
-    const mod = await import("../src/store2.ts");
+    const mod = await import("store2");
     expect(mod.default._.conflict).toBe(prior);
     (window as Window & { store: typeof store }).store = store;
   });
@@ -581,7 +583,7 @@ describe("store2", () => {
       },
     });
     vi.resetModules();
-    const mod = await import("../src/store2.ts");
+    const mod = await import("store2");
     expect(mod.default.isFake()).toBe(true);
     Object.defineProperty(globalThis, "localStorage", {
       configurable: true,
@@ -598,7 +600,7 @@ describe("store2", () => {
       },
     });
     vi.resetModules();
-    const mod = await import("../src/store2.ts");
+    const mod = await import("store2");
     expect(mod.default.session.isFake()).toBe(true);
     Object.defineProperty(globalThis, "sessionStorage", {
       configurable: true,

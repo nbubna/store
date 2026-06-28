@@ -14,78 +14,94 @@
     "email": "nathan@esha.com",
     "url": "http://www.esha.com/"
   },
+  "homepage": "https://github.com/nbubna/store#readme",
   "type": "module",
-  "files": [
-    "dist"
+  "sideEffects": [
+    "./dist/extensions/**",
+    "./dist/store2.js",
+    "./dist/store2.min.js"
   ],
-  "main": "./dist/store2.cjs",
+  "files": [
+    "dist",
+    "MIGRATION-v3.md"
+  ],
+  "main": "./dist/store2.mjs",
   "module": "./dist/store2.mjs",
   "types": "./dist/index.d.ts",
+  "unpkg": "./dist/store2.min.js",
+  "jsdelivr": "./dist/store2.min.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/store2.mjs",
-      "require": "./dist/store2.cjs"
+      "default": "./dist/store2.mjs"
     },
     "./array": {
-      "import": "./dist/extensions/array.mjs",
-      "require": "./dist/extensions/array.cjs"
+      "types": "./dist/extensions/array.d.ts",
+      "default": "./dist/extensions/array.mjs"
     },
     "./async": {
-      "import": "./dist/extensions/async.mjs",
-      "require": "./dist/extensions/async.cjs"
+      "types": "./dist/extensions/async.d.ts",
+      "default": "./dist/extensions/async.mjs"
     },
     "./bind": {
-      "import": "./dist/extensions/bind.mjs",
-      "require": "./dist/extensions/bind.cjs"
+      "types": "./dist/extensions/bind.d.ts",
+      "default": "./dist/extensions/bind.mjs"
     },
     "./cache": {
-      "import": "./dist/extensions/cache.mjs",
-      "require": "./dist/extensions/cache.cjs"
+      "types": "./dist/extensions/cache.d.ts",
+      "default": "./dist/extensions/cache.mjs"
     },
     "./cookie": {
-      "import": "./dist/extensions/cookie.mjs",
-      "require": "./dist/extensions/cookie.cjs"
+      "types": "./dist/extensions/cookie.d.ts",
+      "default": "./dist/extensions/cookie.mjs"
     },
     "./cookies": {
-      "import": "./dist/extensions/cookies.mjs",
-      "require": "./dist/extensions/cookies.cjs"
+      "types": "./dist/extensions/cookies.d.ts",
+      "default": "./dist/extensions/cookies.mjs"
     },
     "./deep": {
-      "import": "./dist/extensions/deep.mjs",
-      "require": "./dist/extensions/deep.cjs"
+      "types": "./dist/extensions/deep.d.ts",
+      "default": "./dist/extensions/deep.mjs"
+    },
+    "./devalue": {
+      "types": "./dist/extensions/devalue.d.ts",
+      "default": "./dist/extensions/devalue.mjs"
     },
     "./dom": {
-      "import": "./dist/extensions/dom.mjs",
-      "require": "./dist/extensions/dom.cjs"
+      "types": "./dist/extensions/dom.d.ts",
+      "default": "./dist/extensions/dom.mjs"
     },
     "./dot": {
-      "import": "./dist/extensions/dot.mjs",
-      "require": "./dist/extensions/dot.cjs"
+      "types": "./dist/extensions/dot.d.ts",
+      "default": "./dist/extensions/dot.mjs"
+    },
+    "./proxy": {
+      "types": "./dist/extensions/proxy.d.ts",
+      "default": "./dist/extensions/proxy.mjs"
     },
     "./measure": {
-      "import": "./dist/extensions/measure.mjs",
-      "require": "./dist/extensions/measure.cjs"
+      "types": "./dist/extensions/measure.d.ts",
+      "default": "./dist/extensions/measure.mjs"
     },
     "./old": {
-      "import": "./dist/extensions/old.mjs",
-      "require": "./dist/extensions/old.cjs"
+      "types": "./dist/extensions/old.d.ts",
+      "default": "./dist/extensions/old.mjs"
     },
     "./on": {
-      "import": "./dist/extensions/on.mjs",
-      "require": "./dist/extensions/on.cjs"
+      "types": "./dist/extensions/on.d.ts",
+      "default": "./dist/extensions/on.mjs"
     },
     "./onlyreal": {
-      "import": "./dist/extensions/onlyreal.mjs",
-      "require": "./dist/extensions/onlyreal.cjs"
+      "types": "./dist/extensions/onlyreal.d.ts",
+      "default": "./dist/extensions/onlyreal.mjs"
     },
     "./overflow": {
-      "import": "./dist/extensions/overflow.mjs",
-      "require": "./dist/extensions/overflow.cjs"
+      "types": "./dist/extensions/overflow.d.ts",
+      "default": "./dist/extensions/overflow.mjs"
     },
     "./quota": {
-      "import": "./dist/extensions/quota.mjs",
-      "require": "./dist/extensions/quota.cjs"
+      "types": "./dist/extensions/quota.d.ts",
+      "default": "./dist/extensions/quota.mjs"
     }
   },
   "bugs": {
@@ -97,22 +113,33 @@
     "url": "git+ssh://git@github.com/nbubna/store.git"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
-    "build": "vite build && BUILD_MIN=1 vite build && vite build --config vite.extensions.config.ts",
+    "build": "vite build && BUILD_MIN=1 vite build && vite build --config vite.extensions.config.ts && node scripts/copy-extension-types.mjs",
     "prepublishOnly": "npm run build && npm test && git commit -m \"$npm_package_version\" README.md *.json dist && git tag $npm_package_version && git push && git push --tags",
     "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
+    "publint": "publint",
+    "attw": "attw --pack .",
     "lint": "oxlint",
     "format": "oxfmt",
     "format:check": "oxfmt --check"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@vitest/coverage-v8": "^3.2.4",
     "jsdom": "^26.1.0",
     "oxfmt": "^0.16.0",
     "oxlint": "^0.16.0",
+    "publint": "^0.3.12",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "devalue": "^5.8.1"
   }
 }

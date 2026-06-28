@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import { resolve } from "node:path";
 import fs from "node:fs";
-import { cjsDeprecationPlugin } from "./build/vite-plugin-cjs-deprecation";
 import pkg from "./package.json";
 
 const extDir = resolve(__dirname, "src/extensions");
@@ -16,7 +15,6 @@ const entries = Object.fromEntries(
 );
 
 export default defineConfig({
-  plugins: [cjsDeprecationPlugin()],
   define: {
     __STORE2_VERSION__: JSON.stringify(pkg.version),
   },
@@ -30,8 +28,8 @@ export default defineConfig({
     outDir: "dist",
     lib: {
       entry: entries,
-      formats: ["es", "cjs"],
-      fileName: (format, entryName) => `${entryName}.${format === "es" ? "mjs" : "cjs"}`,
+      formats: ["es"],
+      fileName: (_format, entryName) => `${entryName}.mjs`,
     },
     rollupOptions: {
       external: ["store2"],

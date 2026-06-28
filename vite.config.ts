@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import { resolve } from "node:path";
 import dts from "vite-plugin-dts";
-import { cjsDeprecationPlugin } from "./build/vite-plugin-cjs-deprecation";
 import pkg from "./package.json";
 
 const banner = `/*! ${pkg.name} - v${pkg.version} - ${new Date().toISOString().slice(0, 10)}
@@ -11,7 +10,6 @@ const minBuild = process.env.BUILD_MIN === "1";
 
 export default defineConfig({
   plugins: [
-    cjsDeprecationPlugin(),
     dts({
       entryRoot: "src",
       include: ["src/store2.ts", "src/types.ts"],
@@ -30,11 +28,10 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/store2.ts"),
       name: "store",
-      formats: minBuild ? ["iife"] : ["es", "cjs", "iife"],
+      formats: minBuild ? ["iife"] : ["es", "iife"],
       fileName: (format) => {
         if (minBuild) return "store2.min.js";
         if (format === "es") return "store2.mjs";
-        if (format === "cjs") return "store2.cjs";
         return "store2.js";
       },
     },

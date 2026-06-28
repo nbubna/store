@@ -7,7 +7,6 @@
 import type {
   InternalSupport,
   StoreAPIInternal,
-  StoreInternal,
 } from "./internal";
 import type { EachFn, Replacer, Reviver, StoredData, Store, StorageAPI, StorageLike, FakeStorage, FakeStorageCore, StoreAPI, StoreBase, TransactFn } from "./types";
 
@@ -21,14 +20,14 @@ const safeStorage = (getStorage: () => Storage): Storage | undefined => {
   }
 };
 
-const storageAPI: FakeStorage = {
+const storageAPI = {
   length: 0,
   name: "",
   items: {},
-  has(k: string): boolean {
+  has(this: FakeStorage, k: string): boolean {
     return Object.hasOwn(this.items, k);
   },
-  key(i: number): string | undefined {
+  key(this: FakeStorage, i: number): string | undefined {
     let c = 0;
     for (const k in this.items) {
       if (this.has(k) && i === c++) {
@@ -36,33 +35,35 @@ const storageAPI: FakeStorage = {
       }
     }
   },
-  setItem(k: string, v: string): void {
+  setItem(this: FakeStorage, k: string, v: string): void {
     if (!this.has(k)) {
       this.length++;
     }
     this.items[k] = v;
   },
-  removeItem(k: string): void {
+  removeItem(this: FakeStorage, k: string): void {
     if (this.has(k)) {
       delete this.items[k];
       this.length--;
     }
   },
-  getItem(k: string): string | null {
+  getItem(this: FakeStorage, k: string): string | null {
     return this.has(k) ? this.items[k] : null;
   },
-  clear(): void {
+  clear(this: FakeStorage): void {
     for (const k in this.items) {
       this.removeItem(k);
     }
   },
-};
+} satisfies FakeStorage;
 
 const _: InternalSupport = {
   version: __STORE2_VERSION__,
-  areas: {},
-  apis: {},
+  areas: {} as Record<string, StorageLike>,
+  apis: {} as Record<string, StoreAPIInternal>,
   nsdelim: ".",
+  replace: undefined as Replacer | undefined,
+  revive: undefined as Reviver | undefined,
 
   inherit<S = StorageAPI | StoreAPIInternal, O = StoreBase | FakeStorageCore>(api: S, o: O): S & O {
     for (const p in api) {
@@ -73,34 +74,35 @@ const _: InternalSupport = {
     return o as unknown as S & O;
   },
 
-  stringify: (d, fn) =>
-    d === undefined || typeof d === "function" ? `${d}` : JSON.stringify(d, fn || _.replace),
+  stringify<T = unknown>(d: unknown, fn?: Replacer<T>) {
+    return d === undefined || typeof d === "function" ? `${d}` : JSON.stringify(d, fn || _.replace);
+  },
 
-  parse: (s, fn) => {
+  parse<T = unknown>(s: string, fn?: Reviver<T>): T {
     try {
-      return JSON.parse(s, fn || _.revive);
+      return JSON.parse(s, fn || _.revive) as T;
     } catch {
-      return s;
+      return s as T;
     }
   },
 
-  fn(name, fn) {
+  fn(name: string, fn: (...args: unknown[]) => unknown) {
     (_.storeAPI as Record<string, unknown>)[name] = fn;
     for (const api in _.apis) {
       _.apis[api][name] = fn;
     }
   },
 
-  get: (area, key) => area.getItem(key),
-  set: (area, key, value) => {
+  get: (area: StorageLike, key: string) => area.getItem(key),
+  set: (area: StorageLike, key: string, value: string) => {
     area.setItem(key, value);
   },
-  remove: (area, key) => area.removeItem(key),
-  key: (area, i) => area.key(i) ?? null,
-  length: (area) => area.length,
-  clear: (area) => area.clear(),
+  remove: (area: StorageLike, key: string) => area.removeItem(key),
+  key: (area: StorageLike, i: number) => area.key(i) ?? null,
+  length: (area: StorageLike) => area.length,
+  clear: (area: StorageLike) => area.clear(),
 
-  Store(id, area, namespace = "") {
+  Store(id: string, area: StorageLike | undefined, namespace = "") {
     const store: StoreAPIInternal & StoreBase = _.inherit<StoreAPIInternal, StoreBase>(
       _.storeAPI,
       function<T = unknown>(key?: string | number | Function | false, data?: T | TransactFn<T>, overwrite?: T | Reviver<T> | boolean | Replacer<T>): null | undefined | boolean | T | StoreBase | StoredData {
@@ -145,11 +147,11 @@ const _: InternalSupport = {
     return store;
   },
 
-  storage: (name) => _.inherit(storageAPI, { items: {}, name }) as FakeStorage,
+  storage: (name: string) => _.inherit(storageAPI, { items: {}, name }) as FakeStorage,
 
   storeAPI: {
-    area(id: string, area?: StorageLike): StoreInternal {
-      let store = this[id] as StoreInternal | undefined;
+    area(this: StoreAPIInternal, id: string, area?: StorageLike): StoreAPIInternal {
+      let store = this[id] as StoreAPIInternal | undefined;
       if (!store || !store.area) {
         store = _.Store(id, area, this._ns);
         if (!this[id]) {
@@ -159,15 +161,15 @@ const _: InternalSupport = {
       return store;
     },
 
-    namespace(namespace?: string, singleArea?: boolean, delim?: string): StoreInternal {
+    namespace(this: StoreAPIInternal, namespace?: string, singleArea?: boolean, delim?: string): StoreAPIInternal {
       delim = delim || this._delim || _.nsdelim;
       if (!namespace) {
         return (this._ns
           ? this._ns.substring(0, this._ns.length - delim.length)
-          : "") as unknown as StoreInternal;
+          : "") as unknown as StoreAPIInternal;
       }
       const ns = namespace;
-      let store = this[ns] as StoreInternal | undefined;
+      let store = this[ns] as StoreAPIInternal | undefined;
       if (!store || !store.namespace) {
         store = _.Store(this._id, this._area, this._ns + ns + delim);
         store._delim = delim;
@@ -183,7 +185,7 @@ const _: InternalSupport = {
       return store;
     },
 
-    isFake(force?: boolean): boolean {
+    isFake(this: StoreAPIInternal, force?: boolean): boolean {
       if (force) {
         this._real = this._area;
         this._area = _.storage("fake");
@@ -193,11 +195,11 @@ const _: InternalSupport = {
       return this._area.name === "fake";
     },
 
-    toString(): string {
+    toString(this: StoreAPIInternal): string {
       return `store${this._ns ? `.${this.namespace()}` : ""}[${this._id}]`;
     },
 
-    has(key: string): boolean {
+    has(this: StoreAPIInternal, key: string): boolean {
       if (this._area.has) {
         return this._area.has(this._in(key));
       }
@@ -208,11 +210,11 @@ const _: InternalSupport = {
       return this.keys().length;
     },
 
-    each(fn: EachFn, fill?: unknown): StoreInternal | unknown {
+    each<T = unknown>(this: StoreAPIInternal, fn: EachFn<T | null>, fill?: T): StoreAPIInternal | T {
       for (let i = 0, m = _.length(this._area); i < m; i++) {
-        const key = this._out(_.key(this._area, i) ?? undefined);
+        const key = this._out(_.key(this._area, i));
         if (key !== undefined) {
-          if (fn.call(this, key, this.get(key), fill) === false) {
+          if (fn.call(this, key, this.get(key)!, fill) === false) {
             break;
           }
         }
@@ -221,41 +223,41 @@ const _: InternalSupport = {
           i--;
         }
       }
-      return fill || this;
+      return fill ?? this;
     },
 
-    keys(fillList?: string[]): string[] {
-      return this.each((k, _v, list) => {
+    keys(this: StoreAPIInternal, fillList?: string[]): string[] {
+      return this.each<string[]>((k: string, _v: unknown, list: string[] | undefined) => {
         (list as string[]).push(k);
-      }, fillList || []) as string[];
+      }, (fillList ?? []) as string[]) as unknown as string[];
     },
 
-    get(key: string, alt?: unknown | Reviver): unknown {
+    get(this: StoreAPIInternal, key: string, alt?: unknown | Reviver): unknown {
       let s = _.get(this._area, this._in(key));
       let fn: Reviver | undefined;
       if (typeof alt === "function") {
-        fn = alt;
+        fn = alt as Reviver;
         alt = null;
       }
       return s !== null ? _.parse(s, fn) : alt != null ? alt : s;
     },
 
-    getAll(fillObj?: StoredData): StoredData {
-      return this.each((k, v, all) => {
+    getAll(this: StoreAPIInternal, fillObj?: StoredData): StoredData {
+      return this.each<StoredData>((k: string, v: unknown, all: StoredData | undefined) => {
         (all as StoredData)[k] = v;
-      }, fillObj || {}) as StoredData;
+      }, fillObj ?? {}) as unknown as StoredData;
     },
 
-    transact(key: string, fn: (data: unknown) => unknown, alt?: unknown | Reviver): StoreInternal {
+    transact<T = unknown>(this: StoreAPIInternal, key: string, fn: TransactFn<T>, alt?: T | Reviver<T>): StoreAPIInternal {
       const val = this.get(key, alt);
       const ret = fn(val);
       this.set(key, ret === undefined ? val : ret);
       return this;
     },
 
-    set(key: string, data: unknown, overwrite?: boolean | Replacer): unknown {
+    set<T = unknown>(this: StoreAPIInternal, key: string, data: T, overwrite?: boolean | Replacer<T>): T | null | unknown{
       const d = this.get(key);
-      let replacer: Replacer | undefined;
+      let replacer: Replacer<T> | undefined;
       if (d != null && overwrite === false) {
         return data;
       }
@@ -263,10 +265,10 @@ const _: InternalSupport = {
         replacer = overwrite;
         overwrite = undefined;
       }
-      return _.set(this._area, this._in(key), _.stringify(data, replacer), overwrite) || d;
+      return _.set(this._area, this._in(key), _.stringify<T>(data, replacer), overwrite) ?? d;
     },
 
-    setAll(data: StoredData, overwrite?: boolean | Replacer): boolean | undefined {
+    setAll(this: StoreAPIInternal, data: StoredData, overwrite?: boolean | Replacer): boolean | undefined {
       let changed: boolean | undefined;
       for (const key in data) {
         const val = data[key];
@@ -277,32 +279,34 @@ const _: InternalSupport = {
       return changed;
     },
 
-    add(key: string, data: unknown, replacer?: Replacer): unknown {
-      let d = this.get(key);
+    add<T = unknown>(this: StoreAPIInternal, key: string, data: T, replacer?: Replacer<T>): T | T[] {
+      let d = this.get<T | T[]>(key);
+      let result: T | T[] = data;
       if (d instanceof Array) {
-        data = d.concat(data);
+        result = d.concat(data) as T[];
       } else if (d !== null) {
         const type = typeof d;
         if (type === typeof data && type === "object") {
           for (const k in data as Record<string, unknown>) {
             (d as Record<string, unknown>)[k] = (data as Record<string, unknown>)[k];
           }
-          data = d;
+          result = d;
         } else {
-          data = d + data;
+          // @ts-expect-error - string concatenation or number addition, types be damned
+          result = d + data;
         }
       }
-      _.set(this._area, this._in(key), _.stringify(data, replacer));
-      return data;
+      _.set(this._area, this._in(key), _.stringify(result, replacer));
+      return result;
     },
 
-    remove(key: string, alt?: unknown | Reviver): unknown {
-      const d = this.get(key, alt);
+    remove<T = unknown>(this: StoreAPIInternal, key: string, alt?: T | Reviver<T>): T | null {
+      const d = this.get<T>(key, alt);
       _.remove(this._area, this._in(key));
       return d;
     },
 
-    clear(): StoreInternal {
+    clear(this: StoreAPIInternal): StoreAPIInternal {
       if (!this._ns) {
         _.clear(this._area);
       } else {
@@ -313,7 +317,7 @@ const _: InternalSupport = {
       return this;
     },
 
-    clearAll(): StoreInternal {
+    clearAll(this: StoreAPIInternal): StoreAPIInternal {
       const area = this._area;
       for (const id in _.areas) {
         if (_.areas.hasOwnProperty(id)) {
@@ -325,21 +329,21 @@ const _: InternalSupport = {
       return this;
     },
 
-    _in(k: string | unknown): string {
+    _in(this: StoreAPIInternal, k: string | unknown): string {
       if (typeof k !== "string") {
         k = _.stringify(k);
       }
       return this._ns ? this._ns + k : (k as string);
     },
 
-    _out(k: string | null | undefined): string | undefined {
+    _out(this: StoreAPIInternal, k: string | null | undefined): string | undefined {
       return this._ns
         ? k && k.indexOf(this._ns) === 0
           ? k.substring(this._ns.length)
           : undefined
-        : k;
+        : k ?? undefined;
     },
-  },
+  } as unknown as StoreAPIInternal,
 
   storageAPI,
 };
@@ -347,8 +351,9 @@ const _: InternalSupport = {
 const store = _.Store(
   "local",
   safeStorage(() => localStorage),
-);
+) as unknown as Store;
 store.local = store;
+// @ts-expect-error - _ is a read-only property, but here is where we assign it to the store
 store._ = _;
 store.area(
   "session",
@@ -363,4 +368,4 @@ if (typeof window !== "undefined") {
   window.store = store as unknown as Store;
 }
 
-export default store as Store;
+export default store;

@@ -4,15 +4,14 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * If fake (non-persistent) storage for users stuck in the dark ages
- * does not satisfy you, this will replace it with the a reasonable imitator for their
- * pathetic, incompetent browser.  Note that the session replacement here is potentially
- * insecure as it uses window.name without any fancy protections.
+ * Legacy IE userData / globalStorage / cookie / window.name polyfills for when
+ * localStorage and sessionStorage are unavailable.
  *
- * Status: USEFUL - unsupported, useful, needs testing & refining
+ * Status: DEPRECATED — targets browsers store2 3.x no longer supports; will be
+ * removed in a future major release. Do not use in new projects.
  */
 import store from "store2";
-import type { FakeStorage, StorageLike, Store, StoreMetadata } from "../types";
+import type { FakeStorage, StorageLike, StoreMetadata } from "../types";
 import type { InternalSupport } from "../internal";
 
 type StorageRecord = Record<string, string>;
@@ -169,3 +168,7 @@ if (store.session.isFake()) {
     },
   );
 }
+
+console.warn(
+  "[store2/old] Deprecated: legacy IE storage polyfill unsupported in store2 3.x and will be removed in a future major release.",
+);

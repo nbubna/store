@@ -11,7 +11,7 @@ store2 **3.0.0** is a modernization release: TypeScript source, Vite build, firs
 - [ ] Update bundler config if it assumed UMD/CJS `main` (now `./dist/store2.mjs`)
 - [ ] Load extensions via subpath imports: `import 'store2/cache'`
 - [ ] Opt in to new extensions explicitly: `store2/devalue`, `store2/proxy`
-- [ ] Review deprecated extensions: `bind` (use `on`), `old` (legacy IE; not tested in 3.x)
+- [ ] Review deprecated extensions: `bind` (use `on`), `dot` (use `proxy`), `old` (legacy IE; deprecated, will be removed)
 
 ---
 
@@ -96,7 +96,8 @@ These behaviors are covered by the ported test suite (`test/store.test.ts`, 34 t
 | `devalue` | **New.** Replaces `_.stringify` / `_.parse` with [devalue](https://github.com/sveltejs/devalue) when no custom replacer/reviver is active. Opt-in only. |
 | `proxy` | **New.** Default export is a proxied store; do not load alongside tests expecting raw `store` shape. |
 | `bind` | Deprecated; prefer `on` |
-| `old` | Legacy IE userData backend; built but **not covered by unit tests** in 3.x |
+| `dot` | Deprecated; prefer `proxy` |
+| `old` | **Deprecated.** Legacy IE userData backend; unsupported in 3.x and will be removed in a future major release |
 | `measure` | Still experimental; `charsLeft()` can stress storage (unchanged risk) |
 
 ### TypeScript

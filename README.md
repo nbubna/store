@@ -104,7 +104,7 @@ meant only to last until page reload.
 store.page("until","reload");
 ```
 
-All the specific ```get```, ```set```, etc. functions are available on ```store.session```, ```store.local```, and ```store.page```, as well as any other storage facility registered via ```store.area(name, customStorageObject)``` by an extension, where customStorageObject must implement the [Storage interface][storage]. This is how the ```store2/old``` extension extends store to support older versions of IE and Firefox.
+All the specific ```get```, ```set```, etc. functions are available on ```store.session```, ```store.local```, and ```store.page```, as well as any other storage facility registered via ```store.area(name, customStorageObject)``` by an extension, where customStorageObject must implement the [Storage interface][storage].
 
 [storage]: http://dev.w3.org/html5/webstorage/#the-storage-interface
 
@@ -134,8 +134,8 @@ store.isFake([force]);// test or set whether localStorage/sessionStorage or an i
 to pass in an alternate namespace delimiter for advanced use-cases (e.g. ```store.page.namespace("subpage", true, ":")```).
 
 If localStorage or sessionStorage are unavailable, they will be faked to prevent errors,
-but data stored will NOT persist beyond the life of the current document/page. Use the 
-Use the ```store2/old``` extension to add persistent backing for the store API in ancient browsers.
+but data stored will NOT persist beyond the life of the current document/page.
+The ```store2/old``` extension (deprecated) once added persistent backing for ancient IE/Firefox browsers and is no longer supported in 3.x.
 
 ```isFake(true|false)``` is particularly useful to force use of a temporary, fake storage in testing situations,
 to prevent cluttering actual storage.
@@ -171,7 +171,7 @@ Contributions are welcome!
 ### Deprecated
 * `store2/dot` - Creates accessors for keys (e.g. ```store.foo == store.get('foo')```)
 * `store2/bind` - Older event support
-* `store2/old` - Add working localStorage and sessionStorage polyfills for ancient browsers
+* `store2/old` - **Deprecated.** Legacy localStorage/sessionStorage polyfills for ancient IE/Firefox; will be removed in a future major release
 
 #### Write Your Own Extension
 To write your own extension, you can use or carefully override internal functions exposed as ```store._```.
@@ -235,7 +235,7 @@ widgetStore.falsy('state'); // returns true
 * 2022-07-18 [v2.14.2][] (public) - Fix typo in ```index.d.ts``` typings.
 * 2024-02-14 [v2.14.3][] (public) - Cut license options to just MIT, also removed Bower and Component support since those are long dead.
 * 2024-12-26 [v2.14.4][] (public) - Remove use of eval from store.deep.js
-* 2026-07-04 [v3.0.0][] (public) - **Major:** ESM-only distribution (`.mjs`); TypeScript source and rolled-up types; Vite build; Vitest test suite; `oxlint` (type-aware) + `oxfmt` in CI; Node **≥ 20.19.0**; extensions rebuilt as `dist/extensions/*.mjs` with typed subpath exports; new **`devalue`** extension (rich serialization via [devalue](https://github.com/sveltejs/devalue)); new **`proxy`** extension (property-access wrapper with recursive object/array commit); `deep` retains eval-free path parsing; `bind` deprecated in favor of `on`; `old` extension retained but not unit-tested; see [MIGRATION-v3.md](./MIGRATION-v3.md)
+* 2026-07-04 [v3.0.0][] (public) - **Major:** ESM-only distribution (`.mjs`); TypeScript source and rolled-up types; Vite build; Vitest test suite; `oxlint` (type-aware) + `oxfmt` in CI; Node **≥ 20.19.0**; extensions rebuilt as `dist/extensions/*.mjs` with typed subpath exports; new **`devalue`** extension (rich serialization via [devalue](https://github.com/sveltejs/devalue)); new **`proxy`** extension (property-access wrapper with recursive object/array commit); `deep` retains eval-free path parsing; `bind` and `dot` deprecated; **`old`** extension deprecated (legacy IE polyfill, will be removed); see [MIGRATION-v3.md](./MIGRATION-v3.md)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0

@@ -1,0 +1,11 @@
+{
+  "name": "store2-integration-cjs",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node smoke.cjs"
+  },
+  "dependencies": {
+    "store2": "file:../.."
+  }
+}

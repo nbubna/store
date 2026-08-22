@@ -1,5 +1,5 @@
 var store = (function() {
-  "use strict";/*! store2 - v2.14.4 - 2026-06-28
+  "use strict";/*! store2 - v3.0.0 - 2026-08-22
 * Copyright (c) 2026 Nathan Bubna; Licensed MIT */
 
   const safeStorage = (getStorage) => {
@@ -11,6 +11,8 @@ var store = (function() {
   };
   const storageAPI = {
     length: 0,
+    name: "",
+    items: {},
     has(k) {
       return Object.hasOwn(this.items, k);
     },
@@ -44,7 +46,7 @@ var store = (function() {
     }
   };
   const _ = {
-    version: "2.14.4",
+    version: "3.0.0",
     areas: {},
     apis: {},
     nsdelim: ".",
@@ -195,9 +197,12 @@ var store = (function() {
         return fill ?? this;
       },
       keys(fillList) {
-        return this.each((k, _v, list) => {
-          list.push(k);
-        }, fillList ?? []);
+        return this.each(
+          (k, _v, list) => {
+            list.push(k);
+          },
+          fillList ?? []
+        );
       },
       get(key, alt) {
         let s = _.get(this._area, this._in(key));

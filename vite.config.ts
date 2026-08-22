@@ -12,7 +12,7 @@ export default defineConfig({
   plugins: [
     dts({
       entryRoot: "src",
-      include: ["src/store2.ts", "src/types.ts"],
+      include: ["src/store2.ts", "src/types.ts", "src/globals.d.ts"],
       outDir: "dist",
       rollupTypes: true,
       insertTypesEntry: true,

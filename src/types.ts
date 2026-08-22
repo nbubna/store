@@ -6,7 +6,10 @@ export type Replacer<T = unknown> = (key: string, value: T) => string | String[]
 export type Reviver<T = unknown> = (key: string, value: T) => T;
 export type EachFn<T = unknown> = (key: string, data: T, fill?: T) => false | T | void;
 export type TransactFn<T = unknown> = (data: T | null) => T | null;
-export type ExtensionFn<A = unknown, B extends StoreBase = StoreBase, R = unknown> = (this: B, ...args: A[]) => R | null;
+export type ExtensionFn<A = unknown, B extends StoreBase = StoreBase, R = unknown> = (
+  this: B,
+  ...args: A[]
+) => R | null;
 
 // Base override signaturess for Store
 type Set = <T = unknown>(key: string, data: T) => T | null;
@@ -17,13 +20,7 @@ type Transact = <T = unknown>(key: string, fn: TransactFn, alt?: T) => StoreBase
 type Each = <T = unknown>(fn: EachFn<T>) => StoreBase;
 type Clear = (clear: false) => StoreBase;
 
-export type StoreFn = Set &
-  Get &
-  SetAll &
-  GetAll &
-  Transact &
-  Each &
-  Clear;
+export type StoreFn = Set & Get & SetAll & GetAll & Transact & Each & Clear;
 
 export interface StoreAPI {
   clear(): StoreBase;
@@ -90,8 +87,7 @@ export interface FakeStorageCore {
   items: Record<string, string>;
 }
 
-export interface FakeStorage extends StorageAPI, FakeStorageCore {
-}
+export interface FakeStorage extends StorageAPI, FakeStorageCore {}
 
 export type StorageLike = Storage | FakeStorage;
 

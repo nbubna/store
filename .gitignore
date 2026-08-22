@@ -1,6 +1,7 @@
 /node_modules/
 /dist/
 /coverage/
+integration/*/node_modules/
 components
 build
 .DS_Store

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>store2 browser script integration</title>
+    <script src="../../dist/store2.min.js"></script>
+  </head>
+  <body>
+    <p id="status">pending</p>
+    <script>
+      var store = window.store;
+      store.set("browser-script", "ok");
+      var value = store.get("browser-script");
+      document.getElementById("status").textContent =
+        value === "ok" ? "browser-script integration OK" : "failed: " + value;
+    </script>
+  </body>
+</html>

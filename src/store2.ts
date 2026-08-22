@@ -4,11 +4,21 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  */
+import type { InternalSupport, StoreAPIInternal } from "./internal";
 import type {
-  InternalSupport,
-  StoreAPIInternal,
-} from "./internal";
-import type { EachFn, Replacer, Reviver, StoredData, Store, StorageAPI, StorageLike, FakeStorage, FakeStorageCore, StoreAPI, StoreBase, TransactFn } from "./types";
+  EachFn,
+  Replacer,
+  Reviver,
+  StoredData,
+  Store,
+  StorageAPI,
+  StorageLike,
+  FakeStorage,
+  FakeStorageCore,
+  StoreAPI,
+  StoreBase,
+  TransactFn,
+} from "./types";
 
 export type * from "./types";
 
@@ -105,7 +115,11 @@ const _: InternalSupport = {
   Store(id: string, area: StorageLike | undefined, namespace = "") {
     const store: StoreAPIInternal & StoreBase = _.inherit<StoreAPIInternal, StoreBase>(
       _.storeAPI,
-      function<T = unknown>(key?: string | number | Function | false, data?: T | TransactFn<T>, overwrite?: T | Reviver<T> | boolean | Replacer<T>): null | undefined | boolean | T | StoreBase | StoredData {
+      function <T = unknown>(
+        key?: string | number | Function | false,
+        data?: T | TransactFn<T>,
+        overwrite?: T | Reviver<T> | boolean | Replacer<T>,
+      ): null | undefined | boolean | T | StoreBase | StoredData {
         if (arguments.length === 0) {
           return store.getAll();
         }
@@ -161,7 +175,12 @@ const _: InternalSupport = {
       return store;
     },
 
-    namespace(this: StoreAPIInternal, namespace?: string, singleArea?: boolean, delim?: string): StoreAPIInternal {
+    namespace(
+      this: StoreAPIInternal,
+      namespace?: string,
+      singleArea?: boolean,
+      delim?: string,
+    ): StoreAPIInternal {
       delim = delim || this._delim || _.nsdelim;
       if (!namespace) {
         return (this._ns
@@ -210,7 +229,11 @@ const _: InternalSupport = {
       return this.keys().length;
     },
 
-    each<T = unknown>(this: StoreAPIInternal, fn: EachFn<T | null>, fill?: T): StoreAPIInternal | T {
+    each<T = unknown>(
+      this: StoreAPIInternal,
+      fn: EachFn<T | null>,
+      fill?: T,
+    ): StoreAPIInternal | T {
       for (let i = 0, m = _.length(this._area); i < m; i++) {
         const key = this._out(_.key(this._area, i));
         if (key !== undefined) {
@@ -227,9 +250,12 @@ const _: InternalSupport = {
     },
 
     keys(this: StoreAPIInternal, fillList?: string[]): string[] {
-      return this.each<string[]>((k: string, _v: unknown, list: string[] | undefined) => {
-        (list as string[]).push(k);
-      }, (fillList ?? []) as string[]) as unknown as string[];
+      return this.each<string[]>(
+        (k: string, _v: unknown, list: string[] | undefined) => {
+          (list as string[]).push(k);
+        },
+        (fillList ?? []) as string[],
+      ) as unknown as string[];
     },
 
     get(this: StoreAPIInternal, key: string, alt?: unknown | Reviver): unknown {
@@ -248,14 +274,24 @@ const _: InternalSupport = {
       }, fillObj ?? {}) as unknown as StoredData;
     },
 
-    transact<T = unknown>(this: StoreAPIInternal, key: string, fn: TransactFn<T>, alt?: T | Reviver<T>): StoreAPIInternal {
+    transact<T = unknown>(
+      this: StoreAPIInternal,
+      key: string,
+      fn: TransactFn<T>,
+      alt?: T | Reviver<T>,
+    ): StoreAPIInternal {
       const val = this.get(key, alt);
       const ret = fn(val);
       this.set(key, ret === undefined ? val : ret);
       return this;
     },
 
-    set<T = unknown>(this: StoreAPIInternal, key: string, data: T, overwrite?: boolean | Replacer<T>): T | null | unknown{
+    set<T = unknown>(
+      this: StoreAPIInternal,
+      key: string,
+      data: T,
+      overwrite?: boolean | Replacer<T>,
+    ): T | null | unknown {
       const d = this.get(key);
       let replacer: Replacer<T> | undefined;
       if (d != null && overwrite === false) {
@@ -268,7 +304,11 @@ const _: InternalSupport = {
       return _.set(this._area, this._in(key), _.stringify<T>(data, replacer), overwrite) ?? d;
     },
 
-    setAll(this: StoreAPIInternal, data: StoredData, overwrite?: boolean | Replacer): boolean | undefined {
+    setAll(
+      this: StoreAPIInternal,
+      data: StoredData,
+      overwrite?: boolean | Replacer,
+    ): boolean | undefined {
       let changed: boolean | undefined;
       for (const key in data) {
         const val = data[key];
@@ -279,7 +319,12 @@ const _: InternalSupport = {
       return changed;
     },
 
-    add<T = unknown>(this: StoreAPIInternal, key: string, data: T, replacer?: Replacer<T>): T | T[] {
+    add<T = unknown>(
+      this: StoreAPIInternal,
+      key: string,
+      data: T,
+      replacer?: Replacer<T>,
+    ): T | T[] {
       let d = this.get<T | T[]>(key);
       let result: T | T[] = data;
       if (d instanceof Array) {
@@ -341,7 +386,7 @@ const _: InternalSupport = {
         ? k && k.indexOf(this._ns) === 0
           ? k.substring(this._ns.length)
           : undefined
-        : k ?? undefined;
+        : (k ?? undefined);
     },
   } as unknown as StoreAPIInternal,
 

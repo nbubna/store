@@ -67,14 +67,17 @@ _.on = function (this: StoreBase, key: string | OnListener, fn?: OnListener) {
       const k = s._out(e.key);
       if (
         k &&
-        (k === key ||
-          (!key && k !== "_-bad-_")) &&
+        (k === key || (!key && k !== "_-bad-_")) &&
         (!e.storageArea || e.storageArea === s._area)
       ) {
         return fn!.call(s, _.event.call(s, k, e));
       }
     };
-  window.addEventListener("storage", (fn![(key as string) + "-listener"] = listener as EventListener), false);
+  window.addEventListener(
+    "storage",
+    (fn![(key as string) + "-listener"] = listener as EventListener),
+    false,
+  );
   return this;
 };
 

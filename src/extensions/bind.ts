@@ -65,7 +65,7 @@ _.fn("on", function (this: StoreBase, key: string | BindListener, fn?: BindListe
       }),
     );
   }
-  fn![ "_" + key + "listener"] = bound;
+  fn!["_" + key + "listener"] = bound;
   return this;
 } as ExtensionFn);
 

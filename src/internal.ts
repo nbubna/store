@@ -1,4 +1,13 @@
-import type { FakeStorage, FakeStorageCore, Replacer, Reviver, StorageAPI, StorageLike, StoreAPI, StoreBase } from "./types";
+import type {
+  FakeStorage,
+  FakeStorageCore,
+  Replacer,
+  Reviver,
+  StorageAPI,
+  StorageLike,
+  StoreAPI,
+  StoreBase,
+} from "./types";
 
 /** Shared methods on fake storage; `items` / `name` exist only on instances from `storage()`. */
 
@@ -24,10 +33,7 @@ export interface InternalSupport {
   conflict?: unknown;
   storeAPI: StoreAPIInternal;
   storageAPI: StorageAPI;
-  inherit<S = StorageAPI | StoreAPIInternal, O = StoreBase | FakeStorageCore>(
-    api: S,
-    o: O,
-  ): S & O;
+  inherit<S = StorageAPI | StoreAPIInternal, O = StoreBase | FakeStorageCore>(api: S, o: O): S & O;
   stringify<T = unknown>(d: unknown, fn?: Replacer<T>): string;
   parse<T = unknown>(s: string, fn?: Reviver<T>): T | unknown;
   fn(name: string, fn: (...args: unknown[]) => unknown): void;

@@ -164,7 +164,7 @@ function area(id: string) {
   looseEqual(id, s._id);
   is("_area", store._.areas[id], s);
   for (const n in store._.storageAPI) {
-    if (n !== "has" && n !== "toString") {
+    if (n !== "has" && n !== "toString" && n !== "name" && n !== "items") {
       has(n, storage as unknown as Record<string, unknown>, id);
     }
   }

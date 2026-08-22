@@ -1,6 +1,6 @@
 {
   "name": "store2",
-  "version": "2.14.4",
+  "version": "3.0.0",
   "description": "Better localStorage",
   "keywords": [
     "localStorage",
@@ -123,7 +123,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
     "publint": "publint",
     "attw": "attw --pack .",
-    "lint": "oxlint",
+    "integration": "node scripts/integration-test.mjs",
+    "lint": "oxlint --type-aware",
     "format": "oxfmt",
     "format:check": "oxfmt --check"
   },
@@ -132,7 +133,8 @@
     "@vitest/coverage-v8": "^3.2.4",
     "jsdom": "^26.1.0",
     "oxfmt": "^0.16.0",
-    "oxlint": "^0.16.0",
+    "oxlint": "^1.79.0",
+    "oxlint-tsgolint": "^7.0.2001",
     "publint": "^0.3.12",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",

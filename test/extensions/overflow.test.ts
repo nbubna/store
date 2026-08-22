@@ -11,7 +11,10 @@ function quotaError() {
 function mockPrimaryQuota() {
   const primary = store._area;
   const original = Storage.prototype.setItem;
-  return vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (key: string, value: string) {
+  return vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (
+    key: string,
+    value: string,
+  ) {
     if (this === primary) {
       throw quotaError();
     }

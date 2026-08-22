@@ -53,8 +53,7 @@ const C: CookieHelper = (_.cookie = {
     document.cookie = (name || C.name) + "=" + C.encode(state) + ";max-age=" + C.maxAge + C.suffix;
   },
   remove: function (name?: string) {
-    document.cookie =
-      (name || C.name) + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT" + C.suffix;
+    document.cookie = (name || C.name) + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT" + C.suffix;
   },
   area: {} as StorageAPI,
 });
@@ -105,4 +104,8 @@ Object.defineProperty(C.area, "length", {
   },
 });
 
-(store.area as (id: string, area?: StorageLike) => typeof store).call(store, "cookie", C.area as StorageLike);
+(store.area as (id: string, area?: StorageLike) => typeof store).call(
+  store,
+  "cookie",
+  C.area as StorageLike,
+);

@@ -120,7 +120,10 @@ if (store.isFake()) {
       }),
     } as unknown as FakeStorage;
     area = new UserDataStorage();
-  } else if ("globalStorage" in window && (window as Window & { globalStorage?: Record<string, StorageRecord> }).globalStorage) {
+  } else if (
+    "globalStorage" in window &&
+    (window as Window & { globalStorage?: Record<string, StorageRecord> }).globalStorage
+  ) {
     area = create(
       "global",
       (window as Window & { globalStorage: Record<string, StorageRecord> }).globalStorage[
@@ -156,9 +159,13 @@ if (store.session.isFake()) {
   const domain = document.domain;
   const parsed = window.name ? (JSON.parse(window.name) as Record<string, StorageRecord>) : {};
   const sItems = parsed[domain] || {};
-  (store.session as unknown as StoreMetadata)._area = _.areas.session = create("windowName", sItems, function (this: FakeStorage) {
-    const o: Record<string, StorageRecord> = {};
-    o[domain] = this.items;
-    window.name = JSON.stringify(o);
-  });
+  (store.session as unknown as StoreMetadata)._area = _.areas.session = create(
+    "windowName",
+    sItems,
+    function (this: FakeStorage) {
+      const o: Record<string, StorageRecord> = {};
+      o[domain] = this.items;
+      window.name = JSON.stringify(o);
+    },
+  );
 }

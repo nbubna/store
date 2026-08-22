@@ -31,10 +31,10 @@ const _ = store._ as DotDeveloperTools;
 
 _.dot = function (this: StoreBase, key?: string | string[]) {
   const keys = !key
-    ? this.keys()
-    : Array.isArray(key)
-      ? key
-      : (Array.prototype.slice.call(arguments) as string[]),
+      ? this.keys()
+      : Array.isArray(key)
+        ? key
+        : (Array.prototype.slice.call(arguments) as string[]),
     target = this;
   keys.forEach(function (key: string) {
     _.dot.define(target, key);

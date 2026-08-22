@@ -23,14 +23,14 @@ import type { DeveloperTools, ExtensionFn, StoreBase } from "../types";
 export type ArrayExtensions = {
   array: ExtensionFn<string | unknown>;
   arrayFn: (fnName: string) => ExtensionFn<string>;
-}
+};
 export type ArrayDeveloperTools = DeveloperTools & ArrayExtensions;
 export type ArrayStore = StoreBase & ArrayExtensions & typeof Array.prototype;
 
 const _ = store._ as ArrayDeveloperTools;
 
 // expose internals on the DeveloperTools to allow extensibility
-_.array = function(this: StoreBase, fnName: string, key: string, args?: unknown[] | null) {
+_.array = function (this: StoreBase, fnName: string, key: string, args?: unknown[] | null) {
   var value = this.get(key, []),
     array = Array.isArray(value) ? value : [value],
     ret = Array.prototype[fnName as keyof typeof Array.prototype].apply(array, args);
@@ -41,8 +41,8 @@ _.array = function(this: StoreBase, fnName: string, key: string, args?: unknown[
   }
   return ret;
 } as ExtensionFn<string | unknown>;
-_.arrayFn = function(fnName: string): ExtensionFn<string> {
-  return function(this: StoreBase, key: string) {
+_.arrayFn = function (fnName: string): ExtensionFn<string> {
+  return function (this: StoreBase, key: string) {
     return (this as ArrayStore).array(
       fnName,
       key,

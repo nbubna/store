@@ -45,8 +45,7 @@ function isQuotaError(e: unknown): boolean {
 }
 
 _.overflow = function (area: StorageLike, create?: boolean) {
-  const name =
-    area === areas.local ? "+local+" : area === areas.session ? "+session+" : false;
+  const name = area === areas.local ? "+local+" : area === areas.session ? "+session+" : false;
   if (name) {
     let overflow = areas[name];
     if (create && !overflow) {

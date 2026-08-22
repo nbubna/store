@@ -97,4 +97,8 @@ Object.defineProperty(C.area, "length", {
   },
 });
 
-(store.area as (id: string, area?: StorageLike) => typeof store).call(store, "cookies", C.area as StorageLike);
+(store.area as (id: string, area?: StorageLike) => typeof store).call(
+  store,
+  "cookies",
+  C.area as StorageLike,
+);

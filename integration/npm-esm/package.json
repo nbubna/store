@@ -1,0 +1,16 @@
+{
+  "name": "store2-integration-npm-esm",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "start": "node --import tsx smoke.ts"
+  },
+  "dependencies": {
+    "store2": "file:../.."
+  },
+  "devDependencies": {
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}

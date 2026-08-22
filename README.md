@@ -235,7 +235,7 @@ widgetStore.falsy('state'); // returns true
 * 2022-07-18 [v2.14.2][] (public) - Fix typo in ```index.d.ts``` typings.
 * 2024-02-14 [v2.14.3][] (public) - Cut license options to just MIT, also removed Bower and Component support since those are long dead.
 * 2024-12-26 [v2.14.4][] (public) - Remove use of eval from store.deep.js
-* 2026-07-04 [v3.0.0][] (public) - Full TypeScript, modernized build, ESM only, new proxy and devalue extensions
+* 2026-07-04 [v3.0.0][] (public) - **Major:** ESM-only distribution (`.mjs`); TypeScript source and rolled-up types; Vite build; Vitest test suite; `oxlint` (type-aware) + `oxfmt` in CI; Node **≥ 20.19.0**; extensions rebuilt as `dist/extensions/*.mjs` with typed subpath exports; new **`devalue`** extension (rich serialization via [devalue](https://github.com/sveltejs/devalue)); new **`proxy`** extension (property-access wrapper with recursive object/array commit); `deep` retains eval-free path parsing; `bind` deprecated in favor of `on`; `old` extension retained but not unit-tested; see [MIGRATION-v3.md](./MIGRATION-v3.md)
 
 [v2.0.3]: https://github.com/nbubna/store/tree/2.0.3
 [v2.1.0]: https://github.com/nbubna/store/tree/2.1.0

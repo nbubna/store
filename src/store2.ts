@@ -43,6 +43,7 @@ const storageAPI = {
         return k;
       }
     }
+    return undefined;
   },
   setItem(this: FakeStorage, k: string, v: string): void {
     if (!this.has(k)) {
@@ -68,8 +69,8 @@ const storageAPI = {
 
 const _: InternalSupport = {
   version: __STORE2_VERSION__,
-  areas: {} as Record<string, StorageLike>,
-  apis: {} as Record<string, StoreAPIInternal>,
+  areas: {},
+  apis: {},
   nsdelim: ".",
   replace: undefined as Replacer | undefined,
   revive: undefined as Reviver | undefined,
@@ -134,12 +135,12 @@ const _: InternalSupport = {
           return store.get(String(key));
         }
         if (typeof key === "function") {
-          return store.each(key as EachFn<unknown>);
+          return store.each(key as EachFn);
         }
         if (!key) {
           return store.clear();
         }
-        return store.setAll(key as StoredData);
+        return store.setAll(key);
       } as StoreBase,
     );
 
@@ -162,7 +163,7 @@ const _: InternalSupport = {
     return store;
   },
 
-  storage: (name: string) => _.inherit(storageAPI, { items: {}, name }) as FakeStorage,
+  storage: (name: string) => _.inherit(storageAPI, { items: {}, name }),
 
   storeAPI: {
     area(this: StoreAPIInternal, id: string, area?: StorageLike): StoreAPIInternal {
@@ -223,7 +224,7 @@ const _: InternalSupport = {
       if (this._area.has) {
         return this._area.has(this._in(key));
       }
-      return !!(this._in(key) in this._area);
+      return this._in(key) in this._area;
     },
 
     size(this: StoreAPIInternal): number {
@@ -253,10 +254,10 @@ const _: InternalSupport = {
     keys(this: StoreAPIInternal, fillList?: string[]): string[] {
       return this.each<string[]>(
         (k: string, _v: unknown, list: string[] | undefined) => {
-          (list as string[]).push(k);
+          list!.push(k);
         },
-        (fillList ?? []) as string[],
-      ) as unknown as string[];
+        fillList ?? [],
+      );
     },
 
     get(this: StoreAPIInternal, key: string, alt?: unknown): unknown {
@@ -329,8 +330,8 @@ const _: InternalSupport = {
     ): T | T[] {
       let d = this.get<T | T[]>(key);
       let result: T | T[] = data;
-      if (d instanceof Array) {
-        result = d.concat(data) as T[];
+      if (Array.isArray(d)) {
+        result = d.concat(data);
       } else if (d !== null) {
         const type = typeof d;
         if (type === typeof data && type === "object") {
@@ -412,7 +413,7 @@ if (typeof window !== "undefined") {
   if (window.store) {
     _.conflict = window.store;
   }
-  window.store = store as unknown as Store;
+  window.store = store;
 }
 
 export default store;

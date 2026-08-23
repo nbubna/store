@@ -43,29 +43,30 @@ _.fn("on", function (this: StoreBase, key: string | BindListener, fn?: BindListe
     fn = key as BindListener;
     key = "";
   }
+  const handler = fn;
   const s = this as BindStore,
     id = _.id((this as BindStore)._area);
   let bound: EventListener;
   if (window.addEventListener) {
     bound = function (e: StorageEvent) {
       const k = s._out(e.key);
-      if (k && (!key || k === key)) {
-        const eid = _.id(e.storageArea as StorageLike);
+      if (k && (!key || k === key) && e.storageArea) {
+        const eid = _.id(e.storageArea);
         if (!eid || id === eid) {
-          fn!.call(s, _.event(k, s, e));
+          handler.call(s, _.event(k, s, e));
         }
       }
-    } as EventListener;
+    };
     window.addEventListener("storage", bound, false);
   } else {
     (document as Document & { attachEvent: (type: string, fn: EventListener) => void }).attachEvent(
       "onstorage",
       (bound = function () {
-        return fn!.call(s, window.event as Event);
+        handler.call(s, window.event as Event);
       }),
     );
   }
-  fn!["_" + key + "listener"] = bound;
+  handler["_" + key + "listener"] = bound;
   return this;
 } as ExtensionFn);
 
@@ -74,7 +75,8 @@ _.fn("off", function (this: StoreBase, key: string | BindListener, fn?: BindList
     fn = key as BindListener;
     key = "";
   }
-  const bound = fn!["_" + key + "listener"];
+  const handler = fn;
+  const bound = handler["_" + key + "listener"];
   if (window.removeEventListener) {
     window.removeEventListener("storage", bound);
   } else {
@@ -113,4 +115,5 @@ _.id = function (area: StorageLike) {
       return id;
     }
   }
+  return undefined;
 };

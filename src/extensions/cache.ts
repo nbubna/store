@@ -84,4 +84,5 @@ _.set = function (area: StorageLike, key: string, string: string, sec?: unknown)
     }
     throw e;
   }
+  return undefined;
 };

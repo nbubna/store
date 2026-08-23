@@ -68,6 +68,7 @@ C.area = {
         return k;
       }
     }
+    return undefined;
   },
   setItem: (key: string, value: string) => C.write(key, value),
   getItem: (key: string) => C.read(key),

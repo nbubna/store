@@ -56,11 +56,13 @@ _.overflow = function (area: StorageLike, create?: boolean) {
     }
     return overflow;
   }
+  return undefined;
 };
 
 _.set = function (area: StorageLike, key: string, string: string, ...rest: unknown[]) {
   try {
     _set(area, key, string, ...rest);
+    return undefined;
   } catch (e) {
     if (isQuotaError(e)) {
       return _.set(_.overflow(area, true)!, key, string, ...rest);

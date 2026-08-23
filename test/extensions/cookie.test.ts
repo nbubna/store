@@ -48,6 +48,6 @@ describe("cookie extension", () => {
     store.cookie.set("one", 1);
     store.cookie.set("two", 2);
     expect(store.cookie.size()).toBe(2);
-    expect(store.cookie.keys().sort()).toEqual(["one", "two"]);
+    expect(store.cookie.keys().toSorted()).toEqual(["one", "two"]);
   });
 });

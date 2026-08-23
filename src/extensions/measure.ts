@@ -28,23 +28,25 @@ export type MeasureDeveloperTools = DeveloperTools & InternalSupport;
 
 const _ = store._ as MeasureDeveloperTools;
 
-function put(area: StorageLike, s: string) {
+function put(area: StorageLike, s: string): boolean {
   try {
     area.setItem("__test__", s);
     return true;
-  } catch {}
+  } catch {
+    return false;
+  }
 }
 
 _.fn("remainingSpace", function (this: StoreBase) {
-  return ((this as unknown as StoreMetadata)._area as StorageLike & { remainingSpace?: number })
-    .remainingSpace;
-} as ExtensionFn);
+  const area = (this as StoreMetadata)._area as StorageLike & { remainingSpace?: number };
+  return area.remainingSpace;
+});
 
 _.fn("charsUsed", function (this: StoreBase) {
   return _.stringify(this.getAll()).length - 2;
-} as ExtensionFn);
+});
 
-_.fn("charsLeft", function (this: StoreBase, test?: boolean) {
+_.fn("charsLeft", function (this: StoreBase, test?: boolean): number | undefined {
   if (this.isFake()) {
     return;
   }
@@ -70,8 +72,9 @@ _.fn("charsLeft", function (this: StoreBase, test?: boolean) {
     _.remove(store._area, "__test__");
     return s.length + 8;
   }
-} as ExtensionFn);
+  return undefined;
+});
 
 _.fn("charsTotal", function (this: StoreBase, test?: boolean) {
   return (this as MeasureStore).charsUsed() + (this as MeasureStore).charsLeft(test)!;
-} as ExtensionFn);
+});

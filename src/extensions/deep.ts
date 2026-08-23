@@ -26,16 +26,16 @@ type DeepGet = (area: StorageLike, key: string, kid?: string) => string | null;
 
 const _ = store._ as DeepDeveloperTools;
 
-const _get = _.get as DeepGet;
+const baseGet = _.get;
 
-_.get = function (area: StorageLike, key: string, kid?: string) {
-  let s = _get(area, key);
+const deepGet: DeepGet = function (area: StorageLike, key: string, kid?: string) {
+  let s = baseGet(area, key);
   if (s === null || s === undefined) {
     const parts = _.split(key);
     if (parts) {
       key = parts[0];
       kid = kid ? parts[1] + "." + kid : parts[1];
-      return (_.get as DeepGet)(area, parts[0], kid);
+      return deepGet(area, parts[0], kid);
     }
   } else if (kid) {
     try {
@@ -49,6 +49,8 @@ _.get = function (area: StorageLike, key: string, kid?: string) {
   }
   return s;
 };
+
+_.get = deepGet;
 
 _.resolvePath = function (obj: unknown, path: string) {
   return path.split(".").reduce(function (acc: unknown, key: string) {
@@ -65,4 +67,5 @@ _.split = function (key: string) {
     key = key.substring(0, dot);
     return [key, kid];
   }
+  return undefined;
 };

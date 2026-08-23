@@ -13,7 +13,12 @@
     "eqeqeq": "error",
     "no-unused-vars": "error",
     "curly": "error",
-    "no-var": "off"
+    "no-var": "off",
+    "no-underscore-dangle": "off",
+    "unicorn/require-module-specifiers": "off",
+    "typescript/no-unsafe-type-assertion": "off",
+    "typescript/no-unnecessary-type-parameters": "off",
+    "unicorn/consistent-function-scoping": "off"
   },
   "overrides": [
     {
@@ -24,6 +29,12 @@
       ],
       "rules": {
         "typescript/unbound-method": "off"
+      }
+    },
+    {
+      "files": ["src/extensions/measure.ts"],
+      "rules": {
+        "typescript/consistent-return": "off"
       }
     }
   ],

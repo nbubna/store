@@ -35,8 +35,8 @@ _.dot = function (this: StoreBase, key?: string | string[]) {
       : Array.isArray(key)
         ? key
         : (Array.prototype.slice.call(arguments) as string[]);
-  keys.forEach((key: string) => {
-    _.dot.define(this, key);
+  keys.forEach((dotKey: string) => {
+    _.dot.define(this, dotKey);
   });
   return this;
 } as DotExtensions["dot"];

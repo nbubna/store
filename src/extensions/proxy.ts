@@ -153,11 +153,11 @@ function createArrayHandler(ctx: DataContext): ProxyHandler<unknown[]> {
   };
 }
 
-_.wrapData = function (store: StoreBase, key: string, value: unknown): unknown {
+_.wrapData = function (targetStore: StoreBase, key: string, value: unknown): unknown {
   if (!shouldWrapData(value)) {
     return value;
   }
-  return wrapDataValue(value, { store, key, root: value });
+  return wrapDataValue(value, { store: targetStore, key, root: value });
 };
 
 const storeProxyHandler: ProxyHandler<StoreBase> = {

@@ -62,6 +62,7 @@ _.on = function (this: StoreBase, key: string | OnListener, fn?: OnListener) {
     fn = key as OnListener;
     key = "";
   }
+  const handler = fn;
   const s = this as OnStore,
     listener = function (e: StorageEvent) {
       const k = s._out(e.key);
@@ -70,12 +71,13 @@ _.on = function (this: StoreBase, key: string | OnListener, fn?: OnListener) {
         (k === key || (!key && k !== "_-bad-_")) &&
         (!e.storageArea || e.storageArea === s._area)
       ) {
-        return fn!.call(s, _.event.call(s, k, e));
+        return handler.call(s, _.event.call(s, k, e));
       }
+      return undefined;
     };
   window.addEventListener(
     "storage",
-    (fn![(key as string) + "-listener"] = listener as EventListener),
+    (handler[key + "-listener"] = listener),
     false,
   );
   return this;
@@ -86,7 +88,8 @@ _.off = function (this: StoreBase, key: string | OnListener, fn?: OnListener) {
     fn = key as OnListener;
     key = "";
   }
-  window.removeEventListener("storage", fn![(key as string) + "-listener"]);
+  const handler = fn;
+  window.removeEventListener("storage", handler[key + "-listener"]);
   return this;
 };
 
@@ -95,12 +98,13 @@ _.once = function (this: StoreBase, key: string | OnListener, fn?: OnListener) {
     fn = key as OnListener;
     key = "";
   }
+  const handler = fn;
   const s = this as OnBoundStore;
   let listener: OnListener = function (this: StoreBase, ...args: unknown[]) {
-    s.off(key as string, listener);
-    return fn!.apply(this, args as [StorageEventInfo]);
-  } 
-  return s.on(key as string, listener);
+    s.off(key, listener);
+    return handler.apply(this, args);
+  };
+  return s.on(key, listener);
 };
 
 _.event = function (this: StoreBase, k: string, e: StorageEvent) {

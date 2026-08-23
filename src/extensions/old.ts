@@ -52,10 +52,10 @@ function create(
       length++;
     }
   }
-  const area = _.inherit(_.storageAPI, { items, length, name }) as FakeStorage;
+  const area = _.inherit(_.storageAPI, { items, length, name });
   if (update) {
-    addUpdateFn(area as unknown as Record<string, unknown>, "setItem", update);
-    addUpdateFn(area as unknown as Record<string, unknown>, "removeItem", update);
+    addUpdateFn(area as Record<string, unknown>, "setItem", update);
+    addUpdateFn(area as Record<string, unknown>, "removeItem", update);
   }
   return area;
 }
@@ -85,31 +85,31 @@ if (store.isFake()) {
       },
       UserDataStorage = function UserDataStorage(this: FakeStorage) {
         return this;
-      } as unknown as { new (): FakeStorage };
+      } as { new (): FakeStorage };
 
     UserDataStorage.prototype = {
       length: wrap(function () {
         return el.XMLDocument.documentElement.attributes.length;
       })(),
-      has: wrap(has as (...args: unknown[]) => unknown),
+      has: wrap(has),
       key: wrap(function (i: number) {
         return el.XMLDocument.documentElement.attributes[i]?.name;
-      } as (...args: unknown[]) => unknown),
+      }),
       setItem: wrap(function (this: FakeStorage, k: string, v: string) {
         if (!has(k)) {
           this.length++;
         }
         el.setAttribute(k, v);
-      } as (...args: unknown[]) => unknown),
+      }),
       removeItem: wrap(function (this: FakeStorage, k: string) {
         if (has(k)) {
           el.removeAttribute(k);
           this.length--;
         }
-      } as (...args: unknown[]) => unknown),
+      }),
       getItem: wrap(function (k: string) {
         return el.getAttribute(k);
-      } as (...args: unknown[]) => unknown),
+      }),
       clear: wrap(function (this: FakeStorage) {
         const all = el.XMLDocument.documentElement.attributes;
         // eslint-disable-next-line no-extra-boolean-cast
@@ -118,7 +118,7 @@ if (store.isFake()) {
         }
         this.length = 0;
       }),
-    } as unknown as FakeStorage;
+    } as FakeStorage;
     area = new UserDataStorage();
   } else if (
     "globalStorage" in window &&

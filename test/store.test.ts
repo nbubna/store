@@ -173,7 +173,7 @@ function area(id: string) {
   is("_area", store._.areas[id], s);
   for (const n in store._.storageAPI) {
     if (n !== "has" && n !== "toString" && n !== "name" && n !== "items") {
-      has(n, storage as unknown as Record<string, unknown>, id);
+      has(n, storage, id);
     }
   }
   looseEqual(s._area, store._.areas[id]);
@@ -187,7 +187,7 @@ describe("store2", () => {
     for (let i = 0; i < API.length; i++) {
       has(API[i]);
     }
-    has("version", store._ as unknown as Record<string, unknown>);
+    has("version", store._);
   });
 
   it("shortcuts", () => {
@@ -645,7 +645,7 @@ describe("store2", () => {
     store.set("c", 3);
     const seen: string[] = [];
     store.each(function (k) {
-      seen.push(k as string);
+      seen.push(k);
       return k === "b" ? false : undefined;
     });
     expect(seen).toEqual(["a", "b"]);

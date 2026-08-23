@@ -67,6 +67,7 @@ C.area = {
         return k;
       }
     }
+    return undefined;
   },
   setItem: function (k: string, v: string) {
     const state = C.all();

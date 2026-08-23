@@ -40,7 +40,7 @@ function quotaFn(fn: QuotaHandler) {
   quotaStore.quota.fns.push(fn);
 }
 quotaFn.fns = [] as QuotaHandler[];
-quotaStore.quota = quotaFn as QuotaFn;
+quotaStore.quota = quotaFn;
 
 const _set = _.set;
 _.set = function (area: StorageLike, key: string, str: string, ...rest: unknown[]) {

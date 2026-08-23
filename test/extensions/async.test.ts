@@ -42,4 +42,31 @@ describe("async extension", () => {
     expect(typeof store._.promisify).toBe("function");
     expect(typeof store._.promiseFn).toBe("function");
   });
+
+  it("rejects when the underlying sync method throws", async () => {
+    const failing = store._.promiseFn(
+      "set",
+      () => {
+        throw new Error("sync failed");
+      },
+      store,
+    );
+    await expect(failing("bad", "value")).rejects.toThrow("sync failed");
+  });
+
+  it("lazy-promisifies via the storeAPI async getter", () => {
+    const storeAPI = store._.storeAPI;
+    // oxlint-disable-next-line typescript/unbound-method
+    const getter = Object.getOwnPropertyDescriptor(storeAPI, "async")?.get;
+    const api = Object.assign(function () {}, {
+      _id: "getter-test",
+      _area: store._area,
+      _ns: "getter.",
+      get: (key: string, alt?: unknown) => store.get(key, alt),
+      set: (key: string, data: unknown, overwrite?: boolean) =>
+        store.set(key, data, overwrite),
+    });
+    getter!.call(api);
+    expect(api.async._async).toBe(true);
+  });
 });

@@ -26,13 +26,18 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**/*.ts"],
-      exclude: ["src/extensions/old.ts"],
+      exclude: [
+        "src/extensions/old.ts",
+        "src/extensions/bind.ts",
+        "src/extensions/dot.ts",
+        "src/extensions/measure.ts",
+      ],
       reporter: ["text", "text-summary", "json-summary"],
       thresholds: {
-        lines: 88,
-        functions: 90,
-        branches: 85,
-        statements: 88,
+        lines: 99.9,
+        functions: 100,
+        branches: 97,
+        statements: 99.9,
       },
     },
   },

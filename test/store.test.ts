@@ -357,6 +357,13 @@ describe("store2", () => {
     expect(store).toBeDefined();
   });
 
+  it("fake storage key returns undefined past the last index", () => {
+    const fake = store.area("fake-key-range");
+    fake.set("only", 1);
+    expect(fake._area.key(1)).toBeUndefined();
+    fake.clear();
+  });
+
   it("tricky for us", () => {
     save(null as unknown as string, null);
     save(undefined as unknown as string, "undefined");

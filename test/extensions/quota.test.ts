@@ -61,6 +61,25 @@ describe("quota extension", () => {
     expect(() => store.set("fail", "value")).toThrow("quota");
   });
 
+  it("handles firefox quota error names", () => {
+    const primary = store._area;
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (
+      this: Storage,
+      key: string,
+      value: string,
+    ) {
+      if (this === primary) {
+        const err = new Error("quota");
+        err.name = "NS_ERROR_DOM_QUOTA_REACHED";
+        throw err;
+      }
+      return Storage.prototype.setItem.call(this, key, value);
+    });
+    store.quota(() => true);
+
+    expect(() => store.set("firefox-quota", "value")).not.toThrow();
+  });
+
   it("stops calling handlers after one returns true", () => {
     const first = vi.fn<QuotaHandler>(() => true);
     const second = vi.fn<QuotaHandler>();

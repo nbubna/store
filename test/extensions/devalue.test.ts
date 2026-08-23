@@ -1,6 +1,6 @@
 import { store } from "../setup";
 import "../../src/extensions/devalue";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("devalue extension", () => {
   beforeEach(() => {
@@ -72,5 +72,35 @@ describe("devalue extension", () => {
     expect(got).toBeInstanceOf(Point);
     expect(got.x).toBe(3);
     expect(got.y).toBe(4);
+  });
+
+  it("stringifies undefined and functions as strings", () => {
+    expect(store._.stringify(undefined)).toBe("undefined");
+    expect(store._.stringify(() => "fn")).toMatch(/function|=>/);
+  });
+
+  it("uses JSON stringify when replace is configured", () => {
+    store._.replace = (_key, value) => value;
+    expect(store._.stringify({ plain: true })).toBe('{"plain":true}');
+  });
+
+  it("falls back to JSON when devalue stringify fails", async () => {
+    vi.doMock("devalue", () => ({
+      stringify: () => {
+        throw new Error("devalue failed");
+      },
+      parse: (source: string) => JSON.parse(source),
+    }));
+    vi.resetModules();
+    const { default: freshStore } = await import("store2");
+    await import("../../src/extensions/devalue");
+    expect(freshStore._.stringify({ ok: true })).toBe('{"ok":true}');
+    vi.doUnmock("devalue");
+    vi.resetModules();
+    await import("../../src/extensions/devalue");
+  });
+
+  it("falls back to JSON parse when devalue parse fails", async () => {
+    expect(store._.parse("{bad")).toBe("{bad");
   });
 });

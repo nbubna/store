@@ -43,4 +43,41 @@ describe("cache extension", () => {
     expect(typeof store._.cache).toBe("function");
     expect(store._.expires("exp@123;value")).toBe(123);
   });
+
+  it("retries set after evicting expired ttl entries on quota errors", () => {
+    const area = store._area;
+    const nativeSetItem = Storage.prototype.setItem;
+    area.setItem("other", JSON.stringify("keep"));
+
+    let attempts = 0;
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (
+      this: Storage,
+      key: string,
+      value: string,
+    ) {
+      if (this === area) {
+        attempts++;
+        if (attempts === 1) {
+          const err = new Error("quota");
+          err.name = "QUOTA_EXCEEDED_ERR";
+          throw err;
+        }
+      }
+      return nativeSetItem.call(this, key, value);
+    });
+    vi.spyOn(store._, "cache").mockReturnValue(undefined);
+
+    store._.set(area, "retry", JSON.stringify("new"), 60);
+    expect(attempts).toBe(2);
+    expect(area.getItem("retry")).toContain("new");
+  });
+
+  it("rethrows quota errors when nothing expired can be evicted", () => {
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      const err = new Error("quota");
+      err.name = "QUOTA_EXCEEDED_ERR";
+      throw err;
+    });
+    expect(() => store._.set(store._area, "blocked", JSON.stringify("v"))).toThrow("quota");
+  });
 });

@@ -48,4 +48,16 @@ describe("cookies extension", () => {
     C.remove("helper");
     expect(C.read("helper")).toBeNull();
   });
+
+  it("exposes low-level cookies area storage methods", () => {
+    const area = store._.cookies.area;
+    area.setItem("one", JSON.stringify("1"));
+    area.setItem("two", JSON.stringify("2"));
+    expect(area.key(0)).toBe("one");
+    expect(area.key(9)).toBeUndefined();
+    expect(area.has("one")).toBe(true);
+    expect(area.length).toBe(2);
+    area.clear();
+    expect(area.length).toBe(0);
+  });
 });

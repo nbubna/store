@@ -89,4 +89,43 @@ describe("proxy extension", () => {
     expect(store._.wrapData(store, "count", 3)).toBe(3);
     expect(store._.wrapData(store, "name", "Ada")).toBe("Ada");
   });
+
+  it("persists additional array mutations and deletions", () => {
+    store.items = ["a", "b", "c"];
+    store.items.pop();
+    expect(store.get("items")).toEqual(["a", "b"]);
+
+    store.items.sort();
+    expect(store.get("items")).toEqual(["a", "b"]);
+
+    store.items = ["x", "y", "z"];
+    delete store.items[1];
+    expect(store.get("items")).toEqual(["x", null, "z"]);
+
+    store.items.length = 2;
+    expect(store.get("items")).toEqual(["x", null]);
+  });
+
+  it("reuses wrapped object proxies and deletes non-storage properties", () => {
+    store.profile = { user: { name: "Ada" } };
+    const profile = store.profile;
+    expect(profile.user).toBe(profile.user);
+
+    const target = store as unknown as Record<string, unknown>;
+    target.__temp = true;
+    expect("__temp" in store).toBe(true);
+    delete target.__temp;
+    expect("__temp" in store).toBe(false);
+  });
+
+  it("deletes built-in properties through the proxy reflect trap", () => {
+    store.namespace("proxy-delete");
+    expect("proxy-delete" in store).toBe(true);
+    delete (store as unknown as { "proxy-delete"?: unknown })["proxy-delete"];
+    expect("proxy-delete" in store).toBe(false);
+  });
+
+  it("uses reflect traps for built-in store properties", () => {
+    expect("local" in store).toBe(true);
+  });
 });

@@ -64,4 +64,16 @@ describe("dom extension", () => {
     expect(store.get("one")).toBe("1");
     expect(store.get("two")).toBe("2");
   });
+
+  it("derives keys from node name and writes non-input content", () => {
+    const block = document.createElement("div");
+    document.body.appendChild(block);
+
+    expect(store._.dom.key(block)).toBe("dom.div");
+    expect(store._.dom.key(block, 2)).toBe("dom.div2");
+    store._.dom.set(block, "plain");
+    expect(block.innerHTML).toBe("plain");
+    store._.dom.set(block, { text: "hello" });
+    expect(block.innerHTML).toBe('{"text":"hello"}');
+  });
 });

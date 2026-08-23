@@ -50,4 +50,17 @@ describe("cookie extension", () => {
     expect(store.cookie.size()).toBe(2);
     expect(store.cookie.keys().toSorted()).toEqual(["one", "two"]);
   });
+
+  it("exposes low-level cookie area storage methods", () => {
+    const area = store._.cookie.area;
+    area.setItem("alpha", JSON.stringify(1));
+    area.setItem("beta", JSON.stringify(2));
+    expect(area.key(0)).toBe("alpha");
+    expect(area.key(9)).toBeUndefined();
+    expect(area.has("alpha")).toBe(true);
+    expect(area.has("missing")).toBe(false);
+    expect(area.length).toBe(2);
+    area.removeItem("alpha");
+    expect(area.getItem("alpha")).toBeNull();
+  });
 });

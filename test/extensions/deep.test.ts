@@ -1,6 +1,6 @@
 import { store } from "../setup";
 import "../../src/extensions/deep";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("deep extension", () => {
   beforeEach(() => {
@@ -24,5 +24,15 @@ describe("deep extension", () => {
   it("exposes split and resolvePath helpers", () => {
     expect(store._.split("foo.bar.baz")).toEqual(["foo.bar", "baz"]);
     expect(store._.resolvePath({ a: { b: 2 } }, "a.b")).toBe(2);
+  });
+
+  it("returns null when nested serialization fails", () => {
+    store.set("broken", { a: 1 });
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(store._, "stringify").mockImplementation(() => {
+      throw new Error("serialize failed");
+    });
+    expect(store.get("broken.a")).toBeNull();
+    errorSpy.mockRestore();
   });
 });

@@ -63,4 +63,28 @@ describe("overflow extension", () => {
     expect(typeof store._.overflow).toBe("function");
     expect(store._.overflow(store._area)).toBeUndefined();
   });
+
+  it("reads, removes, and indexes overflow storage after quota failures", () => {
+    mockPrimaryQuota();
+    store.set("overflow-a", "1");
+    store.set("overflow-b", "2");
+
+    expect(store.get("overflow-a")).toBe("1");
+    expect(store.get("overflow-b")).toBe("2");
+    expect(store._.key(store._area, 999)).toBeNull();
+
+    const overflow = store._.overflow(store._area)!;
+    expect(store._.key(store._area, store._area.length)).toBe(store._.key(overflow, 0));
+
+    store.remove("overflow-a");
+    expect(store.get("overflow-a")).toBeNull();
+    expect(store.get("overflow-b")).toBe("2");
+  });
+
+  it("rethrows non-quota storage errors", () => {
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("disk failure");
+    });
+    expect(() => store.set("fail", "value")).toThrow("disk failure");
+  });
 });

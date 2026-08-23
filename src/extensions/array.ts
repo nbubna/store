@@ -20,8 +20,15 @@
 import store from "store2";
 import type { DeveloperTools, ExtensionFn, StoreBase } from "../types";
 
+export type ArrayFn = (
+  this: StoreBase,
+  fnName: string,
+  key: string,
+  args?: unknown[] | null,
+) => unknown;
+
 export type ArrayExtensions = {
-  array: ExtensionFn<string | unknown>;
+  array: ArrayFn;
   arrayFn: (fnName: string) => ExtensionFn<string>;
 };
 export type ArrayDeveloperTools = DeveloperTools & ArrayExtensions;
@@ -40,7 +47,7 @@ _.array = function (this: StoreBase, fnName: string, key: string, args?: unknown
     this.remove(key);
   }
   return ret;
-} as ExtensionFn<string | unknown>;
+} satisfies ArrayFn;
 _.arrayFn = function (fnName: string): ExtensionFn<string> {
   return function (this: StoreBase, key: string) {
     return (this as ArrayStore).array(
@@ -52,7 +59,7 @@ _.arrayFn = function (fnName: string): ExtensionFn<string> {
 };
 
 // add function(s) to the store interface
-_.fn("array", _.array);
+_.fn("array", _.array as ExtensionFn);
 Object.getOwnPropertyNames(Array.prototype).forEach((name: string) => {
   // add Array interface functions w/o existing conflicts
   if (typeof Array.prototype[name as keyof typeof Array.prototype] === "function") {

@@ -45,7 +45,7 @@ const DOM: DOMHelper = Object.assign(domInit, {
     const key = DOM.key(node, i),
       area = DOM.area(node);
     let value = area(key);
-    if (value == null) {
+    if (value === null || value === undefined) {
       value = DOM.get(node as HTMLElement);
     } else {
       DOM.set(node as HTMLElement, value);

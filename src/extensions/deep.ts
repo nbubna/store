@@ -30,7 +30,7 @@ const _get = _.get as DeepGet;
 
 _.get = function (area: StorageLike, key: string, kid?: string) {
   let s = _get(area, key);
-  if (s == null) {
+  if (s === null || s === undefined) {
     const parts = _.split(key);
     if (parts) {
       key = parts[0];

@@ -15,5 +15,24 @@
     "curly": "error",
     "no-var": "off"
   },
-  "ignorePatterns": ["dist/**", "libs/**", "node_modules/**"]
+  "overrides": [
+    {
+      "files": [
+        "src/extensions/on.ts",
+        "src/extensions/onlyreal.ts",
+        "src/extensions/quota.ts"
+      ],
+      "rules": {
+        "typescript/unbound-method": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "dist/**",
+    "libs/**",
+    "node_modules/**",
+    "scripts/**",
+    "*.config.ts",
+    "vite.extensions.config.ts"
+  ],
 }

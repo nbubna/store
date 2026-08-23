@@ -34,7 +34,7 @@ const _set = _.set,
   _clear = _.clear;
 
 function isQuotaError(e: unknown): boolean {
-  if (typeof e !== "object" || e === null) return false;
+  if (typeof e !== "object" || e === null) { return false; }
   const err = e as { name?: string; toString?: () => string };
   return (
     err.name === "QUOTA_EXCEEDED_ERR" ||

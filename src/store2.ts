@@ -266,7 +266,7 @@ const _: InternalSupport = {
         fn = alt as Reviver;
         alt = null;
       }
-      return s !== null ? _.parse(s, fn) : alt != null ? alt : s;
+      return s !== null ? _.parse(s, fn) : alt !== null && alt !== undefined ? alt : s;
     },
 
     getAll(this: StoreAPIInternal, fillObj?: StoredData): StoredData {
@@ -295,7 +295,7 @@ const _: InternalSupport = {
     ): T | null {
       const d = this.get(key);
       let replacer: Replacer<T> | undefined;
-      if (d != null && overwrite === false) {
+      if (d !== null && d !== undefined && overwrite === false) {
         return data;
       }
       if (typeof overwrite === "function") {

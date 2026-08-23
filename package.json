@@ -124,7 +124,7 @@
     "publint": "publint",
     "attw": "attw --pack .",
     "integration": "node scripts/integration-test.mjs",
-    "lint": "oxlint --type-aware",
+    "lint": "oxlint --type-aware -c oxlint.json",
     "format": "oxfmt",
     "format:check": "oxfmt --check"
   },

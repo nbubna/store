@@ -112,6 +112,7 @@ if (store.isFake()) {
       } as (...args: unknown[]) => unknown),
       clear: wrap(function (this: FakeStorage) {
         const all = el.XMLDocument.documentElement.attributes;
+        // eslint-disable-next-line no-extra-boolean-cast
         for (let i = 0, a; !!(a = all[i]); i++) {
           el.removeAttribute(a.name);
         }

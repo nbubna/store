@@ -69,12 +69,12 @@ C.area = {
       }
     }
   },
-  setItem: C.write,
-  getItem: C.read,
+  setItem: (key: string, value: string) => C.write(key, value),
+  getItem: (key: string) => C.read(key),
   has: function (k: string) {
     return Object.hasOwn(C.all(), k);
   },
-  removeItem: C.remove,
+  removeItem: (key: string) => C.remove(key),
   clear: function () {
     const state = C.all();
     for (const k in state) {

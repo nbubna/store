@@ -96,14 +96,11 @@ _.once = function (this: StoreBase, key: string | OnListener, fn?: OnListener) {
     key = "";
   }
   const s = this as OnBoundStore;
-  let listener: OnListener;
-  return s.on(
-    key as string,
-    (listener = function (this: StoreBase, ...args: unknown[]) {
-      s.off(key as string, listener);
-      return fn!.apply(this, args as [StorageEventInfo]);
-    } as OnListener),
-  );
+  let listener: OnListener = function (this: StoreBase, ...args: unknown[]) {
+    s.off(key as string, listener);
+    return fn!.apply(this, args as [StorageEventInfo]);
+  } 
+  return s.on(key as string, listener);
 };
 
 _.event = function (this: StoreBase, k: string, e: StorageEvent) {

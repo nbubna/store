@@ -87,7 +87,7 @@ C.area = {
       C.write(state);
     }
   },
-  clear: C.remove,
+  clear: () => C.remove(),
   length: 0,
 };
 

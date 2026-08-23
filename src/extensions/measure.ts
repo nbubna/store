@@ -14,7 +14,7 @@
  * Status: EXPERIMENTAL - changing API *and* crash threats :)
  */
 import store from "store2";
-import type { DeveloperTools, ExtensionFn, StorageLike, StoreBase, StoreMetadata } from "../types";
+import type { DeveloperTools, StorageLike, StoreBase, StoreMetadata } from "../types";
 import type { InternalSupport } from "../internal";
 
 export type MeasureStore = StoreBase & {

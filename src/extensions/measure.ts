@@ -32,7 +32,7 @@ function put(area: StorageLike, s: string) {
   try {
     area.setItem("__test__", s);
     return true;
-  } catch (e) {}
+  } catch {}
 }
 
 _.fn("remainingSpace", function (this: StoreBase) {

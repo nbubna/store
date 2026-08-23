@@ -11,11 +11,10 @@ import type {
   Reviver,
   StoredData,
   Store,
-  StorageAPI,
   StorageLike,
   FakeStorage,
   FakeStorageCore,
-  StoreAPI,
+  StorageAPI,
   StoreBase,
   TransactFn,
 } from "./types";
@@ -85,7 +84,9 @@ const _: InternalSupport = {
   },
 
   stringify<T = unknown>(d: unknown, fn?: Replacer<T>) {
-    return d === undefined || typeof d === "function" ? `${d}` : JSON.stringify(d, fn || _.replace);
+    return d === undefined || typeof d === "function"
+      ? String(d)
+      : JSON.stringify(d, fn || _.replace);
   },
 
   parse<T = unknown>(s: string, fn?: Reviver<T>): T {
@@ -225,7 +226,7 @@ const _: InternalSupport = {
       return !!(this._in(key) in this._area);
     },
 
-    size(): number {
+    size(this: StoreAPIInternal): number {
       return this.keys().length;
     },
 
@@ -258,7 +259,7 @@ const _: InternalSupport = {
       ) as unknown as string[];
     },
 
-    get(this: StoreAPIInternal, key: string, alt?: unknown | Reviver): unknown {
+    get(this: StoreAPIInternal, key: string, alt?: unknown): unknown {
       let s = _.get(this._area, this._in(key));
       let fn: Reviver | undefined;
       if (typeof alt === "function") {
@@ -291,7 +292,7 @@ const _: InternalSupport = {
       key: string,
       data: T,
       overwrite?: boolean | Replacer<T>,
-    ): T | null | unknown {
+    ): T | null {
       const d = this.get(key);
       let replacer: Replacer<T> | undefined;
       if (d != null && overwrite === false) {
@@ -301,7 +302,8 @@ const _: InternalSupport = {
         replacer = overwrite;
         overwrite = undefined;
       }
-      return _.set(this._area, this._in(key), _.stringify<T>(data, replacer), overwrite) ?? d;
+      return (_.set(this._area, this._in(key), _.stringify<T>(data, replacer), overwrite) ??
+        d) as T | null;
     },
 
     setAll(
@@ -374,7 +376,7 @@ const _: InternalSupport = {
       return this;
     },
 
-    _in(this: StoreAPIInternal, k: string | unknown): string {
+    _in(this: StoreAPIInternal, k: unknown): string {
       if (typeof k !== "string") {
         k = _.stringify(k);
       }

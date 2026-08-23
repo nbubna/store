@@ -127,7 +127,7 @@ _.event = function (this: StoreBase, k: string, e: StorageEvent) {
   return event;
 };
 
-const old = !window.addEventListener ? function () {} : null;
-_.fn("on", (old || _.on) as ExtensionFn);
-_.fn("off", (old || _.off) as ExtensionFn);
-_.fn("once", (old || _.once) as ExtensionFn);
+const old = window?.addEventListener ? null : function () {};
+_.fn("on", (old ?? _.on) as ExtensionFn);
+_.fn("off", (old ?? _.off) as ExtensionFn);
+_.fn("once", (old ?? _.once) as ExtensionFn);

@@ -18,7 +18,7 @@ export interface StoreAPIInternal extends StoreAPI {
   _delim?: string;
   _real?: StorageLike;
   _async?: boolean;
-  _in(k: string | unknown): string;
+  _in(k: unknown): string;
   _out(k: string | null | undefined): string | undefined;
   [key: string]: unknown;
 }
@@ -35,7 +35,7 @@ export interface InternalSupport {
   storageAPI: StorageAPI;
   inherit<S = StorageAPI | StoreAPIInternal, O = StoreBase | FakeStorageCore>(api: S, o: O): S & O;
   stringify<T = unknown>(d: unknown, fn?: Replacer<T>): string;
-  parse<T = unknown>(s: string, fn?: Reviver<T>): T | unknown;
+  parse<T = unknown>(s: string, fn?: Reviver<T>): T;
   fn(name: string, fn: (...args: unknown[]) => unknown): void;
   get(area: StorageLike, key: string): string | null;
   set(area: StorageLike, key: string, value: string, overwrite?: unknown): unknown;

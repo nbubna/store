@@ -2,7 +2,7 @@ export interface StoredData {
   [key: string]: unknown;
 }
 
-export type Replacer<T = unknown> = (key: string, value: T) => string | String[] | number[] | T;
+export type Replacer<T = unknown> = (key: string, value: T) => string | string[] | number[] | T;
 export type Reviver<T = unknown> = (key: string, value: T) => T;
 export type EachFn<T = unknown> = (key: string, data: T, fill?: T) => false | T | void;
 export type TransactFn<T = unknown> = (data: T | null) => T | null;

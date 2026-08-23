@@ -34,7 +34,7 @@ const jsonParse = _.parse;
 
 _.stringify = function (d: unknown, fn?: Replacer) {
   if (d === undefined || typeof d === "function") {
-    return `${d}`;
+    return String(d);
   }
   if (fn || _.replace) {
     return jsonStringify(d, fn);

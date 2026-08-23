@@ -61,7 +61,7 @@ var store = (function() {
       return o;
     },
     stringify(d, fn) {
-      return d === void 0 || typeof d === "function" ? `${d}` : JSON.stringify(d, fn || _.replace);
+      return d === void 0 || typeof d === "function" ? String(d) : JSON.stringify(d, fn || _.replace);
     },
     parse(s, fn) {
       try {

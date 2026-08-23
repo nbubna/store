@@ -14,7 +14,7 @@ describe("onlyreal extension", () => {
   });
 
   it("skips writes to fake storage but allows real storage", async () => {
-    previousSet = internal().set;
+    previousSet = internal().set.bind(internal());
     await import("../../src/extensions/onlyreal");
 
     const fake = store.area("onlyreal-test");
@@ -27,7 +27,7 @@ describe("onlyreal extension", () => {
   });
 
   it("still allows reads from fake storage", async () => {
-    previousSet = internal().set;
+    previousSet = internal().set.bind(internal());
     await import("../../src/extensions/onlyreal");
 
     const fake = store.area("onlyreal-read") as unknown as StoreAPIInternal;

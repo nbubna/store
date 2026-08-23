@@ -14,7 +14,7 @@
  * Status: USEFUL
  */
 import store from "store2";
-import type { DeveloperTools, StorageLike, Store, StoreMetadata } from "../types";
+import type { DeveloperTools, StorageLike, StoreMetadata } from "../types";
 import type { InternalSupport } from "../internal";
 
 export type OverflowExtensions = {

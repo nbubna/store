@@ -3,6 +3,7 @@
  */
 import store from "store2";
 import "store2/cache";
+import "store2/on";
 import proxyStore from "store2/proxy";
 import type { Store } from "store2";
 

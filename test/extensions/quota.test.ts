@@ -10,7 +10,9 @@ function quotaExceeded() {
 
 function mockPrimaryQuota() {
   const primary = store._area;
-  const original = Storage.prototype.setItem;
+  const original = function (this: Storage, key: string, value: string) {
+    return Storage.prototype.setItem.call(this, key, value);
+  };
   return vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (
     key: string,
     value: string,

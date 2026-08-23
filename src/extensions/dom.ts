@@ -83,4 +83,6 @@ const DOM: DOMHelper = Object.assign(domInit, {
 
 _.dom = DOM;
 
-document.addEventListener("DOMContentLoaded", DOM);
+if (typeof document !== "undefined") {
+  document.addEventListener("DOMContentLoaded", DOM);
+}

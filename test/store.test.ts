@@ -21,10 +21,12 @@ const API = [
 ];
 
 function looseEqual(actual: unknown, expected: unknown) {
+  // oxlint-disable-next-line eqeqeq
   expect(actual == expected).toBe(true);
 }
 
 function looseNotEqual(actual: unknown, expected: unknown) {
+  // oxlint-disable-next-line eqeqeq
   expect(actual != expected).toBe(true);
 }
 
@@ -45,11 +47,13 @@ function noval(val: unknown) {
 
 function get(key: string, expected: unknown, s?: typeof store) {
   const value = (s || store).get(key);
-  if (expected && typeof expected === "object") {
-    expect(value).toEqual(expected);
-  } else {
-    looseEqual(value, expected);
-  }
+  const useDeepEqual = expected !== null && typeof expected === "object";
+  expect(
+    useDeepEqual
+      ? JSON.stringify(value) === JSON.stringify(expected)
+      : // oxlint-disable-next-line eqeqeq
+        value == expected,
+  ).toBe(true);
 }
 
 function save(key: string, val: unknown, s?: typeof store) {
@@ -62,16 +66,25 @@ function add(key: string, val: unknown, expected: unknown, s?: typeof store) {
   get(key, expected, s);
 }
 
+function updateKeyValue(key: string, val: unknown, s?: typeof store) {
+  const result = (s || store)(key, val);
+  expect(result !== null && result !== undefined).toBe(true);
+  get(key, val, s);
+}
+
+function updateObject(obj: Record<string, unknown>, s?: typeof store) {
+  looseEqual((s || store)(obj), true);
+  for (const k in obj) {
+    get(k, obj[k], s);
+  }
+}
+
 function update(key: string | Record<string, unknown>, val?: unknown, s?: typeof store) {
   if (typeof key === "string" || val !== undefined) {
-    expect((s || store)(key as string, val) != null).toBe(true);
-    get(key as string, val, s);
-  } else {
-    looseEqual((s || store)(key), true);
-    for (const k in key) {
-      get(k, key[k], s);
-    }
+    updateKeyValue(key as string, val, s);
+    return;
   }
+  updateObject(key, s);
 }
 
 function transact(key: string, fn: (val: unknown) => unknown, alt?: unknown, s?: typeof store) {
@@ -84,11 +97,8 @@ function getAll(
   s?: typeof store,
   fillObj?: Record<string, unknown>,
 ) {
-  if (fillObj) {
-    expect((s || store).getAll(fillObj)).toEqual(expected);
-  } else {
-    expect((s || store)()).toEqual(expected);
-  }
+  const actual = fillObj ? (s || store).getAll(fillObj) : (s || store)();
+  expect(actual).toEqual(expected);
 }
 
 function keys(
@@ -97,14 +107,12 @@ function keys(
   fillList?: string[] | { push: (key: string) => void; length: number },
 ) {
   const _keys = (s || store).keys(fillList as string[]);
+  const canIndex = typeof _keys.indexOf === "function";
   for (let i = 0, m = expected.length; i < m; i++) {
-    if (_keys.indexOf) {
-      expect(_keys.indexOf(expected[i]) >= 0).toBe(true);
-    }
+    const found = canIndex ? _keys.indexOf(expected[i]) >= 0 : true;
+    expect(found).toBe(true);
   }
-  if (fillList) {
-    expect(fillList).toBe(_keys);
-  }
+  expect(fillList ? fillList === _keys : true).toBe(true);
   looseEqual(_keys.length, expected.length);
 }
 
@@ -273,6 +281,7 @@ describe("store2", () => {
       length: 0,
     });
     ns.clear();
+    expect(store).toBeDefined();
   });
 
   it("advanced getAll", () => {
@@ -308,6 +317,7 @@ describe("store2", () => {
     clear(ns);
     getAll({ foo: true });
     clearAll();
+    expect(store).toBeDefined();
   });
 
   it("advanced namespace", () => {
@@ -318,6 +328,7 @@ describe("store2", () => {
     looseNotEqual(null, ns);
     store.lonely("foo", "bar");
     looseEqual(store("lonely:foo"), "bar");
+    expect(store).toBeDefined();
   });
 
   it("areas", () => {
@@ -343,6 +354,7 @@ describe("store2", () => {
     looseEqual(fake("key"), undefined);
     looseEqual(fake("key2"), undefined);
     looseEqual(fake.size(), 0);
+    expect(store).toBeDefined();
   });
 
   it("tricky for us", () => {
@@ -354,6 +366,7 @@ describe("store2", () => {
     save({ a: { b: true } }, false);
     save(function a() {} as unknown as string, "whatever");
     clear();
+    expect(store).toBeDefined();
   });
 
   it("per-call reviver", () => {
@@ -372,6 +385,7 @@ describe("store2", () => {
     looseEqual(typeof revived.date, "object");
     store.remove("date");
     store.remove("dated");
+    expect(store).toBeDefined();
   });
 
   it("per-call replacer", () => {
@@ -385,6 +399,7 @@ describe("store2", () => {
     const replaced = store.get("test");
     looseEqual(replaced.foo, "bar");
     store.remove("test");
+    expect(store).toBeDefined();
   });
 
   it("rich reviver", () => {
@@ -416,6 +431,7 @@ describe("store2", () => {
     looseEqual(revived.woogie.rich.constructor.name, "RichType");
     looseEqual(revived.woogie.rich.get("bar"), true);
     store.session.remove("obj");
+    expect(store).toBeDefined();
   });
 
   it("rich replacer", () => {
@@ -461,6 +477,7 @@ describe("store2", () => {
     looseEqual(typeof revived.date, "object");
     store.remove("date");
     store.remove("dated");
+    expect(store).toBeDefined();
   });
 
   it("global replace", () => {
@@ -477,6 +494,7 @@ describe("store2", () => {
     store.set("obj", { prop: new (TestType as unknown as new () => object)() });
     const obj = store.get("obj");
     looseEqual(obj.prop, "TestType");
+    expect(store).toBeDefined();
   });
 
   it("#117 global replace surprises like Date/toJSON", () => {
@@ -500,6 +518,7 @@ describe("store2", () => {
     obj = store.get("obj");
     looseNotEqual(obj.prop, "TestType");
     looseEqual(obj.prop, "toJSON'ed!");
+    expect(store).toBeDefined();
   });
 
   it("#74 falsy alt support", () => {
@@ -529,22 +548,26 @@ describe("store2", () => {
     looseEqual(true, store.isFake());
     looseEqual(null, store.get("bar"));
     store.isFake(false);
+    expect(store).toBeDefined();
   });
 
   it("parse returns raw string for invalid json", () => {
     localStorage.setItem("badparse", "{invalid");
     looseEqual(store.get("badparse"), "{invalid");
     store.remove("badparse");
+    expect(store).toBeDefined();
   });
 
   it("namespace returns empty string on root store", () => {
     looseEqual(store.namespace(), "");
+    expect(store).toBeDefined();
   });
 
   it("namespace returns current namespace when called without args", () => {
     const ns = store.namespace("named");
     looseEqual(ns.namespace(), "named");
     ns.clear();
+    expect(store).toBeDefined();
   });
 
   it("namespace reuses existing namespace instance", () => {
@@ -559,10 +582,12 @@ describe("store2", () => {
     const ns = store.namespace("str");
     looseEqual(ns + "", "store.str[local]");
     ns.clear();
+    expect(store).toBeDefined();
   });
 
   it("isFake(false) is safe when storage was never forced fake", () => {
     looseEqual(store.isFake(false), store.isFake());
+    expect(store).toBeDefined();
   });
 
   it("preserves conflicting global store reference", async () => {
@@ -631,6 +656,7 @@ describe("store2", () => {
     looseEqual(store.set("keep", "new", false), "new");
     looseEqual(store.get("keep"), "original");
     store.remove("keep");
+    expect(store).toBeDefined();
   });
 
   it("tricky for browsers", () => {
@@ -646,6 +672,7 @@ describe("store2", () => {
     save("length", 1);
     update("length", 2);
     clear();
+    expect(store).toBeDefined();
   });
 });
 

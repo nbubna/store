@@ -1,5 +1,6 @@
 import { store } from "../setup";
 import "../../src/extensions/quota";
+import type { QuotaHandler } from "../../src/extensions/quota";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 function quotaExceeded() {
@@ -38,13 +39,13 @@ describe("quota extension", () => {
   it("registers quota handlers", () => {
     expect(typeof store.quota).toBe("function");
     expect(Array.isArray(store.quota.fns)).toBe(true);
-    const handler = vi.fn();
+    const handler = vi.fn<QuotaHandler>();
     store.quota(handler);
     expect(store.quota.fns).toContain(handler);
   });
 
   it("invokes handlers when storage throws quota errors", () => {
-    const handler = vi.fn(() => true);
+    const handler = vi.fn<QuotaHandler>(() => true);
     store.quota(handler);
     mockPrimaryQuota();
 
@@ -57,12 +58,12 @@ describe("quota extension", () => {
     store.quota(() => false);
     mockPrimaryQuota();
 
-    expect(() => store.set("fail", "value")).toThrow();
+    expect(() => store.set("fail", "value")).toThrow("quota");
   });
 
   it("stops calling handlers after one returns true", () => {
-    const first = vi.fn(() => true);
-    const second = vi.fn();
+    const first = vi.fn<QuotaHandler>(() => true);
+    const second = vi.fn<QuotaHandler>();
     store.quota(first);
     store.quota(second);
     mockPrimaryQuota();
